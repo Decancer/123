@@ -2,7 +2,14 @@ import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// 延迟初始化：只在真正发送邮件时才创建 Resend 实例，避免构建时因环境变量缺失崩溃
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
 
 const FROM = "My Blog <onboarding@resend.dev>";
 
@@ -70,7 +77,7 @@ export async function sendVerificationEmail(
   const verifyUrl = `${getBaseUrl()}/verify-email?token=${token}`;
 
   try {
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: FROM,
       to: userEmail,
       subject: "[My Blog] 请验证你的邮箱",
