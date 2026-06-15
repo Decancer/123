@@ -7,9 +7,15 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
+  const url = process.env.DATABASE_URL ?? "file:./dev.db";
+  const authToken = process.env.TURSO_AUTH_TOKEN;
+
   const adapter = new PrismaLibSql({
-    url: process.env.DATABASE_URL ?? "file:./dev.db",
+    url,
+    // Turso 需要 authToken；本地 SQLite 文件不需要
+    ...(authToken ? { authToken } : {}),
   });
+
   return new PrismaClient({ adapter });
 }
 
