@@ -68,9 +68,10 @@ export async function POST(request: NextRequest) {
     }
 
     // 处理标签：查找已有或创建新标签
-    const tagNames: string[] = (tags && tags.length > 0)
-      ? [...new Set(tags.map((t: string) => t.trim()).filter(Boolean))]
-      : [];
+    const rawTags: unknown[] = Array.isArray(tags) ? tags : [];
+    const tagNames: string[] = rawTags
+      .map((t) => (typeof t === "string" ? t.trim() : ""))
+      .filter(Boolean);
 
     const tagConnections = await Promise.all(
       tagNames.map(async (name) => {

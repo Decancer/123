@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 // GET /api/users — 获取所有用户
@@ -15,23 +15,5 @@ export async function GET() {
   } catch (error) {
     console.error("获取用户失败:", error);
     return NextResponse.json({ error: "获取用户失败" }, { status: 500 });
-  }
-}
-
-// POST /api/users — 创建新用户
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const user = await prisma.user.create({
-      data: {
-        email: body.email,
-        name: body.name,
-        bio: body.bio,
-      },
-    });
-    return NextResponse.json(user, { status: 201 });
-  } catch (error) {
-    console.error("创建用户失败:", error);
-    return NextResponse.json({ error: "创建用户失败" }, { status: 500 });
   }
 }
