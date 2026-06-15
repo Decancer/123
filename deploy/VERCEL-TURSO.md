@@ -145,7 +145,7 @@ Vercel 会自动识别 Next.js 项目，一般无需改动。确认：
 | `DATABASE_URL` | `libsql://my-blog-xxxx.turso.io` | Production |
 | `TURSO_AUTH_TOKEN` | `eyJhbGciOiJFZERTQSIsInR...`（你创建的 token） | Production |
 | `JWT_SECRET` | 运行 `openssl rand -base64 64` 生成的随机串 | Production |
-| `RESEND_API_KEY` | `REPLACE_WITH_YOUR_RESEND_API_KEY` | Production |
+| `RESEND_API_KEY` | `你的 Resend API Key — 去 resend.com 创建` | Production |
 | `BASE_URL` | `https://你的项目名.vercel.app` | Production |
 
 > `BASE_URL` 先用 Vercel 给的默认域名。以后绑了自定义域名再改。
