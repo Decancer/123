@@ -187,7 +187,7 @@ DATABASE_URL="file:./dev.db"
 JWT_SECRET="<用上面 openssl rand -base64 64 的输出替换>"
 
 # Resend API Key（发邮件验证用）
-RESEND_API_KEY="RESEND_KEY_REDACTED"
+RESEND_API_KEY="<你的 Resend API Key — 去 resend.com 创建>"
 
 # 网站域名（重要！邮箱验证链接会用这个）
 BASE_URL="http://<你的服务器IP>:3000"
