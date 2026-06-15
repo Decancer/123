@@ -20,15 +20,20 @@
 
 | 文件 | 用途 |
 |------|------|
-| `SKILL.md` | **主文件** — 发给豆包 AI，包含完整部署步骤 |
+| `SKILL.md` | **主文件** — 完整部署步骤（Node.js + Nginx + PM2） |
+| `SKILL-CLOUDFLARE-TUNNEL.md` | **外网访问** — Cloudflare Tunnel 配置指南（解决 NAT 隔离无法外网访问的问题） |
 | `env.template` | 环境变量模板，部署时参考 |
 | `nginx.conf` | Nginx 配置模板 |
 | `ecosystem.config.js` | PM2 进程管理配置模板 |
 
 ## 部署后访问
 
-- 有域名：`http://你的域名`
-- 无域名：`http://服务器公网IP`
+部署完成后，豆包 VM 有 NAT 网络隔离，**外网无法直接访问**。还需要配 Cloudflare Tunnel：
+
+> 把 `SKILL-CLOUDFLARE-TUNNEL.md` 发给豆包，按指引配置。
+
+- 方案 A（无需域名）：得到 `https://xxx.trycloudflare.com` 临时地址
+- 方案 B（需域名）：得到 `https://你的域名` 固定地址，自动 HTTPS
 - 测试账号：`alice@example.com` / `password123`
 
 ## 注意事项
