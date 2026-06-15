@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ==================== 模型定义 ====================
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password      String
+  name          String?
+  avatar        String?
+  bio           String?
+  emailVerified DateTime? @map("email_verified")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  posts              Post[]
+  comments           Comment[]
+  verificationTokens EmailVerificationToken[]
+
+  @@map("users")
+}
+
+model EmailVerificationToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int      @unique @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("email_verification_tokens")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  content   String
+  excerpt   String?
+  category  String   @default("tech") @map("category")
+  published Boolean  @default(false)
+  viewCount Int      @default(0) @map("view_count")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  authorId  Int      @map("author_id")
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  comments  Comment[]
+  tags      TagOnPost[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  postId    Int      @map("post_id")
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  authorId  Int      @map("author_id")
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Tag {
+  id    Int        @id @default(autoincrement())
+  name  String     @unique
+  posts TagOnPost[]
+
+  @@map("tags")
+}
+
+model TagOnPost {
+  postId Int  @map("post_id")
+  tagId  Int  @map("tag_id")
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@map("tags_on_posts")
+}
