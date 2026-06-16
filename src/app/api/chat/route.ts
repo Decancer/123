@@ -1,8 +1,7 @@
-import { streamText } from "ai";
+import { streamText, convertToModelMessages } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { getCurrentUser } from "@/lib/auth";
 
-// DeepSeek 兼容 OpenAI API
 const deepseek = createOpenAI({
   baseURL: "https://api.deepseek.com/v1",
   apiKey: process.env.DEEPSEEK_API_KEY,
@@ -18,15 +17,16 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
 
     if (!process.env.DEEPSEEK_API_KEY) {
-      console.error("[Chat] Key 未设置");
       return Response.json({ error: "API Key 未配置" }, { status: 500 });
     }
 
-    // deepseek-v4-flash — 非推理模型，速度快，兼容性最好
+    // AI SDK v6 useChat 发来 parts 格式，需转为 content 格式给 DeepSeek
+    const modelMessages = await convertToModelMessages(messages);
+
     const result = streamText({
       model: deepseek.chat("deepseek-v4-flash" as any),
       system: process.env.AI_SYSTEM_PROMPT ?? "You are a helpful assistant.",
-      messages,
+      messages: modelMessages,
     });
 
     return result.toUIMessageStreamResponse();
