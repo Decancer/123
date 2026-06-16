@@ -18,6 +18,7 @@ const PUBLIC_PATHS = [
   "/api/auth/delete",
   "/api/posts",
   "/api/comments",
+  "/api/profile",
   "/_next",
   "/favicon.ico",
 ];

@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import Link from "next/link";
 import { UserMenu } from "@/components/UserMenu";
+import { ProfileEditor } from "@/components/ProfileEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -40,23 +41,21 @@ export default async function ProfilePage() {
           ← 返回首页
         </Link>
 
-        <div className="mb-8 flex items-center gap-4">
-          <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-500 text-2xl font-semibold text-white">
-            {currentUser?.name?.charAt(0) || "U"}
-          </span>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              {currentUser?.name || "用户"}
-            </h1>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              {currentUser?.email}
-            </p>
+        {currentUser ? (
+          <ProfileEditor
+            user={{
+              name: currentUser.name,
+              email: currentUser.email,
+              avatar: currentUser.avatar,
+              background: currentUser.background ?? null,
+              bio: currentUser.bio,
+            }}
+          />
+        ) : (
+          <div className="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
+            <p className="text-zinc-400">请先登录</p>
           </div>
-        </div>
-
-        <div className="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
-          <p className="text-zinc-400">更多内容即将上线…</p>
-        </div>
+        )}
       </main>
 
       <footer className="border-t border-zinc-200 py-8 text-center text-sm text-zinc-400 dark:border-zinc-800">

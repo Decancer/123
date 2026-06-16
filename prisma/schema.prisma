@@ -18,6 +18,7 @@ model User {
   password      String
   name          String?
   avatar        String?
+  background    String?   @map("background")
   bio           String?
   role          String    @default("user") @map("role")
   emailVerified DateTime? @map("email_verified")
