@@ -49,14 +49,14 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
     []
   );
 
-  // 用 DiceBear 生成默认头像 URL（如果没有上传的头像）
   const avatarUrl = avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(user.email)}`;
 
   return (
     <div className="w-full">
-      {/* 背景区 */}
+      {/* 背景区 — 整块区域可点击换背景 */}
       <div
-        className="relative mb-6 h-40 w-full overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700"
+        onClick={() => bgInputRef.current?.click()}
+        className="group relative mb-6 h-40 w-full cursor-pointer overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700"
         style={
           background
             ? {
@@ -67,13 +67,12 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
             : { background: "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)" }
         }
       >
-        <button
-          onClick={() => bgInputRef.current?.click()}
-          disabled={uploading === "background"}
-          className="absolute bottom-2 right-2 rounded-md bg-black/40 px-2 py-1 text-xs text-white backdrop-blur transition hover:bg-black/60 disabled:opacity-50"
-        >
-          {uploading === "background" ? "上传中..." : "更换背景"}
-        </button>
+        {/* 半透明提示条 — hover 时显示 */}
+        <div className="absolute inset-x-0 bottom-0 flex items-center justify-center bg-gradient-to-t from-black/50 to-transparent pb-2 pt-8 opacity-0 transition group-hover:opacity-100">
+          <span className="rounded-md bg-white/20 px-3 py-1 text-xs text-white backdrop-blur">
+            {uploading === "background" ? "上传中..." : "点击更换背景"}
+          </span>
+        </div>
         <input
           ref={bgInputRef}
           type="file"
@@ -88,20 +87,19 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
       </div>
 
       {/* 头像区 — 叠加在背景下缘 */}
-      <div className="relative -mt-14 mb-6 flex items-end gap-4 px-2">
-        <div className="relative group">
+      <div className="relative z-10 -mt-14 mb-6 flex items-end gap-4 px-2">
+        <div
+          onClick={() => avatarInputRef.current?.click()}
+          className="group relative cursor-pointer"
+        >
           <img
             src={avatarUrl}
             alt="头像"
             className="h-20 w-20 rounded-full border-4 border-white bg-white object-cover shadow-md dark:border-zinc-900"
           />
-          <button
-            onClick={() => avatarInputRef.current?.click()}
-            disabled={uploading === "avatar"}
-            className="absolute inset-0 flex items-center justify-center rounded-full bg-black/30 text-xs text-white opacity-0 transition group-hover:opacity-100 disabled:opacity-50"
-          >
+          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/30 text-xs text-white opacity-0 transition group-hover:opacity-100">
             {uploading === "avatar" ? "..." : "更换"}
-          </button>
+          </div>
           <input
             ref={avatarInputRef}
             type="file"
