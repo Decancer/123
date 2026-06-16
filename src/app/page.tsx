@@ -5,6 +5,7 @@ import { UserMenu } from "@/components/UserMenu";
 import { WriteArticle } from "@/components/WriteArticle";
 import { EmailVerificationBanner } from "@/components/EmailVerificationBanner";
 import { PostList } from "@/components/PostList";
+import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +32,9 @@ export default async function Home({ searchParams }: HomeProps) {
   ]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950">
+    <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950 relative">
+      {/* 背景装饰生物 */}
+      <BackgroundMonsters />
       {/* 顶部导航 */}
       <header className="sticky top-0 z-10 border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
@@ -75,7 +78,7 @@ export default async function Home({ searchParams }: HomeProps) {
       </header>
 
       {/* 主体内容 */}
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-12">
+      <main className="relative z-[1] mx-auto w-full max-w-3xl flex-1 px-4 py-12">
         {/* 欢迎区 */}
         {currentUser && (
           <div className="mb-10 rounded-xl border border-blue-100 bg-blue-50/50 p-5 dark:border-blue-900 dark:bg-blue-950/30">
