@@ -59,10 +59,10 @@ export function ChatWidget({ user }: ChatWidgetProps) {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-2xl text-white shadow-lg transition hover:bg-blue-700 hover:shadow-xl"
+          className="h-14 w-14 rounded-full shadow-lg transition hover:scale-110 hover:shadow-xl overflow-hidden"
           aria-label="打开 AI 聊天"
         >
-          <img src="/mashiro.svg" alt="Mashiro" className="h-8 w-8" />
+          <img src="/mashiro.svg" alt="Mashiro" className="h-full w-full object-cover" />
         </button>
       )}
 
