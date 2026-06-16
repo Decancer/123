@@ -9,11 +9,27 @@ export function BackgroundMonsters() {
       className="pointer-events-none fixed inset-0 overflow-hidden hidden md:block"
       style={{ zIndex: 0 }}
     >
-      {/* 橙色矮胖 — 靠中间，钝半圆头，只留黑眼珠，黑色横条嘴 */}
+      {/* 蓝色瘦高 — 外（左） */}
+      <SlenderMonster
+        color="#3b82f6"
+        name="蓝色瘦高"
+        left="4%"
+        bottom="3%"
+        width={42}
+        height={320}
+        eyeSize={28}
+        pupilSize={10}
+        zIndex={1}
+        maxSkew={5}
+        borderRadius="5px 5px 0 0"
+        showFeet={false}
+      />
+
+      {/* 橙色矮胖 — 紧挨着蓝色 */}
       <SlenderMonster
         color="#f97316"
         name="橙色矮胖"
-        left="14%"
+        left="calc(4% + 44px)"
         bottom="5%"
         width={90}
         height={160}
@@ -27,22 +43,6 @@ export function BackgroundMonsters() {
         showMouth
         mouthWidth={28}
         mouthSensitivity={1.2}
-      />
-
-      {/* 蓝色瘦高 — 靠中间，靠近橙色 */}
-      <SlenderMonster
-        color="#3b82f6"
-        name="蓝色瘦高"
-        left="6%"
-        bottom="3%"
-        width={42}
-        height={320}
-        eyeSize={28}
-        pupilSize={10}
-        zIndex={1}
-        maxSkew={5}
-        borderRadius="5px 5px 0 0"
-        showFeet={false}
       />
     </div>
   );

@@ -76,6 +76,7 @@ export function SlenderMonster({
   const [mouseY, setMouseY] = useState(0);
   const [blinking, setBlinking] = useState(false);
   const [mouthX, setMouthX] = useState(0);
+  const [mouthY, setMouthY] = useState(0);
 
   // 全局鼠标跟踪
   useEffect(() => {
@@ -104,7 +105,7 @@ export function SlenderMonster({
     return () => cancelAnimationFrame(raf);
   }, [mouseX, mouseY, maxSkew]);
 
-  // 嘴的鼠标追踪（幅度比眼睛大，但限制在身体内）
+  // 嘴的鼠标追踪（水平+垂直，幅度比眼睛大，但不超出身体）
   useEffect(() => {
     if (!showMouth) return;
     let raf: number;
@@ -112,11 +113,16 @@ export function SlenderMonster({
       if (bodyRef.current) {
         const rect = bodyRef.current.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
         const deltaX = mouseX - centerX;
-        // 最大移动范围：身体半宽 - 嘴半宽 - 4px 边距
-        const maxTravel = Math.max(0, width / 2 - mouthWidth / 2 - 4);
-        const raw = deltaX / 30 * mouthSensitivity;
-        setMouthX(Math.max(-maxTravel, Math.min(maxTravel, raw)));
+        const deltaY = mouseY - centerY;
+        // 水平：身体半宽 - 嘴半宽 - 4px 边距
+        const maxTravelX = Math.max(0, width / 2 - mouthWidth / 2 - 4);
+        const maxTravelY = 8; // 垂直 ±8px
+        const rawX = deltaX / 30 * mouthSensitivity;
+        const rawY = deltaY / 30 * mouthSensitivity;
+        setMouthX(Math.max(-maxTravelX, Math.min(maxTravelX, rawX)));
+        setMouthY(Math.max(-maxTravelY, Math.min(maxTravelY, rawY)));
       }
       raf = requestAnimationFrame(update);
     };
@@ -224,8 +230,8 @@ export function SlenderMonster({
             height: 5,
             backgroundColor: "#1a1a1a",
             borderRadius: 3,
-            marginTop: 18,
-            transform: `translateX(${mouthX}px)`,
+            marginTop: 10,
+            transform: `translate(${mouthX}px, ${mouthY}px)`,
             transition: "transform 0.15s ease-out",
           }}
         />
