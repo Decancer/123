@@ -45,12 +45,6 @@ export default async function Home({ searchParams }: HomeProps) {
             <Link href="/" className="hover:text-zinc-900 dark:hover:text-zinc-100">
               首页
             </Link>
-            <Link href="/api/users" className="hover:text-zinc-900 dark:hover:text-zinc-100">
-              API: 用户
-            </Link>
-            <Link href="/api/posts?published=true" className="hover:text-zinc-900 dark:hover:text-zinc-100">
-              API: 文章
-            </Link>
 
             {/* 分隔线 */}
             <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
