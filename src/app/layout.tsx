@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "My Blog — Next.js + Prisma + SQLite",
-  description: "一个使用 Next.js、Prisma 和 SQLite 构建的全栈博客",
+  title: "Mashiro Chat",
+  description: "Mashiro Chat — 技术与生活博客",
 };
 
 export default function RootLayout({

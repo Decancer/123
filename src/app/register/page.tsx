@@ -65,7 +65,7 @@ export default function RegisterPage() {
           <div className="mb-4 text-5xl">✨</div>
           <h1 className="text-2xl font-bold tracking-tight">创建账号</h1>
           <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-            注册后即可开始使用 My Blog
+            注册后即可开始使用 Mashiro Chat
           </p>
         </div>
 

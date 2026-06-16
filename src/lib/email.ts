@@ -11,7 +11,7 @@ function getResend(): Resend {
   return _resend;
 }
 
-const FROM = "My Blog <onboarding@resend.dev>";
+const FROM = "Mashiro Chat <onboarding@resend.dev>";
 
 // 24 小时过期
 const TOKEN_EXPIRES_MS = 24 * 60 * 60 * 1000;
@@ -80,7 +80,7 @@ export async function sendVerificationEmail(
     const { error } = await getResend().emails.send({
       from: FROM,
       to: userEmail,
-      subject: "[My Blog] 请验证你的邮箱",
+      subject: "[Mashiro Chat] 请验证你的邮箱",
       html: getEmailHtml(userName, verifyUrl),
     });
 
@@ -152,7 +152,7 @@ function getEmailHtml(userName: string, verifyUrl: string): string {
   <div style="text-align: center; font-size: 32px; margin-bottom: 16px;">📝</div>
   <h2 style="text-align: center; color: #27272a;">验证你的邮箱</h2>
   <p style="color: #52525b; text-align: center;">
-    你好，<strong>${displayName}</strong>！感谢注册 My Blog。
+    你好，<strong>${displayName}</strong>！感谢注册 Mashiro Chat。
   </p>
   <p style="color: #52525b; text-align: center; margin-bottom: 28px;">
     请点击下方按钮验证你的邮箱地址，该链接 24 小时内有效：
@@ -171,7 +171,7 @@ function getEmailHtml(userName: string, verifyUrl: string): string {
   </p>
   <hr style="margin: 24px 0; border: none; border-top: 1px solid #e4e4e7;">
   <p style="color: #a1a1aa; font-size: 11px; text-align: center;">
-    如果你没有注册 My Blog，请忽略此邮件。
+    如果你没有注册 Mashiro Chat，请忽略此邮件。
   </p>
 </body>
 </html>`.trim();
