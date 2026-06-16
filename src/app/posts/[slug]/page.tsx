@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { UserMenu } from "@/components/UserMenu";
 import { CommentForm } from "@/components/CommentForm";
 import { EmailVerificationBanner } from "@/components/EmailVerificationBanner";
+import { PostActions } from "@/components/PostActions";
+import { CommentItem } from "@/components/CommentItem";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -114,9 +116,26 @@ export default async function PostPage({ params }: PageProps) {
             ))}
           </div>
 
-          <h1 className="mb-4 text-3xl font-bold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">
-            {post.title}
-          </h1>
+          <div className="mb-4 flex items-start gap-2">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">
+              {post.title}
+            </h1>
+            {currentUser && (
+              <PostActions
+                post={{
+                  id: post.id,
+                  title: post.title,
+                  slug: post.slug,
+                  content: post.content,
+                  excerpt: post.excerpt,
+                  category: post.category,
+                  tags: post.tags,
+                  authorId: post.author.id,
+                }}
+                currentUserId={currentUser.id}
+              />
+            )}
+          </div>
 
           {/* 作者信息 */}
           <div className="flex items-center gap-3">
@@ -198,25 +217,17 @@ export default async function PostPage({ params }: PageProps) {
           ) : (
             <div className="space-y-5">
               {post.comments.map((comment) => (
-                <div
+                <CommentItem
                   key={comment.id}
-                  className="rounded-lg border border-zinc-100 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
-                >
-                  <div className="mb-2 flex items-center gap-2">
-                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-zinc-200 text-xs font-medium text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
-                      {comment.author.name?.charAt(0) || "?"}
-                    </span>
-                    <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                      {comment.author.name}
-                    </span>
-                    <time className="text-xs text-zinc-400" dateTime={comment.createdAt.toISOString()}>
-                      {new Date(comment.createdAt).toLocaleDateString("zh-CN")}
-                    </time>
-                  </div>
-                  <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                    {comment.content}
-                  </p>
-                </div>
+                  comment={{
+                    id: comment.id,
+                    content: comment.content,
+                    createdAt: comment.createdAt,
+                    author: comment.author,
+                  }}
+                  currentUserId={currentUser?.id}
+                  currentUserRole={currentUser?.role}
+                />
               ))}
             </div>
           )}

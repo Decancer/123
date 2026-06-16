@@ -26,9 +26,10 @@ async function main() {
     data: {
       email: "alice@example.com",
       password: passwordHash,
-      name: "Alice",
+      name: "Alice（管理员）",
       avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Alice",
       bio: "全栈开发者，热爱 Next.js 和 TypeScript",
+      role: "admin",
     },
   });
 

@@ -19,6 +19,7 @@ model User {
   name          String?
   avatar        String?
   bio           String?
+  role          String    @default("user") @map("role")
   emailVerified DateTime? @map("email_verified")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
