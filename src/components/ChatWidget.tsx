@@ -46,7 +46,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
     return (
       <div className="fixed bottom-6 right-6 z-50">
         <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 shadow-lg dark:border-zinc-700 dark:bg-zinc-800">
-          <img src="/mashiro.svg" alt="Mashiro" className="h-6 w-6" />
+          <img src="/mashiro.svg" alt="Mashiro" className="h-6 w-6 rounded-full" />
           <span className="text-xs text-zinc-400">登录后可与我对话</span>
         </div>
       </div>
@@ -72,7 +72,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
           {/* 头部 */}
           <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
             <div className="flex items-center gap-2">
-              <img src="/mashiro.svg" alt="Mashiro" className="h-7 w-7" />
+              <img src="/mashiro.svg" alt="Mashiro" className="h-7 w-7 rounded-full" />
               <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                 Mashiro
               </span>
@@ -102,7 +102,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
             {messages.length === 0 && (
               <div className="text-center py-8">
-                <img src="/mashiro.svg" alt="Mashiro" className="mx-auto h-12 w-12" />
+                <img src="/mashiro.svg" alt="Mashiro" className="mx-auto h-12 w-12 rounded-full" />
                 <p className="mt-2 text-sm text-zinc-400">
                   你好，{user.name}！有什么我可以帮你的吗？
                 </p>
