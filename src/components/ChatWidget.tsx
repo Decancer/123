@@ -74,7 +74,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
             <div className="flex items-center gap-2">
               <img src="/mashiro.svg" alt="Mashiro" className="h-7 w-7" />
               <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                AI 助手
+                Mashiro
               </span>
             </div>
             <button
