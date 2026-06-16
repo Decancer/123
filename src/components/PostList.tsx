@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { EditPostForm } from "@/components/EditPostForm";
 
@@ -52,6 +52,20 @@ export function PostList({
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const actionRefs = useRef<Map<number, HTMLDivElement | null>>(new Map());
+
+  // 点击空白处取消删除确认
+  useEffect(() => {
+    if (deleteConfirm === null) return;
+    function handleClick(e: MouseEvent) {
+      const el = actionRefs.current.get(deleteConfirm!);
+      if (el && !el.contains(e.target as Node)) {
+        setDeleteConfirm(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [deleteConfirm]);
 
   const filtered =
     activeCategory === null
@@ -116,7 +130,10 @@ export function PostList({
             >
               {/* 编辑/删除按钮 */}
               {(currentUserId === post.author.id || currentUserRole === "admin") && (
-                <div className="absolute right-3 top-3 flex gap-1 opacity-0 transition group-hover:opacity-100">
+                <div
+                  ref={(el) => { actionRefs.current.set(post.id, el); }}
+                  className="absolute right-3 top-3 flex gap-1 opacity-0 transition group-hover:opacity-100"
+                >
                   {/* 编辑（仅作者本人） */}
                   {currentUserId === post.author.id && (
                     <button

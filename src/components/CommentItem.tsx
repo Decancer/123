@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useRef, useEffect, type FormEvent } from "react";
 
 interface CommentItemProps {
   comment: {
@@ -19,6 +19,19 @@ export function CommentItem({ comment, currentUserId, currentUserRole }: Comment
   const [saving, setSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const btnRef = useRef<HTMLDivElement>(null);
+
+  // 点击空白处取消删除确认
+  useEffect(() => {
+    if (!deleteConfirm) return;
+    function handleClick(e: MouseEvent) {
+      if (btnRef.current && !btnRef.current.contains(e.target as Node)) {
+        setDeleteConfirm(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [deleteConfirm]);
   const [content, setContent] = useState(comment.content);
 
   const isOwn = currentUserId === comment.author.id;
@@ -74,7 +87,7 @@ export function CommentItem({ comment, currentUserId, currentUserRole }: Comment
 
         {/* 操作按钮 */}
         {(isOwn || canDelete) && (
-          <div className="flex items-center gap-0.5">
+          <div ref={btnRef} className="flex items-center gap-0.5">
             {isOwn && (
               <button
                 onClick={() => { setEditing(true); setEditText(content); }}

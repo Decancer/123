@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { EditPostForm } from "@/components/EditPostForm";
 
 interface PostActionsProps {
@@ -22,6 +22,19 @@ export function PostActions({ post, currentUserId, currentUserRole }: PostAction
   const [editing, setEditing] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const btnRef = useRef<HTMLDivElement>(null);
+
+  // 点击空白处取消删除确认
+  useEffect(() => {
+    if (!deleteConfirm) return;
+    function handleClick(e: MouseEvent) {
+      if (btnRef.current && !btnRef.current.contains(e.target as Node)) {
+        setDeleteConfirm(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [deleteConfirm]);
 
   const isOwn = post.authorId === currentUserId;
   const canDelete = isOwn || currentUserRole === "admin";
@@ -42,7 +55,7 @@ export function PostActions({ post, currentUserId, currentUserRole }: PostAction
 
   return (
     <>
-      <div className="flex items-center gap-1 ml-3">
+      <div ref={btnRef} className="flex items-center gap-1 ml-3">
         {/* 编辑：仅作者本人 */}
         {isOwn && (
           <button
