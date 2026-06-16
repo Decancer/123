@@ -10,7 +10,6 @@ const deepseek = createOpenAI({
 
 export async function POST(req: Request) {
   try {
-    // 鉴权
     const user = await getCurrentUser();
     if (!user) {
       return Response.json({ error: "请先登录" }, { status: 401 });
@@ -19,23 +18,26 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
 
     if (!process.env.DEEPSEEK_API_KEY) {
-      return Response.json(
-        { error: "AI API Key 未配置，请在 Vercel 环境变量中设置 DEEPSEEK_API_KEY 并重新部署" },
-        { status: 500 }
-      );
+      console.error("[Chat] Key 未设置");
+      return Response.json({ error: "API Key 未配置" }, { status: 500 });
     }
 
+    // deepseek-v4-flash — 非推理模型，速度快，兼容性最好
     const result = streamText({
-      model: deepseek.chat("deepseek-v4-pro" as any),
+      model: deepseek.chat("deepseek-v4-flash" as any),
       system: process.env.AI_SYSTEM_PROMPT ?? "You are a helpful assistant.",
       messages,
     });
 
     return result.toUIMessageStreamResponse();
-  } catch (err) {
-    console.error("AI Chat 错误:", err);
+  } catch (err: any) {
+    console.error("[Chat] 异常:", err?.message, err?.cause);
     return Response.json(
-      { error: `AI 服务异常: ${err instanceof Error ? err.message : "未知错误"}` },
+      {
+        error: `${err?.message || "未知错误"}${
+          err?.cause ? " | " + JSON.stringify(err.cause) : ""
+        }`,
+      },
       { status: 500 }
     );
   }
