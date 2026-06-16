@@ -133,6 +133,7 @@ export default async function PostPage({ params }: PageProps) {
                   authorId: post.author.id,
                 }}
                 currentUserId={currentUser.id}
+                currentUserRole={currentUser.role}
               />
             )}
           </div>

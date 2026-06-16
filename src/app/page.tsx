@@ -101,7 +101,7 @@ export default async function Home({ searchParams }: HomeProps) {
         )}
 
         {/* 分类 Tab + 文章列表（客户端筛选，瞬间切换） */}
-        <PostList posts={JSON.parse(JSON.stringify(posts))} initialCategory={initialCategory} currentUserId={currentUser?.id} />
+        <PostList posts={JSON.parse(JSON.stringify(posts))} initialCategory={initialCategory} currentUserId={currentUser?.id} currentUserRole={currentUser?.role} />
 
         {/* 技术栈说明 */}
         <div className="mt-16 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">

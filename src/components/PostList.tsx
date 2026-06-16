@@ -41,10 +41,12 @@ export function PostList({
   posts,
   initialCategory,
   currentUserId,
+  currentUserRole,
 }: {
   posts: Post[];
   initialCategory: Category | null;
   currentUserId?: number;
+  currentUserRole?: string;
 }) {
   const [activeCategory, setActiveCategory] = useState<Category | null>(initialCategory);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
@@ -112,18 +114,22 @@ export function PostList({
               key={post.id}
               className="group relative rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
             >
-              {/* 编辑/删除按钮（仅作者可见） */}
-              {currentUserId === post.author.id && (
+              {/* 编辑/删除按钮 */}
+              {(currentUserId === post.author.id || currentUserRole === "admin") && (
                 <div className="absolute right-3 top-3 flex gap-1 opacity-0 transition group-hover:opacity-100">
-                  <button
-                    onClick={() => setEditingPost(post)}
-                    className="rounded-md p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-blue-500 dark:hover:bg-zinc-700 dark:hover:text-blue-400"
-                    title="编辑"
-                  >
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                  </button>
+                  {/* 编辑（仅作者本人） */}
+                  {currentUserId === post.author.id && (
+                    <button
+                      onClick={() => setEditingPost(post)}
+                      className="rounded-md p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-blue-500 dark:hover:bg-zinc-700 dark:hover:text-blue-400"
+                      title="编辑"
+                    >
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                  )}
+                  {/* 删除（作者或管理员） */}
                   {deleteConfirm === post.id ? (
                     <button
                       onClick={() => handleDelete(post.id)}
