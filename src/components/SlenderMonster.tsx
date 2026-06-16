@@ -32,8 +32,10 @@ interface SlenderMonsterProps {
   maxSkew?: number;
   /** 圆角大小 */
   borderRadius?: string;
-  /** 装饰条纹颜色 */
+  /** 装饰条纹颜色（不传则不显示） */
   accentColor?: string;
+  /** 是否显示底部小脚 */
+  showFeet?: boolean;
   className?: string;
 }
 
@@ -53,6 +55,7 @@ export function SlenderMonster({
   maxSkew = 5,
   borderRadius = "12px 12px 0 0",
   accentColor,
+  showFeet = true,
   className,
 }: SlenderMonsterProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -179,36 +182,38 @@ export function SlenderMonster({
       </div>
 
       {/* 可爱小脚 */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 16,
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "flex-end",
-          paddingBottom: 2,
-        }}
-      >
+      {showFeet && (
         <div
           style={{
-            width: 18,
-            height: 10,
-            backgroundColor: "rgba(0,0,0,0.15)",
-            borderRadius: "50%",
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 16,
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "flex-end",
+            paddingBottom: 2,
           }}
-        />
-        <div
-          style={{
-            width: 18,
-            height: 10,
-            backgroundColor: "rgba(0,0,0,0.15)",
-            borderRadius: "50%",
-          }}
-        />
-      </div>
+        >
+          <div
+            style={{
+              width: 18,
+              height: 10,
+              backgroundColor: "rgba(0,0,0,0.15)",
+              borderRadius: "50%",
+            }}
+          />
+          <div
+            style={{
+              width: 18,
+              height: 10,
+              backgroundColor: "rgba(0,0,0,0.15)",
+              borderRadius: "50%",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
