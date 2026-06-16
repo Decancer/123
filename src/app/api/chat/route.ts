@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     }
 
     const result = streamText({
-      model: deepseek.chat("deepseek-chat"),
+      model: deepseek.chat("deepseek-v4-pro" as any),
       system: process.env.AI_SYSTEM_PROMPT ?? "You are a helpful assistant.",
       messages,
     });
