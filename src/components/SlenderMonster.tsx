@@ -38,6 +38,12 @@ interface SlenderMonsterProps {
   accentColor?: string;
   /** 是否显示底部小脚 */
   showFeet?: boolean;
+  /** 是否显示黑色横条嘴 */
+  showMouth?: boolean;
+  /** 嘴的宽度 */
+  mouthWidth?: number;
+  /** 嘴的移动幅度倍率（默认 1） */
+  mouthSensitivity?: number;
   className?: string;
 }
 
@@ -59,6 +65,9 @@ export function SlenderMonster({
   borderRadius = "12px 12px 0 0",
   accentColor,
   showFeet = true,
+  showMouth = false,
+  mouthWidth = 28,
+  mouthSensitivity = 1,
   className,
 }: SlenderMonsterProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -66,6 +75,7 @@ export function SlenderMonster({
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const [blinking, setBlinking] = useState(false);
+  const [mouthX, setMouthX] = useState(0);
 
   // 全局鼠标跟踪
   useEffect(() => {
@@ -93,6 +103,26 @@ export function SlenderMonster({
     raf = requestAnimationFrame(update);
     return () => cancelAnimationFrame(raf);
   }, [mouseX, mouseY, maxSkew]);
+
+  // 嘴的鼠标追踪（幅度比眼睛大，但限制在身体内）
+  useEffect(() => {
+    if (!showMouth) return;
+    let raf: number;
+    const update = () => {
+      if (bodyRef.current) {
+        const rect = bodyRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const deltaX = mouseX - centerX;
+        // 最大移动范围：身体半宽 - 嘴半宽 - 4px 边距
+        const maxTravel = Math.max(0, width / 2 - mouthWidth / 2 - 4);
+        const raw = deltaX / 30 * mouthSensitivity;
+        setMouthX(Math.max(-maxTravel, Math.min(maxTravel, raw)));
+      }
+      raf = requestAnimationFrame(update);
+    };
+    raf = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(raf);
+  }, [mouseX, mouseY, width, mouthWidth, mouthSensitivity, showMouth]);
 
   // 眨眼：递归 setTimeout，3-7 秒随机
   useEffect(() => {
@@ -185,6 +215,21 @@ export function SlenderMonster({
           isBlinking={blinking}
         />
       </div>
+
+      {/* 黑色横条嘴 */}
+      {showMouth && (
+        <div
+          style={{
+            width: mouthWidth,
+            height: 5,
+            backgroundColor: "#1a1a1a",
+            borderRadius: 3,
+            marginTop: 18,
+            transform: `translateX(${mouthX}px)`,
+            transition: "transform 0.15s ease-out",
+          }}
+        />
+      )}
 
       {/* 可爱小脚 */}
       {showFeet && (
