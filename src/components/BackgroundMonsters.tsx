@@ -6,7 +6,7 @@ export function BackgroundMonsters() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 overflow-hidden"
+      className="pointer-events-none fixed inset-0 overflow-hidden hidden md:block"
       style={{ zIndex: 0 }}
     >
       {/* 橙色矮胖 */}
