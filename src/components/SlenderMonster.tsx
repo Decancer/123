@@ -24,6 +24,8 @@ interface SlenderMonsterProps {
   zIndex?: number;
   /** 眼睛直径 */
   eyeSize?: number;
+  /** 眼球颜色（"transparent" = 只留瞳孔） */
+  eyeColor?: string;
   /** 瞳孔直径 */
   pupilSize?: number;
   /** CSS transform origin */
@@ -50,6 +52,7 @@ export function SlenderMonster({
   top,
   zIndex = 0,
   eyeSize = 36,
+  eyeColor = "white",
   pupilSize = 12,
   transformOrigin = "bottom center",
   maxSkew = 5,
@@ -171,12 +174,14 @@ export function SlenderMonster({
           size={eyeSize}
           pupilSize={pupilSize}
           maxDistance={8}
+          eyeColor={eyeColor}
           isBlinking={blinking}
         />
         <EyeBall
           size={eyeSize}
           pupilSize={pupilSize}
           maxDistance={8}
+          eyeColor={eyeColor}
           isBlinking={blinking}
         />
       </div>
