@@ -4,29 +4,7 @@ import Link from "next/link";
 import { UserMenu } from "@/components/UserMenu";
 import { WriteArticle } from "@/components/WriteArticle";
 import { EmailVerificationBanner } from "@/components/EmailVerificationBanner";
-
-function CategoryTab({
-  href,
-  active,
-  children,
-}: {
-  href: string;
-  active: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`rounded-lg px-4 py-1.5 text-sm font-medium transition ${
-        active
-          ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-zinc-100"
-          : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-      }`}
-    >
-      {children}
-    </Link>
-  );
-}
+import { PostList } from "@/components/PostList";
 
 export const dynamic = "force-dynamic";
 
@@ -36,14 +14,12 @@ interface HomeProps {
 
 export default async function Home({ searchParams }: HomeProps) {
   const { category } = await searchParams;
-  const activeCategory = category === "tech" || category === "life" ? category : null;
+  const initialCategory =
+    category === "tech" || category === "life" ? category : null;
 
   const [posts, currentUser] = await Promise.all([
     prisma.post.findMany({
-      where: {
-        published: true,
-        ...(activeCategory ? { category: activeCategory } : {}),
-      },
+      where: { published: true },
       include: {
         author: { select: { id: true, name: true, avatar: true } },
         tags: { include: { tag: true } },
@@ -124,85 +100,8 @@ export default async function Home({ searchParams }: HomeProps) {
           <EmailVerificationBanner />
         )}
 
-        {/* 分类 Tab 栏 */}
-        <div className="mb-10">
-          <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
-            <CategoryTab href="/" active={!activeCategory}>
-              全部
-            </CategoryTab>
-            <CategoryTab href="/?category=tech" active={activeCategory === "tech"}>
-              💻 技术
-            </CategoryTab>
-            <CategoryTab href="/?category=life" active={activeCategory === "life"}>
-              🌿 生活
-            </CategoryTab>
-          </div>
-        </div>
-
-        {posts.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
-            <p className="text-zinc-500">还没有文章，运行 npm run db:seed 创建示例数据</p>
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {posts.map((post) => (
-              <article
-                key={post.id}
-                className="group rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
-              >
-                {/* 分区徽章 + 标签 */}
-                <div className="mb-3 flex flex-wrap items-center gap-1.5">
-                  {/* 分区徽章 */}
-                  <span
-                    className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${
-                      post.category === "life"
-                        ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
-                        : "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                    }`}
-                  >
-                    {post.category === "life" ? "🌿 生活" : "💻 技术"}
-                  </span>
-                  {/* 标签 */}
-                  {post.tags.map(({ tag }) => (
-                    <span
-                      key={tag.id}
-                      className="inline-flex items-center rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
-                </div>
-
-                {/* 标题 */}
-                <h2 className="mb-2 text-xl font-semibold leading-snug tracking-tight transition group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                  <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-                </h2>
-
-                {/* 摘要 */}
-                {post.excerpt && (
-                  <p className="mb-4 leading-relaxed text-zinc-600 dark:text-zinc-400">
-                    {post.excerpt}
-                  </p>
-                )}
-
-                {/* 底部信息 */}
-                <div className="flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-500">
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                    {post.author.name}
-                  </span>
-                  <span aria-hidden="true">·</span>
-                  <span>{post._count.comments} 条评论</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{post.viewCount} 次阅读</span>
-                  <span aria-hidden="true">·</span>
-                  <time dateTime={post.createdAt.toISOString()}>
-                    {new Date(post.createdAt).toLocaleDateString("zh-CN")}
-                  </time>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+        {/* 分类 Tab + 文章列表（客户端筛选，瞬间切换） */}
+        <PostList posts={JSON.parse(JSON.stringify(posts))} initialCategory={initialCategory} />
 
         {/* 技术栈说明 */}
         <div className="mt-16 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
