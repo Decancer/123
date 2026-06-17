@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
 import { ChatWidget } from "@/components/ChatWidget";
+import { WriteArticleButton } from "@/components/WriteArticle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,11 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
+        {user && (
+          <div className="fixed bottom-24 right-6 z-50">
+            <WriteArticleButton />
+          </div>
+        )}
         <ChatWidget
           user={user ? { id: user.id, name: user.name || "User" } : null}
         />

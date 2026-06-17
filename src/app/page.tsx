@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import Link from "next/link";
 import { UserMenu } from "@/components/UserMenu";
-import { WriteArticle } from "@/components/WriteArticle";
 import { EmailVerificationBanner } from "@/components/EmailVerificationBanner";
 import { PostList } from "@/components/PostList";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
@@ -96,8 +95,6 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
         </div>
 
-        {/* 写文章（仅登录后可见） */}
-        {currentUser && <WriteArticle userName={currentUser.name || "User"} />}
       </main>
 
       {/* 页脚 */}
