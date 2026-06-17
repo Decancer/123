@@ -50,7 +50,7 @@ export default async function Home({ searchParams }: HomeProps) {
             <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
 
             {currentUser ? (
-              <UserMenu userName={currentUser.name || "User"} />
+              <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
             ) : (
               <div className="flex items-center gap-2">
                 <Link
@@ -73,25 +73,6 @@ export default async function Home({ searchParams }: HomeProps) {
 
       {/* 主体内容 */}
       <main className="relative z-[1] mx-auto w-full max-w-3xl flex-1 px-4 py-12">
-        {/* 欢迎区 */}
-        {currentUser && (
-          <div className="mb-10 rounded-xl border border-blue-100 bg-blue-50/50 p-5 dark:border-blue-900 dark:bg-blue-950/30">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-base font-semibold text-white">
-                {currentUser.name?.charAt(0) || "U"}
-              </span>
-              <div>
-                <p className="font-medium text-zinc-900 dark:text-zinc-100">
-                  你好，{currentUser.name}
-                </p>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  {currentUser.email}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* 邮箱未验证提醒（仅登录后显示） */}
         {currentUser && !currentUser.emailVerified && (
           <EmailVerificationBanner />

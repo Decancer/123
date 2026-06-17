@@ -11,8 +11,6 @@ interface ProfileData {
 }
 
 export function ProfileEditor({ user }: { user: ProfileData }) {
-  const [avatar, setAvatar] = useState(user.avatar);
-  const [background, setBackground] = useState(user.background);
   const [uploading, setUploading] = useState<"avatar" | "background" | null>(null);
   const [error, setError] = useState("");
   const avatarInputRef = useRef<HTMLInputElement>(null);
@@ -33,13 +31,12 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
         });
 
         if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.error || "上传失败");
+          const errData = await res.json();
+          throw new Error(errData.error || "上传失败");
         }
 
-        const data = await res.json();
-        if (field === "avatar") setAvatar(data.avatar);
-        if (field === "background") setBackground(data.background);
+        // 整页刷新，确保导航栏等处的头像和背景同步更新
+        window.location.reload();
       } catch (e: any) {
         setError(e.message);
       } finally {
@@ -49,7 +46,7 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
     []
   );
 
-  const avatarUrl = avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(user.email)}`;
+  const avatarUrl = user.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(user.email)}`;
 
   return (
     <div className="w-full">
@@ -58,9 +55,9 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
         onClick={() => bgInputRef.current?.click()}
         className="group relative mb-6 h-40 w-full cursor-pointer overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700"
         style={
-          background
+          user.background
             ? {
-                backgroundImage: `url(${background})`,
+                backgroundImage: `url(${user.background})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }

@@ -5,9 +5,10 @@ import { useState, useRef, useEffect } from "react";
 
 interface UserMenuProps {
   userName: string;
+  avatar: string | null;
 }
 
-export function UserMenu({ userName }: UserMenuProps) {
+export function UserMenu({ userName, avatar }: UserMenuProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState<"logout" | "delete" | null>(null);
@@ -73,9 +74,17 @@ export function UserMenu({ userName }: UserMenuProps) {
         onClick={() => { setOpen(!open); setShowConfirm(false); setShowLogoutConfirm(false); }}
         className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
       >
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300">
-          {initial}
-        </span>
+        {avatar ? (
+          <img
+            src={avatar}
+            alt=""
+            className="h-6 w-6 rounded-full object-cover"
+          />
+        ) : (
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+            {initial}
+          </span>
+        )}
         <span className="hidden text-zinc-700 dark:text-zinc-300 sm:inline">
           {userName}
         </span>

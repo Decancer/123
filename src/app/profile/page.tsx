@@ -22,7 +22,7 @@ export default async function ProfilePage() {
             </Link>
             <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
             {currentUser ? (
-              <UserMenu userName={currentUser.name || "User"} />
+              <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
             ) : (
               <Link href="/login" className="rounded-lg bg-zinc-900 px-3 py-1.5 text-white transition hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300">
                 登录
