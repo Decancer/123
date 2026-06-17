@@ -74,9 +74,17 @@ export function CommentItem({ comment, currentUserId, currentUserRole }: Comment
     <div className="rounded-lg border border-zinc-100 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-zinc-200 text-xs font-medium text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
-            {comment.author.name?.charAt(0) || "?"}
-          </span>
+          {comment.author.avatar ? (
+            <img
+              src={comment.author.avatar}
+              alt=""
+              className="h-6 w-6 rounded-full object-cover"
+            />
+          ) : (
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-zinc-200 text-xs font-medium text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
+              {comment.author.name?.charAt(0) || "?"}
+            </span>
+          )}
           <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
             {comment.author.name}
           </span>

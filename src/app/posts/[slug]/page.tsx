@@ -142,9 +142,17 @@ export default async function PostPage({ params }: PageProps) {
 
           {/* 作者信息 */}
           <div className="flex items-center gap-3">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-500 text-sm font-semibold text-white">
-              {post.author.name?.charAt(0) || "?"}
-            </span>
+            {post.author.avatar ? (
+              <img
+                src={post.author.avatar}
+                alt=""
+                className="h-9 w-9 rounded-full object-cover"
+              />
+            ) : (
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-500 text-sm font-semibold text-white">
+                {post.author.name?.charAt(0) || "?"}
+              </span>
+            )}
             <div>
               <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 {post.author.name}
