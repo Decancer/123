@@ -1,13 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState, FormEvent, useCallback, useEffect } from "react";
 import Link from "next/link";
 
 const COOLDOWN_SECONDS = 60;
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -57,7 +55,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/");
+      window.location.href = "/";
     } catch (err) {
       console.error("登录请求失败:", err);
       setError("网络错误，请检查服务是否启动");
