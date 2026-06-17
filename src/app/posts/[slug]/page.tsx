@@ -17,19 +17,38 @@ interface PageProps {
 export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const post = await prisma.post.findUnique({
-    where: { slug },
-    include: {
-      author: { select: { id: true, name: true, avatar: true, bio: true } },
-      tags: { include: { tag: true } },
-      comments: {
-        include: {
-          author: { select: { id: true, name: true, avatar: true } },
+  let post;
+  try {
+    post = await prisma.post.findUnique({
+      where: { slug },
+      include: {
+        author: { select: { id: true, name: true, avatar: true, bio: true } },
+        tags: { include: { tag: true } },
+        comments: {
+          include: {
+            author: { select: { id: true, name: true, avatar: true } },
+          },
+          orderBy: { createdAt: "asc" },
         },
-        orderBy: { createdAt: "asc" },
       },
-    },
-  });
+    });
+  } catch (err) {
+    console.error("文章详情查询失败:", err);
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="mb-4 text-5xl">😿</div>
+          <h1 className="text-xl font-bold">页面加载失败</h1>
+          <p className="mt-2 text-sm text-zinc-500">请稍后重试</p>
+          <Link href="/" className="mt-6 inline-block text-blue-500">← 返回首页</Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!post) {
+    notFound();
+  }
 
   const images: string[] = post?.images ? JSON.parse(post.images) : [];
 
