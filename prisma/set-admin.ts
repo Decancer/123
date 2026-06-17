@@ -21,10 +21,10 @@ async function main() {
 
   await prisma.user.update({
     where: { email },
-    data: { role: "admin" },
+    data: { role: "admin", emailVerified: user.emailVerified || new Date() },
   });
 
-  console.log(`✅ ${email} 已设为管理员`);
+  console.log(`✅ ${email} 已设为管理员（含邮箱验证）`);
 
   const admins = await prisma.user.findMany({
     where: { role: "admin" },

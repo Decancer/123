@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     // 查找用户
     const user = await prisma.user.findUnique({
       where: { email },
-      select: { id: true, email: true, name: true, avatar: true, password: true },
+      select: { id: true, email: true, name: true, avatar: true, password: true, emailVerified: true },
     });
 
     if (!user) {
@@ -39,10 +39,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // 检查邮箱是否已验证
+    if (!user.emailVerified) {
+      return NextResponse.json(
+        { error: "请先验证邮箱后再登录", email },
+        { status: 403 }
+      );
+    }
+
     // 签发 JWT
     const token = await signToken({ userId: user.id, email: user.email });
 
-    // ✅ 直接在 NextResponse 上设置 Cookie
     const response = NextResponse.json({
       id: user.id,
       email: user.email,
@@ -53,7 +60,7 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, // 7 天
+      maxAge: 60 * 60 * 24 * 7,
       path: "/",
     });
     return response;

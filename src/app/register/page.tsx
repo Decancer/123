@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useCallback, useEffect } from "react";
 import Link from "next/link";
+
+const COOLDOWN_SECONDS = 60;
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -13,11 +15,29 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // 注册成功后显示验证提示
+  const [registered, setRegistered] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendCountdown, setResendCountdown] = useState(0);
+  const [resendMessage, setResendMessage] = useState("");
+
+  // 倒计时
+  useEffect(() => {
+    if (resendCountdown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCountdown((prev) => {
+        if (prev <= 1) { clearInterval(timer); return 0; }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCountdown]);
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
 
-    // 前端校验
     if (!name.trim()) {
       setError("请输入昵称");
       return;
@@ -47,8 +67,10 @@ export default function RegisterPage() {
         return;
       }
 
-      // 注册成功（已自动登录），跳转首页
-      router.push("/");
+      // 注册成功，显示验证提示
+      setRegistered(true);
+      setRegisteredEmail(data.email);
+      setResendMessage(data.message);
     } catch (err) {
       console.error("注册请求失败:", err);
       setError("网络错误，请检查服务是否启动");
@@ -57,10 +79,81 @@ export default function RegisterPage() {
     }
   }
 
+  const handleResend = useCallback(async () => {
+    setResendLoading(true);
+    setResendMessage("");
+
+    try {
+      const res = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: registeredEmail }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setResendCountdown(COOLDOWN_SECONDS);
+        setResendMessage(data.message || "验证邮件已发送，请查收");
+      } else {
+        setResendMessage(data.error || "发送失败");
+      }
+    } catch {
+      setResendMessage("网络错误，请重试");
+    } finally {
+      setResendLoading(false);
+    }
+  }, [registeredEmail]);
+
+  // 注册成功后显示的验证提示页面
+  if (registered) {
+    const canResend = resendCountdown === 0 && !resendLoading;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 dark:bg-zinc-950">
+        <div className="w-full max-w-sm text-center">
+          <div className="mb-4 text-5xl">📧</div>
+          <h1 className="text-2xl font-bold tracking-tight">注册成功</h1>
+          <p className="mt-3 text-zinc-500 dark:text-zinc-400">
+            验证邮件已发送至
+          </p>
+          <p className="font-medium text-zinc-800 dark:text-zinc-200">
+            {registeredEmail}
+          </p>
+          <p className="mt-2 text-sm text-zinc-400">
+            请查收邮件并点击验证链接，完成后即可登录
+          </p>
+
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <button
+              onClick={handleResend}
+              disabled={!canResend}
+              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+            >
+              {resendLoading ? "发送中..." : resendCountdown > 0 ? `再次发送 (${resendCountdown}s)` : "重新发送验证邮件"}
+            </button>
+            {resendMessage && (
+              <span className="text-sm text-green-600 dark:text-green-400">
+                {resendMessage}
+              </span>
+            )}
+          </div>
+
+          <div className="mt-10">
+            <Link
+              href="/login"
+              className="inline-block rounded-lg bg-zinc-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              去登录
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 dark:bg-zinc-950">
       <div className="w-full max-w-sm">
-        {/* Logo & 标题 */}
         <div className="mb-10 text-center">
           <div className="mb-4 text-5xl">✨</div>
           <h1 className="text-2xl font-bold tracking-tight">创建账号</h1>
@@ -69,19 +162,16 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* 表单卡片 */}
         <form
           onSubmit={handleSubmit}
           className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
         >
-          {/* 错误提示 */}
           {error && (
             <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">
               {error}
             </div>
           )}
 
-          {/* 昵称 */}
           <div className="mb-4">
             <label
               htmlFor="name"
@@ -101,7 +191,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* 邮箱 */}
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -121,7 +210,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* 密码 */}
           <div className="mb-4">
             <label
               htmlFor="password"
@@ -142,7 +230,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* 确认密码 */}
           <div className="mb-6">
             <label
               htmlFor="confirmPassword"
@@ -162,7 +249,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* 提交按钮 */}
           <button
             type="submit"
             disabled={loading}
@@ -172,7 +258,6 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        {/* 去登录 */}
         <p className="mt-6 text-center text-sm text-zinc-500">
           已有账号？{" "}
           <Link

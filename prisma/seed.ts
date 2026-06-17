@@ -21,7 +21,7 @@ async function main() {
   // 密码哈希
   const passwordHash = await bcrypt.hash("password123", 10);
 
-  // 创建用户
+  // 创建用户（已标注 emailVerified 以通过登录）
   const alice = await prisma.user.create({
     data: {
       email: "alice@example.com",
@@ -30,6 +30,7 @@ async function main() {
       avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Alice",
       bio: "全栈开发者，热爱 Next.js 和 TypeScript",
       role: "admin",
+      emailVerified: new Date(),
     },
   });
 
@@ -40,6 +41,7 @@ async function main() {
       name: "Bob",
       avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Bob",
       bio: "前端工程师，专注用户体验设计",
+      emailVerified: new Date(),
     },
   });
 

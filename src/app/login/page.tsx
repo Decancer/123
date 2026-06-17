@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useCallback, useEffect } from "react";
 import Link from "next/link";
+
+const COOLDOWN_SECONDS = 60;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,9 +13,27 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // 未验证邮箱时的重发状态
+  const [unverifiedEmail, setUnverifiedEmail] = useState("");
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendCountdown, setResendCountdown] = useState(0);
+  const [resendMessage, setResendMessage] = useState("");
+
+  useEffect(() => {
+    if (resendCountdown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCountdown((prev) => {
+        if (prev <= 1) { clearInterval(timer); return 0; }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCountdown]);
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
+    setUnverifiedEmail("");
     setLoading(true);
 
     try {
@@ -23,8 +43,16 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await res.json();
+
+      if (res.status === 403) {
+        // 邮箱未验证
+        setUnverifiedEmail(data.email || email);
+        setError("请先验证邮箱后再登录");
+        return;
+      }
+
       if (!res.ok) {
-        const data = await res.json();
         setError(data.error || "登录失败");
         return;
       }
@@ -38,10 +66,35 @@ export default function LoginPage() {
     }
   }
 
+  const handleResend = useCallback(async () => {
+    setResendLoading(true);
+    setResendMessage("");
+
+    try {
+      const res = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: unverifiedEmail }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setResendCountdown(COOLDOWN_SECONDS);
+        setResendMessage(data.message || "验证邮件已发送，请查收");
+      } else {
+        setResendMessage(data.error || "发送失败");
+      }
+    } catch {
+      setResendMessage("网络错误，请重试");
+    } finally {
+      setResendLoading(false);
+    }
+  }, [unverifiedEmail]);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 dark:bg-zinc-950">
       <div className="w-full max-w-sm">
-        {/* Logo & 标题 */}
         <div className="mb-10 text-center">
           <div className="mb-4 text-5xl">📝</div>
           <h1 className="text-2xl font-bold tracking-tight">欢迎回来</h1>
@@ -50,7 +103,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* 表单卡片 */}
         <form
           onSubmit={handleSubmit}
           className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
@@ -58,7 +110,25 @@ export default function LoginPage() {
           {/* 错误提示 */}
           {error && (
             <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">
-              {error}
+              <p>{error}</p>
+              {/* 未验证邮箱时显示重发按钮 */}
+              {unverifiedEmail && (
+                <div className="mt-2 flex items-center gap-3 border-t border-red-200 pt-2 dark:border-red-800">
+                  <button
+                    type="button"
+                    onClick={handleResend}
+                    disabled={resendCountdown > 0 || resendLoading}
+                    className="rounded bg-red-600 px-3 py-1 text-xs font-medium text-white transition hover:bg-red-700 disabled:opacity-50"
+                  >
+                    {resendLoading ? "发送中..." : resendCountdown > 0 ? `再次发送 (${resendCountdown}s)` : "重新发送验证邮件"}
+                  </button>
+                  {resendMessage && (
+                    <span className="text-xs text-green-600 dark:text-green-400">
+                      {resendMessage}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
