@@ -54,7 +54,12 @@ export async function PATCH(
         .replace(/[^a-z0-9一-鿿-]/g, "")
         .replace(/-+/g, "-")
         .replace(/^-|-$/g, "");
-      const baseSlug = rawSlug || `post-${Date.now()}`;
+      let baseSlug = rawSlug;
+      if (!rawSlug || !/[a-z0-9]/.test(rawSlug)) {
+        baseSlug = `post-${Date.now()}`;
+      } else if (rawSlug.length < 3) {
+        baseSlug = `${rawSlug}-${Date.now()}`;
+      }
       newSlug = baseSlug;
       let count = 1;
       while (await prisma.post.findUnique({ where: { slug: newSlug } })) {

@@ -61,8 +61,15 @@ export async function POST(request: NextRequest) {
       .replace(/-+/g, "-")
       .replace(/^-|-$/g, "");
 
-    // 纯中文标题兜底
-    const baseSlug = rawSlug || `post-${Date.now()}`;
+    // 纯中文/非 ASCII slug 在 URL 编码/解码时可能不一致，导致 next notFound
+    // 检测是否只有非 ASCII 字符，是的话用时间戳作主 slug
+    let baseSlug = rawSlug;
+    if (!rawSlug || !/[a-z0-9]/.test(rawSlug)) {
+      baseSlug = `post-${Date.now()}`;
+    } else if (rawSlug.length < 3) {
+      baseSlug = `${rawSlug}-${Date.now()}`;
+    }
+
     let slug = baseSlug;
     let count = 1;
     while (await prisma.post.findUnique({ where: { slug } })) {
