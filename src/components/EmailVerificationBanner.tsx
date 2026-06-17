@@ -1,16 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+
+const COOLDOWN_SECONDS = 60;
 
 export function EmailVerificationBanner() {
   const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [countdown, setCountdown] = useState(0);
   const [error, setError] = useState("");
 
-  async function handleResend() {
+  // 倒计时
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [countdown]);
+
+  const handleResend = useCallback(async () => {
     setLoading(true);
     setError("");
-    setSent(false);
 
     try {
       const res = await fetch("/api/auth/send-verification", {
@@ -20,7 +36,7 @@ export function EmailVerificationBanner() {
       const data = await res.json();
 
       if (res.ok) {
-        setSent(true);
+        setCountdown(COOLDOWN_SECONDS);
       } else {
         setError(data.error || "发送失败");
       }
@@ -29,6 +45,15 @@ export function EmailVerificationBanner() {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  const isDisabled = loading || countdown > 0;
+
+  let buttonText = "重新发送验证邮件";
+  if (loading) {
+    buttonText = "发送中...";
+  } else if (countdown > 0) {
+    buttonText = `再次发送 (${countdown}s)`;
   }
 
   return (
@@ -47,13 +72,13 @@ export function EmailVerificationBanner() {
           <div className="mt-3 flex items-center gap-3">
             <button
               onClick={handleResend}
-              disabled={loading}
+              disabled={isDisabled}
               className="rounded-lg bg-amber-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-amber-700 disabled:opacity-50"
             >
-              {loading ? "发送中..." : sent ? "已发送" : "重新发送验证邮件"}
+              {buttonText}
             </button>
 
-            {sent && (
+            {countdown > 0 && (
               <span className="text-sm text-green-600 dark:text-green-400">
                 ✓ 已发送，请查收
               </span>
