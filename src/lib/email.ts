@@ -11,7 +11,7 @@ function getResend(): Resend {
   return _resend;
 }
 
-const FROM = "Mashiro Chat <onboarding@resend.dev>";
+const FROM = "Mashiro Chat <noreply@mashiro.chat>";
 
 // 24 小时过期
 const TOKEN_EXPIRES_MS = 24 * 60 * 60 * 1000;
