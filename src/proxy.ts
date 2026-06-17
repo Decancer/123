@@ -16,6 +16,7 @@ const PUBLIC_PATHS = [
   "/api/auth/logout",
   "/api/auth/register",
   "/api/auth/delete",
+  "/api/auth/resend-verification",
   "/api/posts",
   "/api/comments",
   "/api/profile",
