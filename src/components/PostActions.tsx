@@ -10,6 +10,7 @@ interface PostActionsProps {
     slug: string;
     content: string;
     excerpt: string | null;
+    images: string | null;
     category: string;
     tags: Array<{ tag: { id: number; name: string } }>;
     authorId: number;

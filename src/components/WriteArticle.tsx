@@ -1,6 +1,14 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useRef, FormEvent } from "react";
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.readAsDataURL(file);
+  });
+}
 
 const VALID_CATEGORIES = ["tech", "life"] as const;
 
@@ -12,9 +20,37 @@ export function WriteArticleButton() {
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [category, setCategory] = useState<"tech" | "life">("tech");
+  const [images, setImages] = useState<string[]>([]);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const MAX_IMAGES = 6;
+
+  async function handleAddImages(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []);
+    e.target.value = "";
+    if (images.length + files.length > MAX_IMAGES) {
+      setError(`最多只能上传 ${MAX_IMAGES} 张图片`);
+      return;
+    }
+    setUploadingImage(true);
+    setError("");
+    try {
+      const base64Arr = await Promise.all(files.map(fileToBase64));
+      setImages((prev) => [...prev, ...base64Arr].slice(0, MAX_IMAGES));
+    } catch {
+      setError("图片处理失败");
+    } finally {
+      setUploadingImage(false);
+    }
+  }
+
+  function removeImage(index: number) {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  }
 
   function addTag() {
     const name = tagInput.trim();
@@ -48,7 +84,7 @@ export function WriteArticleButton() {
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, content, excerpt, tags, category }),
+        body: JSON.stringify({ title, content, excerpt, tags, category, images }),
       });
 
       const data = await res.json();
@@ -62,6 +98,7 @@ export function WriteArticleButton() {
       setExcerpt("");
       setContent("");
       setTags([]);
+      setImages([]);
       setOpen(false);
       setSuccess(true);
       setTimeout(() => {
@@ -201,6 +238,53 @@ export function WriteArticleButton() {
                 placeholder={tags.length === 0 ? "添加标签（回车确认）" : "+"}
                 className="w-28 bg-transparent px-1 py-0.5 text-xs text-zinc-400 outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-600"
               />
+            </div>
+
+            {/* 图片上传 */}
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                  图片 ({images.length}/{MAX_IMAGES})
+                </span>
+                {images.length < MAX_IMAGES && (
+                  <button
+                    type="button"
+                    onClick={() => imageInputRef.current?.click()}
+                    disabled={uploadingImage}
+                    className="rounded-md bg-zinc-100 px-2 py-0.5 text-xs text-zinc-500 transition hover:bg-zinc-200 disabled:opacity-50 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                  >
+                    {uploadingImage ? "处理中..." : "+ 添加"}
+                  </button>
+                )}
+                <input
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  multiple
+                  className="hidden"
+                  onChange={handleAddImages}
+                />
+              </div>
+              {images.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {images.map((img, i) => (
+                    <div key={i} className="relative group">
+                      <img
+                        src={img}
+                        alt=""
+                        className="h-16 w-16 rounded-lg object-cover border border-zinc-200 dark:border-zinc-700"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(i)}
+                        className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* 发布按钮 */}

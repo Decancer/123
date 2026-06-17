@@ -47,6 +47,7 @@ model Post {
   id        Int      @id @default(autoincrement())
   title     String
   slug      String   @unique
+  images    String?  @map("images")
   content   String
   excerpt   String?
   category  String   @default("tech") @map("category")

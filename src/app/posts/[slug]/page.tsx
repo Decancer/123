@@ -31,6 +31,8 @@ export default async function PostPage({ params }: PageProps) {
     },
   });
 
+  const images: string[] = post?.images ? JSON.parse(post.images) : [];
+
   if (!post) {
     notFound();
   }
@@ -130,6 +132,7 @@ export default async function PostPage({ params }: PageProps) {
                   slug: post.slug,
                   content: post.content,
                   excerpt: post.excerpt,
+                  images: post.images,
                   category: post.category,
                   tags: post.tags,
                   authorId: post.author.id,
@@ -171,6 +174,25 @@ export default async function PostPage({ params }: PageProps) {
             </div>
           </div>
         </header>
+
+        {/* 图片展示 */}
+        {images.length > 0 && (
+          <div className={`mb-8 grid gap-2 ${
+            images.length === 1 ? "grid-cols-1" :
+            images.length === 2 ? "grid-cols-2" :
+            "grid-cols-3"
+          }`}>
+            {images.map((img, i) => (
+              <div key={i} className="overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-700">
+                <img
+                  src={img}
+                  alt={`图片 ${i + 1}`}
+                  className="w-full object-cover max-h-96"
+                />
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* 正文 */}
         <article className="prose prose-zinc max-w-none dark:prose-invert">

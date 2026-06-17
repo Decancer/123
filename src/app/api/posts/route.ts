@@ -16,7 +16,9 @@ export async function GET(request: NextRequest) {
 
     const posts = await prisma.post.findMany({
       where,
-      include: {
+      select: {
+        id: true, title: true, slug: true, content: true, excerpt: true,
+        images: true, category: true, viewCount: true, createdAt: true,
         author: { select: { id: true, name: true, avatar: true } },
         tags: { include: { tag: true } },
         _count: { select: { comments: true } },
@@ -40,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, content, excerpt, tags, category } = body;
+    const { title, content, excerpt, tags, category, images } = body;
 
     // 参数校验
     if (!title || !title.trim()) {
@@ -80,11 +82,23 @@ export async function POST(request: NextRequest) {
       })
     );
 
+    // 验证图片
+    let imagesJson: string | null = null;
+    if (Array.isArray(images) && images.length > 0) {
+      const validImages = images.slice(0, 6).filter(
+        (img: unknown) => typeof img === "string" && img.startsWith("data:image/")
+      );
+      if (validImages.length > 0) {
+        imagesJson = JSON.stringify(validImages);
+      }
+    }
+
     const post = await prisma.post.create({
       data: {
         title: title.trim(),
         slug,
         content: content.trim(),
+        images: imagesJson,
         excerpt: excerpt?.trim() || content.trim().slice(0, 150),
         category: category === "life" ? "life" : "tech",
         published: true,
@@ -93,7 +107,9 @@ export async function POST(request: NextRequest) {
           create: tagConnections.map((t) => ({ tagId: t.id })),
         },
       },
-      include: {
+      select: {
+        id: true, title: true, slug: true, content: true, excerpt: true,
+        images: true, category: true, viewCount: true, createdAt: true,
         author: { select: { id: true, name: true, avatar: true } },
         tags: { include: { tag: true } },
         _count: { select: { comments: true } },

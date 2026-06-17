@@ -29,7 +29,20 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const { title, content, excerpt, category, tags } = body;
+    const { title, content, excerpt, category, tags, images } = body;
+
+    // 验证图片
+    let imagesJson: string | null | undefined;
+    if (Array.isArray(images)) {
+      if (images.length === 0) {
+        imagesJson = null; // 清空图片
+      } else {
+        const validImages = images.slice(0, 6).filter(
+          (img: unknown) => typeof img === "string" && img.startsWith("data:image/")
+        );
+        imagesJson = JSON.stringify(validImages);
+      }
+    }
 
     // 更新标题 → 也更新 slug
     let newSlug: string | undefined;
@@ -72,12 +85,15 @@ export async function PATCH(
         ...(newSlug ? { slug: newSlug } : {}),
         ...(content?.trim() ? { content: content.trim() } : {}),
         ...(excerpt !== undefined ? { excerpt: excerpt?.trim() || null } : {}),
+        ...(imagesJson !== undefined ? { images: imagesJson } : {}),
         ...(category === "tech" || category === "life" ? { category } : {}),
         ...(tagConnect
           ? { tags: { deleteMany: {}, create: tagConnect } }
           : {}),
       },
-      include: {
+      select: {
+        id: true, title: true, slug: true, content: true, excerpt: true,
+        images: true, category: true, viewCount: true, createdAt: true,
         author: { select: { id: true, name: true, avatar: true } },
         tags: { include: { tag: true } },
         _count: { select: { comments: true } },
