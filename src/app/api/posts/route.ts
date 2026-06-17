@@ -52,24 +52,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "内容不能为空" }, { status: 400 });
     }
 
-    // 生成 slug
-    const rawSlug = title
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9一-鿿-]/g, "")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
-
-    // 纯中文/非 ASCII slug 在 URL 编码/解码时可能不一致，导致 next notFound
-    // 检测是否只有非 ASCII 字符，是的话用时间戳作主 slug
-    let baseSlug = rawSlug;
-    if (!rawSlug || !/[a-z0-9]/.test(rawSlug)) {
-      baseSlug = `post-${Date.now()}`;
-    } else if (rawSlug.length < 3) {
-      baseSlug = `${rawSlug}-${Date.now()}`;
-    }
-
+    // 生成 slug：统一用 post-时间戳
+    const baseSlug = `post-${Date.now()}`;
     let slug = baseSlug;
     let count = 1;
     while (await prisma.post.findUnique({ where: { slug } })) {

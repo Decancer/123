@@ -44,30 +44,6 @@ export async function PATCH(
       }
     }
 
-    // 更新标题 → 也更新 slug
-    let newSlug: string | undefined;
-    if (title && title.trim()) {
-      const rawSlug = title
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9一-鿿-]/g, "")
-        .replace(/-+/g, "-")
-        .replace(/^-|-$/g, "");
-      let baseSlug = rawSlug;
-      if (!rawSlug || !/[a-z0-9]/.test(rawSlug)) {
-        baseSlug = `post-${Date.now()}`;
-      } else if (rawSlug.length < 3) {
-        baseSlug = `${rawSlug}-${Date.now()}`;
-      }
-      newSlug = baseSlug;
-      let count = 1;
-      while (await prisma.post.findUnique({ where: { slug: newSlug } })) {
-        if (newSlug === slug) break; // slug 没变，不冲突
-        newSlug = `${baseSlug}-${count++}`;
-      }
-    }
-
     // 处理标签
     let tagConnect: { tagId: number }[] | undefined;
     if (Array.isArray(tags)) {
@@ -87,7 +63,6 @@ export async function PATCH(
       where: { id: post.id },
       data: {
         ...(title?.trim() ? { title: title.trim() } : {}),
-        ...(newSlug ? { slug: newSlug } : {}),
         ...(content?.trim() ? { content: content.trim() } : {}),
         ...(excerpt !== undefined ? { excerpt: excerpt?.trim() || null } : {}),
         ...(imagesJson !== undefined ? { images: imagesJson } : {}),
