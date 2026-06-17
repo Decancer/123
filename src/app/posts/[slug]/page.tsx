@@ -8,6 +8,8 @@ import { EmailVerificationBanner } from "@/components/EmailVerificationBanner";
 import { PostActions } from "@/components/PostActions";
 import { CommentItem } from "@/components/CommentItem";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
