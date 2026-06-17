@@ -2,10 +2,41 @@
 
 import { useState, useRef, FormEvent } from "react";
 
-function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve) => {
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB 原始文件上限
+const MAX_DIMENSION = 1920; // 压缩后最大宽度
+
+/** 将 File 压缩并转为 base64 */
+function compressAndEncode(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (file.size > MAX_IMAGE_SIZE) {
+      reject(new Error(`图片 "${file.name}" 超过 5MB 限制`));
+      return;
+    }
+
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const { width, height } = img;
+        // 不需要压缩的小图直接返回
+        if (width <= MAX_DIMENSION && file.size < 500 * 1024) {
+          resolve(reader.result as string);
+          return;
+        }
+
+        // 压缩大图
+        const canvas = document.createElement("canvas");
+        const ratio = Math.min(1, MAX_DIMENSION / Math.max(width, height));
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.8));
+      };
+      img.onerror = () => reject(new Error("图片加载失败"));
+      img.src = reader.result as string;
+    };
+    reader.onerror = () => reject(new Error("文件读取失败"));
     reader.readAsDataURL(file);
   });
 }
@@ -39,7 +70,7 @@ export function WriteArticleButton() {
     setUploadingImage(true);
     setError("");
     try {
-      const base64Arr = await Promise.all(files.map(fileToBase64));
+      const base64Arr = await Promise.all(files.map(compressAndEncode));
       setImages((prev) => [...prev, ...base64Arr].slice(0, MAX_IMAGES));
     } catch {
       setError("图片处理失败");
