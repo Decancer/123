@@ -21,7 +21,9 @@ export default async function PostPage({ params }: PageProps) {
   try {
     post = await prisma.post.findUnique({
       where: { slug },
-      include: {
+      select: {
+        id: true, title: true, slug: true, content: true, excerpt: true,
+        images: true, category: true, viewCount: true, createdAt: true, updatedAt: true,
         author: { select: { id: true, name: true, avatar: true, bio: true } },
         tags: { include: { tag: true } },
         comments: {
@@ -39,7 +41,7 @@ export default async function PostPage({ params }: PageProps) {
         <div className="text-center">
           <div className="mb-4 text-5xl">😿</div>
           <h1 className="text-xl font-bold">页面加载失败</h1>
-          <p className="mt-2 text-sm text-zinc-500">请稍后重试</p>
+          <p className="mt-2 text-sm text-zinc-500">{(err as Error).message || "请稍后重试"}</p>
           <Link href="/" className="mt-6 inline-block text-blue-500">← 返回首页</Link>
         </div>
       </div>
@@ -50,7 +52,12 @@ export default async function PostPage({ params }: PageProps) {
     notFound();
   }
 
-  const images: string[] = post?.images ? JSON.parse(post.images) : [];
+  let images: string[] = [];
+  try {
+    images = post.images ? JSON.parse(post.images) : [];
+  } catch {
+    images = [];
+  }
 
   if (!post) {
     notFound();
