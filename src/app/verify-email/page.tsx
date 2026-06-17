@@ -79,16 +79,8 @@ export default async function VerifyEmailPage({ searchParams }: PageProps) {
         <div className="mb-4 text-5xl">✅</div>
         <h1 className="text-2xl font-bold tracking-tight">邮箱验证成功</h1>
         <p className="mt-3 text-zinc-500 dark:text-zinc-400">
-          你的邮箱已验证，现在可以正常使用博客了。
+          你的邮箱已验证，可以返回原页面继续操作。
         </p>
-        <div className="mt-8">
-          <Link
-            href="/"
-            className="inline-block rounded-lg bg-zinc-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-          >
-            开始使用
-          </Link>
-        </div>
       </div>
     </div>
   );

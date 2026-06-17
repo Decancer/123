@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const COOLDOWN_SECONDS = 60;
+const POLL_INTERVAL_MS = 3000;
 
 export function EmailVerificationBanner() {
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [error, setError] = useState("");
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // 倒计时
   useEffect(() => {
@@ -23,6 +25,29 @@ export function EmailVerificationBanner() {
     }, 1000);
     return () => clearInterval(timer);
   }, [countdown]);
+
+  // 轮询检查邮箱是否已验证，验证后自动刷新
+  useEffect(() => {
+    pollingRef.current = setInterval(async () => {
+      try {
+        const res = await fetch("/api/auth/check-verified");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.verified) {
+            window.location.reload();
+          }
+        }
+      } catch {
+        // 网络错误忽略，下次再试
+      }
+    }, POLL_INTERVAL_MS);
+
+    return () => {
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+      }
+    };
+  }, []);
 
   const handleResend = useCallback(async () => {
     setLoading(true);
