@@ -90,7 +90,7 @@ export function WriteArticleButton() {
 
       {/* 展开：写文章面板 */}
       {open && (
-        <div className="flex h-[500px] w-[420px] flex-col rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex h-[500px] w-[calc(100vw-1.5rem)] sm:w-[420px] flex-col rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
           {/* 头部 */}
           <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
             <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
