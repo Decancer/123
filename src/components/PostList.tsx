@@ -23,7 +23,6 @@ interface Post {
   title: string;
   slug: string;
   excerpt: string | null;
-  images: string | null;
   content: string;
   category: string;
   viewCount: number;
@@ -87,25 +86,12 @@ export function PostList({
         </div>
       ) : (
         <div className="space-y-8">
-          {filtered.map((post) => {
-            const firstImage = (() => {
-              if (!post.images) return null;
-              try {
-                const arr = JSON.parse(post.images);
-                if (Array.isArray(arr) && arr.length > 0) return arr[0] as string;
-              } catch { /* ignore */ }
-              return null;
-            })();
-
-            return (
+          {filtered.map((post) => (
             <article
               key={post.id}
               className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
             >
-              {/* 文章卡片：标题+摘要+首图 */}
-              <div className="flex gap-4">
-                <div className="flex-1 min-w-0">
-                  {/* 分区徽章 + 标签 */}
+              {/* 分区徽章 + 标签 */}
               <div className="mb-3 flex flex-wrap items-center gap-1.5">
                 <span
                   className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${
@@ -163,18 +149,8 @@ export function PostList({
                   {formatDate(post.createdAt)}
                 </time>
               </div>
-                </div>
-                {/* 首图缩略图 */}
-                {firstImage && (
-                  <img
-                    src={firstImage}
-                    alt=""
-                    className="h-24 w-36 shrink-0 rounded-lg object-cover border border-zinc-200 dark:border-zinc-700"
-                  />
-                )}
-              </div>
             </article>
-          )})}
+          ))}
         </div>
       )}
 

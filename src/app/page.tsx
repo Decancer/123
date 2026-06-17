@@ -22,7 +22,7 @@ export default async function Home({ searchParams }: HomeProps) {
       where: { published: true },
       select: {
         id: true, title: true, slug: true, content: true, excerpt: true,
-        images: true, category: true, viewCount: true, createdAt: true,
+        category: true, viewCount: true, createdAt: true,
         author: { select: { id: true, name: true, avatar: true } },
         tags: { include: { tag: true } },
         _count: { select: { comments: true } },
