@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface UserMenuProps {
   userName: string;
@@ -70,16 +71,18 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
 
   return (
     <>
-      {/* 全屏加载动画 */}
-      {navLoading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
-          <img
-            src="/mashiro.svg"
-            alt="加载中"
-            className="h-20 w-20 animate-spin"
-          />
-        </div>
-      )}
+      {/* 全屏加载动画（Portal 到 body 避免被 header 的 backdrop-blur 限制固定定位范围） */}
+      {navLoading &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+            <img
+              src="/mashiro.svg"
+              alt="加载中"
+              className="h-20 w-20 animate-spin"
+            />
+          </div>,
+          document.body
+        )}
       <div ref={menuRef} className="relative">
       {/* 触发按钮 */}
       <button
