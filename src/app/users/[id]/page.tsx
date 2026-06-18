@@ -82,14 +82,12 @@ export default async function UserPage({ params }: PageProps) {
 
         {/* 背景图 */}
         {profileUser.background ? (
-          <div className="mb-6 overflow-hidden rounded-xl relative">
+          <div className="mb-6 overflow-hidden rounded-xl">
             <img
               src={profileUser.background}
               alt=""
               className="h-36 w-full object-cover"
             />
-            {/* 底部渐变遮罩，防止白字看不清 */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           </div>
         ) : null}
 
@@ -117,18 +115,10 @@ export default async function UserPage({ params }: PageProps) {
             </span>
           )}
           <div className="pb-1">
-            <h1 className={`text-2xl font-bold ${
-              profileUser.background
-                ? "text-white drop-shadow-sm"
-                : "text-zinc-900 dark:text-zinc-100"
-            }`}>
+            <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
               {profileUser.name || "未命名用户"}
             </h1>
-            <p className={`text-sm ${
-              profileUser.background
-                ? "text-white/80 drop-shadow-sm"
-                : "text-zinc-400"
-            }`}>
+            <p className="text-sm text-zinc-400">
               加入于 {new Date(profileUser.createdAt).toLocaleDateString("zh-CN", {
                 year: "numeric",
                 month: "long",
