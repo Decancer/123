@@ -14,6 +14,7 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
   const [loading, setLoading] = useState<"logout" | "delete" | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [navLoading, setNavLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // 点击外部关闭菜单
@@ -68,7 +69,18 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
   const initial = userName?.charAt(0)?.toUpperCase() || "U";
 
   return (
-    <div ref={menuRef} className="relative">
+    <>
+      {/* 全屏加载动画 */}
+      {navLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+          <img
+            src="/mashiro.svg"
+            alt="加载中"
+            className="h-20 w-20 animate-spin"
+          />
+        </div>
+      )}
+      <div ref={menuRef} className="relative">
       {/* 触发按钮 */}
       <button
         onClick={() => { setOpen(!open); setShowConfirm(false); setShowLogoutConfirm(false); }}
@@ -110,7 +122,7 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
 
           {/* 个人主页 */}
           <button
-            onClick={() => { router.push("/profile"); setOpen(false); }}
+            onClick={() => { setNavLoading(true); router.push("/profile"); setOpen(false); }}
             className="flex w-full items-center gap-2 px-4 py-2 text-sm text-zinc-600 transition hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,5 +165,6 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
         </div>
       )}
     </div>
+    </>
   );
 }
