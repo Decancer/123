@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
-import { ChatWidget } from "@/components/ChatWidget";
-import { WriteArticleButton } from "@/components/WriteArticle";
 import { Live2DMashiroWrapper } from "@/components/Live2DMashiroWrapper";
+import { WidgetArea } from "@/components/WidgetArea";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,12 +34,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
-        {user && (
-          <div className="fixed bottom-20 right-3 sm:bottom-24 sm:right-6 z-[70]">
-            <WriteArticleButton />
-          </div>
-        )}
-        <ChatWidget
+        <WidgetArea
           user={user ? { id: user.id, name: user.name || "User" } : null}
         />
         <Live2DMashiroWrapper />
