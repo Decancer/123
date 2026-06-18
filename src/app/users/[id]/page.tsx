@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { UserMenu } from "@/components/UserMenu";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 import { BackToHomeLink } from "@/components/BackToHomeLink";
+import { UserPostList } from "@/components/UserPostList";
 import { NavHomeLink } from "@/components/NavHomeLink";
 import { NavFeatureLink } from "@/components/NavFeatureLink";
 import { getCurrentUser } from "@/lib/auth";
@@ -144,44 +145,9 @@ export default async function UserPage({ params }: PageProps) {
             <p className="text-zinc-400">暂无已发布文章</p>
           </div>
         ) : (
-          <div className="space-y-6">
-            {profileUser.posts.map((post) => (
-              <Link
-                key={post.id}
-                href={`/posts/${post.slug}`}
-                className="block rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-300 active:scale-[0.98] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
-              >
-                <div className="mb-2 flex flex-wrap items-center gap-1.5">
-                  <span
-                    className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${
-                      post.category === "life"
-                        ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
-                        : "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                    }`}
-                  >
-                    {post.category === "life" ? "🌿 生活" : "💻 技术"}
-                  </span>
-                </div>
-                <h3 className="mb-1.5 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-                  {post.title}
-                </h3>
-                {post.excerpt && (
-                  <p className="mb-3 text-sm text-zinc-500 dark:text-zinc-400">
-                    {post.excerpt}
-                  </p>
-                )}
-                <div className="flex items-center gap-2 text-xs text-zinc-400">
-                  <time dateTime={post.createdAt.toISOString()}>
-                    {new Date(post.createdAt).toLocaleDateString("zh-CN")}
-                  </time>
-                  <span>·</span>
-                  <span>{post._count.comments} 条评论</span>
-                  <span>·</span>
-                  <span>{post.viewCount} 次阅读</span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <UserPostList
+            posts={JSON.parse(JSON.stringify(profileUser.posts))}
+          />
         )}
       </main>
 
