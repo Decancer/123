@@ -1,9 +1,8 @@
 {
   "type": "Live2D Model Setting",
   "name": "mashiro_school_winter-2023",
-  "version": 2.0,
   "model": "mashiro_school_winter-2023.moc",
-  "textures": ["texture_01.png"],
+  "textures": ["texture_00.png", "texture_01.png"],
   "physics": "mashiro_school_winter-2023.physics.json",
   "pose": "",
   "motions": {
