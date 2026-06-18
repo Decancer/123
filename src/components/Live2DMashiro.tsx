@@ -59,8 +59,8 @@ export function Live2DMashiro() {
   return (
     <div
       ref={containerRef}
-      className="fixed bottom-24 right-4 z-20 select-none pointer-events-auto"
-      style={{ width: 300, height: 400 }}
+      className="fixed bottom-0 right-4 z-20 select-none pointer-events-auto"
+      style={{ width: 280, height: 350 }}
       title="点我互动~"
     >
       {error && (
@@ -86,8 +86,8 @@ async function initLive2D(container: HTMLDivElement) {
 
   Live2DModel.registerTicker(Ticker as any);
 
-  const canvasWidth = 300;
-  const canvasHeight = 400;
+  const canvasWidth = 280;
+  const canvasHeight = 350;
 
   const app = new Application({
     backgroundAlpha: 0,
@@ -114,8 +114,9 @@ async function initLive2D(container: HTMLDivElement) {
     ) * 0.9;
 
   model.scale.set(scale);
+  // 位置：身子下端贴 canvas 底部
   model.x = canvasWidth / 2;
-  model.y = canvasHeight * 0.55;
+  model.y = canvasHeight - modelBounds.height * scale * 0.5;
   model.anchor.set(0.5, 0.5);
 
   app.stage.addChild(model as any);
