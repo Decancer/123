@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 // 有模型配置后，用 group 名来切换动作
 const MOTION_GROUPS = [
@@ -20,6 +21,17 @@ export function Live2DMashiro() {
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const initializedRef = useRef(false);
+  const restoreRef = useRef<(() => void) | null>(null);
+  const pathname = usePathname();
+
+  // 路由变化时自动恢复 idle（处理页面导航后残留的状态）
+  const prevPathnameRef = useRef(pathname);
+  useEffect(() => {
+    if (pathname !== prevPathnameRef.current) {
+      prevPathnameRef.current = pathname;
+      restoreRef.current?.();
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (initializedRef.current) return;
@@ -31,7 +43,7 @@ export function Live2DMashiro() {
     const w = window as Window & { Live2D?: unknown };
 
     function bootstrap() {
-      initLive2D(container!).catch((e) => {
+      initLive2D(container!, restoreRef).catch((e) => {
         console.error("Live2D 初始化失败:", e);
         setError(e instanceof Error ? e.message : "初始化失败");
       });
@@ -72,7 +84,10 @@ export function Live2DMashiro() {
   );
 }
 
-async function initLive2D(container: HTMLDivElement) {
+async function initLive2D(
+  container: HTMLDivElement,
+  restoreRef: { current: (() => void) | null }
+) {
   const w = window as Window & { Live2D?: unknown };
   if (!w.Live2D) {
     throw new Error("Cubism 2 Core 未加载");
@@ -157,6 +172,16 @@ async function initLive2D(container: HTMLDivElement) {
       }, duration);
     }
   }
+
+  // 暴露恢复方法：直接恢复 expression + motion，跳过事件总线的时序问题
+  restoreRef.current = () => {
+    if (reactionTimer) clearTimeout(reactionTimer);
+    if (motionTimer) clearTimeout(motionTimer);
+    model.expression("default");
+    model.motion("idle", 0);
+    currentGroup = "idle";
+  };
+
   window.addEventListener(
     "mashiro:reaction",
     handleReaction as EventListener
