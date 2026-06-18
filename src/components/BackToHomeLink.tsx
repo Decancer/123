@@ -1,17 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLoadingReaction } from "@/lib/useLive2DReaction";
 
 export function BackToHomeLink() {
-  const [loading, setLoading] = useState(false);
-  useLoadingReaction(loading);
+  const router = useRouter();
+  const [goBack, setGoBack] = useState(false);
+  useLoadingReaction(goBack);
+
+  useEffect(() => {
+    if (goBack) {
+      router.back();
+    }
+  }, [goBack, router]);
+
+  function handleClick(e: React.MouseEvent) {
+    e.preventDefault();
+    setGoBack(true);
+  }
 
   return (
     <>
-      {loading &&
+      {goBack &&
         createPortal(
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
             <img
@@ -22,13 +34,17 @@ export function BackToHomeLink() {
           </div>,
           document.body
         )}
-      <Link
-        href="/"
-        onClick={() => setLoading(true)}
-        className="mb-8 inline-flex items-center gap-1 text-sm text-zinc-500 transition hover:text-zinc-900 dark:hover:text-zinc-100"
+      <span
+        onClick={handleClick}
+        role="link"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleClick(e as unknown as React.MouseEvent);
+        }}
+        className="mb-8 inline-flex cursor-pointer items-center gap-1 text-sm text-zinc-500 transition hover:text-zinc-900 dark:hover:text-zinc-100"
       >
-        ← 返回首页
-      </Link>
+        ← 返回
+      </span>
     </>
   );
 }
