@@ -81,40 +81,54 @@ export default async function UserPage({ params }: PageProps) {
         <BackToHomeLink />
 
         {/* 背景图 */}
-        {profileUser.background && (
-          <div className="mb-6 overflow-hidden rounded-xl">
+        {profileUser.background ? (
+          <div className="mb-6 overflow-hidden rounded-xl relative">
             <img
               src={profileUser.background}
               alt=""
-              className="h-48 w-full object-cover"
+              className="h-36 w-full object-cover"
             />
+            {/* 底部渐变遮罩，防止白字看不清 */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           </div>
-        )}
+        ) : null}
 
         {/* 用户信息卡片 */}
-        <div className={`flex items-end gap-4 ${profileUser.background ? "-mt-20 relative z-10 px-2" : "mb-6"}`}>
+        <div className={`flex items-end gap-4 ${profileUser.background ? "-mt-14 relative z-10 px-2" : "mb-6"}`}>
           {profileUser.avatar ? (
             <img
               src={profileUser.avatar}
               alt=""
-              className={`rounded-full border-4 border-white object-cover dark:border-zinc-900 ${
-                profileUser.background ? "h-24 w-24" : "h-20 w-20"
+              className={`rounded-full border-4 object-cover ${
+                profileUser.background
+                  ? "h-24 w-24 border-white dark:border-zinc-800"
+                  : "h-20 w-20 border-white dark:border-zinc-900"
               }`}
             />
           ) : (
             <span
-              className={`inline-flex items-center justify-center rounded-full bg-blue-500 font-bold text-white border-4 border-white dark:border-zinc-900 ${
-                profileUser.background ? "h-24 w-24 text-3xl" : "h-20 w-20 text-2xl"
+              className={`inline-flex items-center justify-center rounded-full bg-blue-500 font-bold text-white border-4 ${
+                profileUser.background
+                  ? "h-24 w-24 text-3xl border-white dark:border-zinc-800"
+                  : "h-20 w-20 text-2xl border-white dark:border-zinc-900"
               }`}
             >
               {profileUser.name?.charAt(0) || "?"}
             </span>
           )}
           <div className="pb-1">
-            <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            <h1 className={`text-2xl font-bold ${
+              profileUser.background
+                ? "text-white drop-shadow-sm"
+                : "text-zinc-900 dark:text-zinc-100"
+            }`}>
               {profileUser.name || "未命名用户"}
             </h1>
-            <p className="text-sm text-zinc-400">
+            <p className={`text-sm ${
+              profileUser.background
+                ? "text-white/80 drop-shadow-sm"
+                : "text-zinc-400"
+            }`}>
               加入于 {new Date(profileUser.createdAt).toLocaleDateString("zh-CN", {
                 year: "numeric",
                 month: "long",
