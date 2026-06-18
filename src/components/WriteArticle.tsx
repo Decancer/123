@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { RichTextEditor } from "./RichTextEditor";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB 原始文件上限
@@ -45,6 +46,7 @@ function compressAndEncode(file: File): Promise<string> {
 const VALID_CATEGORIES = ["tech", "life"] as const;
 
 export function WriteArticleButton() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
@@ -131,7 +133,6 @@ export function WriteArticleButton() {
       setContent("");
       setTags([]);
       setImages([]);
-      setOpen(false);
       setSuccess(true);
       // 通知 Live2D 看板娘：得意！
       window.dispatchEvent(
@@ -143,10 +144,12 @@ export function WriteArticleButton() {
           },
         })
       );
+      // 短暂显示成功提示后关闭面板 + 刷新页面数据（不整页重载）
       setTimeout(() => {
+        setOpen(false);
         setSuccess(false);
-        window.location.reload();
-      }, 1000);
+        router.refresh();
+      }, 1200);
     } catch {
       setError("网络错误，请重试");
     } finally {
