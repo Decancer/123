@@ -7,7 +7,6 @@ import { PostList } from "@/components/PostList";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 import { NavHomeLink } from "@/components/NavHomeLink";
 import { NavFeatureLink } from "@/components/NavFeatureLink";
-import { Live2DMashiroWrapper } from "@/components/Live2DMashiroWrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -106,8 +105,6 @@ export default async function Home({ searchParams }: HomeProps) {
         Built with Next.js + Prisma + SQLite
       </footer>
 
-      {/* Live2D 看板娘 */}
-      <Live2DMashiroWrapper />
     </div>
   );
 }

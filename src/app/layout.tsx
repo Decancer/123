@@ -4,6 +4,7 @@ import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
 import { ChatWidget } from "@/components/ChatWidget";
 import { WriteArticleButton } from "@/components/WriteArticle";
+import { Live2DMashiroWrapper } from "@/components/Live2DMashiroWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default async function RootLayout({
         <ChatWidget
           user={user ? { id: user.id, name: user.name || "User" } : null}
         />
+        <Live2DMashiroWrapper />
       </body>
     </html>
   );
