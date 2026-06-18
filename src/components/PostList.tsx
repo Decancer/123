@@ -90,7 +90,7 @@ export function PostList({
             <Link
               key={post.id}
               href={`/posts/${post.slug}`}
-              className="block rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:shadow-md hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
+              className="block rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition active:scale-[0.98] hover:shadow-md hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
             >
               {/* 分区徽章 + 标签 */}
               <div className="mb-3 flex flex-wrap items-center gap-1.5">
