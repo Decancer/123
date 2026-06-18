@@ -29,6 +29,8 @@
     "dotenv": "^17.4.2",
     "jose": "^6.2.3",
     "next": "16.2.9",
+    "pixi-live2d-display": "^0.4.0",
+    "pixi.js": "^7.4.3",
     "prisma": "^7.8.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
