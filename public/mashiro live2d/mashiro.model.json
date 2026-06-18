@@ -67,5 +67,15 @@
       {"file": "uziuzi03.mtn"},
       {"file": "uziuzi04.mtn"}
     ]
-  }
+  },
+  "expressions": [
+    {"name": "angry", "file": "angry01.exp.json"},
+    {"name": "cry", "file": "cry01.exp.json"},
+    {"name": "default", "file": "default.exp.json"},
+    {"name": "kime", "file": "kime01.exp.json"},
+    {"name": "sad", "file": "sad01.exp.json"},
+    {"name": "serious", "file": "serious01.exp.json"},
+    {"name": "smile", "file": "smile01.exp.json"},
+    {"name": "surprised", "file": "surprised01.exp.json"}
+  ]
 }
