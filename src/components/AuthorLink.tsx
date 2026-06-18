@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useLoadingReaction } from "@/lib/useLive2DReaction";
@@ -17,14 +17,21 @@ export function AuthorLink({
   size?: "sm" | "md";
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [navigateTo, setNavigateTo] = useState<string | null>(null);
+  const loading = navigateTo !== null;
   useLoadingReaction(loading);
+
+  // 等 React 渲染出 Portal 后再导航
+  useEffect(() => {
+    if (navigateTo) {
+      router.push(navigateTo);
+    }
+  }, [navigateTo, router]);
 
   function handleClick(e: React.MouseEvent) {
     e.stopPropagation();
     e.preventDefault();
-    setLoading(true);
-    router.push(`/users/${userId}`);
+    setNavigateTo(`/users/${userId}`);
   }
 
   const avatarSize = size === "md" ? "h-9 w-9" : "h-5 w-5";
