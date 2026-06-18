@@ -91,7 +91,7 @@ async function initLive2D(container: HTMLDivElement) {
   const [{ Application, Ticker }, { Live2DModel }] =
     await Promise.all([
       import("pixi.js"),
-      import("pixi-live2d-display"),
+      import("pixi-live2d-display/cubism4"),
     ]);
 
   // 注册 Ticker（类型兼容性用 any 绕开）
