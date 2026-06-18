@@ -25,7 +25,7 @@ export function useLoadingReaction(loading: boolean) {
       restoredRef.current = true;
       window.dispatchEvent(
         new CustomEvent("mashiro:reaction", {
-          detail: { motion: "idle", expression: "default" },
+          detail: { motion: "idle", expression: "reset" },
         })
       );
     };

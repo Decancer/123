@@ -76,6 +76,7 @@
     {"name": "sad", "file": "sad01.exp.json"},
     {"name": "serious", "file": "serious01.exp.json"},
     {"name": "smile", "file": "smile01.exp.json"},
-    {"name": "surprised", "file": "surprised01.exp.json"}
+    {"name": "surprised", "file": "surprised01.exp.json"},
+    {"name": "reset", "file": "reset.exp.json"}
   ]
 }

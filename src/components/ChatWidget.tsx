@@ -73,7 +73,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
           onMouseLeave={() =>
             window.dispatchEvent(
               new CustomEvent("mashiro:reaction", {
-                detail: { motion: "idle", expression: "default" },
+                detail: { motion: "idle", expression: "reset" },
               })
             )
           }

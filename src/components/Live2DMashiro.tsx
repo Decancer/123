@@ -166,7 +166,7 @@ async function initLive2D(
     }
     if (duration) {
       reactionTimer = setTimeout(() => {
-        model.expression("default");
+        model.expression("reset");
         model.motion("idle", 0);
         currentGroup = "idle";
       }, duration);
@@ -177,7 +177,7 @@ async function initLive2D(
   restoreRef.current = () => {
     if (reactionTimer) clearTimeout(reactionTimer);
     if (motionTimer) clearTimeout(motionTimer);
-    model.expression("default");
+    model.expression("reset");
     model.motion("idle", 0);
     currentGroup = "idle";
   };
