@@ -9,6 +9,7 @@ import { PostActions } from "@/components/PostActions";
 import { CommentItem } from "@/components/CommentItem";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 import { BackToHomeLink } from "@/components/BackToHomeLink";
+import { AuthorNameLink } from "@/components/AuthorNameLink";
 import { NavHomeLink } from "@/components/NavHomeLink";
 import { NavFeatureLink } from "@/components/NavFeatureLink";
 
@@ -172,27 +173,22 @@ export default async function PostPage({ params }: PageProps) {
           {/* 作者信息 */}
           <div className="flex items-center gap-3">
             {post.author.avatar ? (
-              <Link href={`/users/${post.author.id}`}>
-                <img
-                  src={post.author.avatar}
-                  alt=""
-                  className="h-9 w-9 rounded-full object-cover transition hover:opacity-80"
-                />
-              </Link>
+              <img
+                src={post.author.avatar}
+                alt=""
+                className="h-9 w-9 rounded-full object-cover"
+              />
             ) : (
-              <Link href={`/users/${post.author.id}`}>
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-500 text-sm font-semibold text-white transition hover:opacity-80">
-                  {post.author.name?.charAt(0) || "?"}
-                </span>
-              </Link>
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-500 text-sm font-semibold text-white">
+                {post.author.name?.charAt(0) || "?"}
+              </span>
             )}
             <div>
-              <Link
-                href={`/users/${post.author.id}`}
-                className="text-sm font-medium text-zinc-700 transition hover:text-blue-600 hover:underline dark:text-zinc-300"
-              >
-                {post.author.name}
-              </Link>
+              <AuthorNameLink
+                userId={post.author.id}
+                name={post.author.name || "User"}
+                className="text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              />
               <div className="flex items-center gap-2 text-xs text-zinc-400">
                 <time dateTime={post.createdAt.toISOString()}>
                   {new Date(post.createdAt).toLocaleDateString("zh-CN", {

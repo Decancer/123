@@ -5,30 +5,26 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useLoadingReaction } from "@/lib/useLive2DReaction";
 
-export function AuthorLink({
+/** 作者名链接 — 轻量版，仅包文字，用于非卡片布局场景 */
+export function AuthorNameLink({
   userId,
   name,
-  avatar,
-  size = "sm",
+  className,
 }: {
   userId: number;
   name: string;
-  avatar: string | null;
-  size?: "sm" | "md";
+  className?: string;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   useLoadingReaction(loading);
 
   function handleClick(e: React.MouseEvent) {
-    e.stopPropagation();
     e.preventDefault();
+    e.stopPropagation();
     setLoading(true);
     router.push(`/users/${userId}`);
   }
-
-  const avatarSize = size === "md" ? "h-9 w-9" : "h-5 w-5";
-  const initialsSize = size === "md" ? "text-sm" : "text-[10px]";
 
   return (
     <>
@@ -50,24 +46,9 @@ export function AuthorLink({
         onKeyDown={(e) => {
           if (e.key === "Enter") handleClick(e as unknown as React.MouseEvent);
         }}
-        className="inline-flex cursor-pointer items-center gap-1.5 font-medium text-zinc-700 transition hover:text-blue-600 group dark:text-zinc-300"
+        className={`cursor-pointer transition hover:text-blue-600 hover:underline ${className ?? ""}`}
       >
-        {avatar ? (
-          <img
-            src={avatar}
-            alt=""
-            className={`${avatarSize} rounded-full object-cover`}
-          />
-        ) : (
-          <span
-            className={`inline-flex ${avatarSize} items-center justify-center rounded-full bg-blue-500 ${initialsSize} font-semibold text-white`}
-          >
-            {name.charAt(0) || "?"}
-          </span>
-        )}
-        <span className="group-hover:underline underline-offset-2">
-          {name}
-        </span>
+        {name}
       </span>
     </>
   );
