@@ -59,6 +59,24 @@ export function ChatWidget({ user }: ChatWidgetProps) {
       {!open && (
         <button
           onClick={() => setOpen(true)}
+          onMouseEnter={() =>
+            window.dispatchEvent(
+              new CustomEvent("mashiro:reaction", {
+                detail: {
+                  motion: "surprised",
+                  expression: "surprised",
+                  duration: 3000,
+                },
+              })
+            )
+          }
+          onMouseLeave={() =>
+            window.dispatchEvent(
+              new CustomEvent("mashiro:reaction", {
+                detail: { motion: "idle", expression: "default" },
+              })
+            )
+          }
           className="h-14 w-14 rounded-full shadow-lg transition hover:scale-110 hover:shadow-xl overflow-hidden"
           aria-label="打开 AI 聊天"
         >

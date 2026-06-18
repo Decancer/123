@@ -137,6 +137,31 @@ async function initLive2D(container: HTMLDivElement) {
     }, 5000);
   }
 
+  // 外部触发表情/动作（全局自定义事件 mashiro:reaction）
+  let reactionTimer: ReturnType<typeof setTimeout> | null = null;
+  function handleReaction(e: CustomEvent) {
+    const { motion, expression, duration } = e.detail || {};
+    // 清除旧的恢复定时 & 点击动作定时
+    if (reactionTimer) clearTimeout(reactionTimer);
+    if (motionTimer) clearTimeout(motionTimer);
+    if (expression) model.expression(expression);
+    if (motion) {
+      currentGroup = motion;
+      model.motion(motion, 0);
+    }
+    if (duration) {
+      reactionTimer = setTimeout(() => {
+        model.expression("default");
+        model.motion("idle", 0);
+        currentGroup = "idle";
+      }, duration);
+    }
+  }
+  window.addEventListener(
+    "mashiro:reaction",
+    handleReaction as EventListener
+  );
+
   const canvas = app.view as HTMLCanvasElement;
   canvas.style.cursor = "pointer";
   canvas.addEventListener("click", onModelClick);
