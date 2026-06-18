@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { useLoadingReaction } from "@/lib/useLive2DReaction";
 
 export function BackToHomeLink() {
   const [loading, setLoading] = useState(false);
+  useLoadingReaction(loading);
 
   return (
     <>

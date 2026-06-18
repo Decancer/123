@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useLoadingReaction } from "@/lib/useLive2DReaction";
 
 type Category = "tech" | "life";
 
@@ -45,6 +46,7 @@ export function PostList({
 }) {
   const [activeCategory, setActiveCategory] = useState<Category | null>(initialCategory);
   const [loading, setLoading] = useState(false);
+  useLoadingReaction(loading);
 
   const filtered =
     activeCategory === null

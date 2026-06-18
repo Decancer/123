@@ -4,10 +4,12 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useLoadingReaction } from "@/lib/useLive2DReaction";
 
 export function NavHomeLink() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  useLoadingReaction(loading);
 
   function handleClick(e: React.MouseEvent) {
     e.preventDefault();

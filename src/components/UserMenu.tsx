@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useLoadingReaction } from "@/lib/useLive2DReaction";
 
 interface UserMenuProps {
   userName: string;
@@ -16,6 +17,7 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [navLoading, setNavLoading] = useState(false);
+  useLoadingReaction(navLoading);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // 点击外部关闭菜单
