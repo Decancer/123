@@ -3,31 +3,53 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { stripHtml } from "@/lib/sanitize";
 
-// GET /api/posts — 获取文章列表（支持 ?published=true 筛选）
+const PAGE_SIZE = 10;
+
+// GET /api/posts — 获取文章列表（支持 published / category / search / page 筛选）
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const published = searchParams.get("published");
     const category = searchParams.get("category");
+    const search = searchParams.get("search")?.trim() || null;
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1") || 1);
+    const pageSize = Math.min(50, Math.max(1, parseInt(searchParams.get("pageSize") || String(PAGE_SIZE)) || PAGE_SIZE));
 
     const where: Record<string, unknown> = {};
     if (published === "true") where.published = true;
     else if (published === "false") where.published = false;
     if (category === "tech" || category === "life") where.category = category;
+    if (search) {
+      where.OR = [
+        { title: { contains: search } },
+        { content: { contains: search } },
+      ];
+    }
 
-    const posts = await prisma.post.findMany({
-      where,
-      select: {
-        id: true, title: true, slug: true, content: true, excerpt: true,
-        category: true, viewCount: true, createdAt: true,
-        author: { select: { id: true, name: true, avatar: true } },
-        tags: { include: { tag: true } },
-        _count: { select: { comments: true } },
-      },
-      orderBy: { createdAt: "desc" },
+    const [total, posts] = await Promise.all([
+      prisma.post.count({ where }),
+      prisma.post.findMany({
+        where,
+        select: {
+          id: true, title: true, slug: true, content: true, excerpt: true,
+          category: true, viewCount: true, createdAt: true,
+          author: { select: { id: true, name: true, avatar: true } },
+          tags: { include: { tag: true } },
+          _count: { select: { comments: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+    ]);
+
+    return NextResponse.json({
+      posts,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
     });
-
-    return NextResponse.json(posts);
   } catch (error) {
     console.error("获取文章失败:", error);
     return NextResponse.json({ error: "获取文章失败" }, { status: 500 });

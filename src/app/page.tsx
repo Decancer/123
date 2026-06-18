@@ -8,18 +8,36 @@ import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 
 export const dynamic = "force-dynamic";
 
+const PAGE_SIZE = 10;
+
 interface HomeProps {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; page?: string }>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { category } = await searchParams;
-  const initialCategory =
-    category === "tech" || category === "life" ? category : null;
+  const params = await searchParams;
 
-  const [posts, currentUser] = await Promise.all([
+  const category =
+    params.category === "tech" || params.category === "life"
+      ? params.category
+      : null;
+  const q = params.q?.trim() || null;
+  const page = Math.max(1, parseInt(params.page || "1") || 1);
+
+  // 构建查询条件
+  const where: Record<string, unknown> = { published: true };
+  if (category) where.category = category;
+  if (q) {
+    where.OR = [
+      { title: { contains: q } },
+      { content: { contains: q } },
+    ];
+  }
+
+  const [total, posts, currentUser] = await Promise.all([
+    prisma.post.count({ where }),
     prisma.post.findMany({
-      where: { published: true },
+      where,
       select: {
         id: true, title: true, slug: true, content: true, excerpt: true,
         category: true, viewCount: true, createdAt: true,
@@ -28,9 +46,13 @@ export default async function Home({ searchParams }: HomeProps) {
         _count: { select: { comments: true } },
       },
       orderBy: { createdAt: "desc" },
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
     }),
     getCurrentUser(),
   ]);
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950 relative">
@@ -79,8 +101,15 @@ export default async function Home({ searchParams }: HomeProps) {
           <EmailVerificationBanner />
         )}
 
-        {/* 分类 Tab + 文章列表（客户端筛选，瞬间切换） */}
-        <PostList posts={JSON.parse(JSON.stringify(posts))} initialCategory={initialCategory} />
+        {/* 搜索 + 分类 + 文章列表 + 分页 */}
+        <PostList
+          posts={JSON.parse(JSON.stringify(posts))}
+          total={total}
+          page={page}
+          totalPages={totalPages}
+          currentCategory={category}
+          currentSearch={q}
+        />
 
         {/* 技术栈说明 */}
         <div className="mt-16 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
