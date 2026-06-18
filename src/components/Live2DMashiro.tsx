@@ -2,23 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// 可点击切换的动作池
-const MOTIONS = [
-  "smile01", "smile02", "smile03",
-  "angry01",
-  "cry01",
-  "sad01", "sad02",
-  "surprised01",
-  "thinking01",
-  "bye01",
-  "kandou01",
-  "kime01",
-  "uziuzi01", "uziuzi02",
-  "serious01", "serious02",
+// 有模型配置后，用 group 名来切换动作
+const MOTION_GROUPS = [
+  "smile", "surprised", "angry", "cry", "sad",
+  "serious", "thinking", "bye", "kandou", "kime",
+  "uziuzi", "nf", "nnf",
 ];
 
-function pickRandomMotion(exclude?: string): string {
-  const pool = exclude ? MOTIONS.filter((m) => m !== exclude) : MOTIONS;
+function pickRandomGroup(exclude?: string): string {
+  const pool = exclude
+    ? MOTION_GROUPS.filter((g) => g !== exclude)
+    : MOTION_GROUPS;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
@@ -108,7 +102,7 @@ async function initLive2D(container: HTMLDivElement) {
   container.appendChild(app.view as HTMLCanvasElement);
 
   const model = await Live2DModel.from(
-    "/mashiro live2d/mashiro_school_winter-2023.moc"
+    "/mashiro live2d/mashiro.model.json"
   );
 
   // 缩放到合适大小
@@ -127,18 +121,18 @@ async function initLive2D(container: HTMLDivElement) {
   app.stage.addChild(model as any);
 
   // 播放待机
-  let currentMotion = "idle01";
-  model.motion(currentMotion);
+  model.motion("idle", 0);
 
   // 点击切换动作
+  let currentGroup = "idle";
   let motionTimer: ReturnType<typeof setTimeout> | null = null;
   function onModelClick() {
     if (motionTimer) clearTimeout(motionTimer);
-    currentMotion = pickRandomMotion(currentMotion);
-    model.motion(currentMotion);
+    currentGroup = pickRandomGroup(currentGroup);
+    model.motion(currentGroup, 0);
     motionTimer = setTimeout(() => {
-      currentMotion = "idle01";
-      model.motion("idle01");
+      currentGroup = "idle";
+      model.motion("idle", 0);
     }, 5000);
   }
 
