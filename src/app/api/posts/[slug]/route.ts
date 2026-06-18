@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { stripHtml } from "@/lib/sanitize";
 
 // PATCH /api/posts/[slug] — 编辑文章（仅作者本人）
 export async function PATCH(

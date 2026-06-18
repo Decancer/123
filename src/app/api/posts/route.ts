@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { stripHtml } from "@/lib/sanitize";
 
 // GET /api/posts — 获取文章列表（支持 ?published=true 筛选）
 export async function GET(request: NextRequest) {
@@ -90,7 +91,7 @@ export async function POST(request: NextRequest) {
         slug,
         content: content.trim(),
         images: imagesJson,
-        excerpt: excerpt?.trim() || content.trim().slice(0, 150),
+        excerpt: excerpt?.trim() || stripHtml(content).slice(0, 150),
         category: category === "life" ? "life" : "tech",
         published: true,
         authorId: user.id,

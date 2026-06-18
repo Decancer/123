@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, FormEvent } from "react";
+import { RichTextEditor } from "./RichTextEditor";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB 原始文件上限
 const MAX_DIMENSION = 1920; // 压缩后最大宽度
@@ -234,13 +235,9 @@ export function WriteArticleButton() {
             </div>
 
             {/* 正文 */}
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="写你想写的..."
-              required
-              rows={10}
-              className="w-full flex-1 resize-none rounded-lg bg-zinc-50 px-3 py-2.5 text-sm leading-relaxed outline-none transition placeholder:text-zinc-300 focus:bg-white focus:ring-2 focus:ring-blue-500/20 dark:bg-zinc-800 dark:placeholder:text-zinc-600 dark:focus:bg-zinc-800"
+            <RichTextEditor
+              content={content}
+              onChange={setContent}
             />
 
             {/* 标签 */}

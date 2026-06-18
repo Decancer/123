@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, type FormEvent } from "react";
+import { RichTextEditor } from "./RichTextEditor";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const MAX_DIMENSION = 1920;
@@ -201,13 +202,9 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
           />
 
           {/* 内容 */}
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="文章内容（支持 Markdown）"
-            required
-            rows={8}
-            className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm outline-none placeholder:text-zinc-300 focus:border-blue-400 dark:border-zinc-700 dark:bg-zinc-800 dark:placeholder:text-zinc-600"
+          <RichTextEditor
+            content={content}
+            onChange={setContent}
           />
 
           {/* 标签 */}

@@ -224,34 +224,10 @@ export default async function PostPage({ params }: PageProps) {
         )}
 
         {/* 正文 */}
-        <article className="prose prose-zinc max-w-none dark:prose-invert">
-          {/* 简单渲染：将 Markdown 风格的换行转为段落 */}
-          <div className="space-y-4 leading-relaxed text-zinc-700 dark:text-zinc-300">
-            {post.content.split("\n\n").map((block, i) =>
-              block.startsWith("## ") ? (
-                <h2 key={i} className="mt-8 mb-3 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                  {block.replace("## ", "")}
-                </h2>
-              ) : block.startsWith("- ") ? (
-                <ul key={i} className="list-disc space-y-1 pl-5">
-                  {block.split("\n").map((item, j) => (
-                    <li key={j}>{item.replace("- ", "")}</li>
-                  ))}
-                </ul>
-              ) : block.startsWith("1. ") ? (
-                <ol key={i} className="list-decimal space-y-1 pl-5">
-                  {block.split("\n").map((item, j) => (
-                    <li key={j}>
-                      {item.replace(/^\d+\.\s/, "").replace(/\*\*(.+?)\*\*/g, "$1")}
-                    </li>
-                  ))}
-                </ol>
-              ) : (
-                <p key={i}>{block}</p>
-              )
-            )}
-          </div>
-        </article>
+        <article
+          className="prose prose-zinc max-w-none dark:prose-invert leading-relaxed text-zinc-700 dark:text-zinc-300"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
 
         {/* 评论区域 */}
         <section className="mt-16 border-t border-zinc-200 pt-10 dark:border-zinc-800">
