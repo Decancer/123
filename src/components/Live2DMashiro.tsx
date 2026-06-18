@@ -73,7 +73,6 @@ export function Live2DMashiro() {
       ref={containerRef}
       className="fixed bottom-0 right-4 z-[60] select-none pointer-events-auto"
       style={{ width: 280, height: 350 }}
-      title="点我互动~"
     >
       {error && (
         <div className="flex h-full items-center justify-center rounded-xl bg-white/80 p-4 text-xs text-zinc-400 dark:bg-zinc-900/80">
