@@ -3,6 +3,7 @@ import Link from "next/link";
 import { UserMenu } from "@/components/UserMenu";
 import { ProfileEditor } from "@/components/ProfileEditor";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
+import { BackToHomeLink } from "@/components/BackToHomeLink";
 
 export const dynamic = "force-dynamic";
 
@@ -37,12 +38,7 @@ export default async function ProfilePage() {
 
       {/* 内容 */}
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-12">
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-1 text-sm text-zinc-500 transition hover:text-zinc-900 dark:hover:text-zinc-100"
-        >
-          ← 返回首页
-        </Link>
+        <BackToHomeLink />
 
         {currentUser ? (
           <ProfileEditor

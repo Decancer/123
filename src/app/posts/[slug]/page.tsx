@@ -8,6 +8,7 @@ import { EmailVerificationBanner } from "@/components/EmailVerificationBanner";
 import { PostActions } from "@/components/PostActions";
 import { CommentItem } from "@/components/CommentItem";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
+import { BackToHomeLink } from "@/components/BackToHomeLink";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +44,7 @@ export default async function PostPage({ params }: PageProps) {
           <div className="mb-4 text-5xl">😿</div>
           <h1 className="text-xl font-bold">页面加载失败</h1>
           <p className="mt-2 text-sm text-zinc-500">{(err as Error).message || "请稍后重试"}</p>
-          <Link href="/" className="mt-6 inline-block text-blue-500">← 返回首页</Link>
+          <BackToHomeLink />
         </div>
       </div>
     );
@@ -114,12 +115,7 @@ export default async function PostPage({ params }: PageProps) {
       {/* 文章内容 */}
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-12">
         {/* 返回链接 */}
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-1 text-sm text-zinc-500 transition hover:text-zinc-900 dark:hover:text-zinc-100"
-        >
-          ← 返回首页
-        </Link>
+        <BackToHomeLink />
 
         {/* 邮箱未验证提醒 */}
         {currentUser && !currentUser.emailVerified && (
