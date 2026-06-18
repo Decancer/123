@@ -6,6 +6,7 @@ import { EmailVerificationBanner } from "@/components/EmailVerificationBanner";
 import { PostList } from "@/components/PostList";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 import { NavHomeLink } from "@/components/NavHomeLink";
+import { NavFeatureLink } from "@/components/NavFeatureLink";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,7 @@ export default async function Home({ searchParams }: HomeProps) {
           </span>
           <nav className="flex items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
             <NavHomeLink />
+            <NavFeatureLink />
 
             {/* 分隔线 */}
             <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
