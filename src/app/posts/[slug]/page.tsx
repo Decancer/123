@@ -9,7 +9,6 @@ import { PostActions } from "@/components/PostActions";
 import { CommentItem } from "@/components/CommentItem";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 import { BackToHomeLink } from "@/components/BackToHomeLink";
-import { AuthorLink } from "@/components/AuthorLink";
 import { NavHomeLink } from "@/components/NavHomeLink";
 import { NavFeatureLink } from "@/components/NavFeatureLink";
 
