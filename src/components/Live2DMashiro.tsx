@@ -59,7 +59,7 @@ export function Live2DMashiro() {
   return (
     <div
       ref={containerRef}
-      className="fixed bottom-0 right-4 z-20 select-none pointer-events-auto"
+      className="fixed bottom-0 right-4 z-[60] select-none pointer-events-auto"
       style={{ width: 280, height: 350 }}
       title="点我互动~"
     >
