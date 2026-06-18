@@ -44,6 +44,7 @@ export function PostList({
   initialCategory: Category | null;
 }) {
   const [activeCategory, setActiveCategory] = useState<Category | null>(initialCategory);
+  const [loading, setLoading] = useState(false);
 
   const filtered =
     activeCategory === null
@@ -52,6 +53,17 @@ export function PostList({
 
   return (
     <>
+      {/* 全屏加载动画 */}
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+          <img
+            src="/mashiro.svg"
+            alt="加载中"
+            className="h-20 w-20 animate-spin"
+          />
+        </div>
+      )}
+
       {/* 分类 Tab */}
       <div className="mb-10">
         <div className="inline-flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
@@ -90,6 +102,7 @@ export function PostList({
             <Link
               key={post.id}
               href={`/posts/${post.slug}`}
+              onClick={() => setLoading(true)}
               className="block rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition active:scale-[0.98] hover:shadow-md hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
             >
               {/* 分区徽章 + 标签 */}
