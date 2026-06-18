@@ -34,8 +34,7 @@ export function Live2DMashiro() {
     const container = containerRef.current;
     if (!container) return;
 
-    // 如果 cubismcore 已经加载过（全局已存在），直接初始化
-    const w = window as Window & { Live2DCubismCore?: unknown };
+    const w = window as Window & { Live2D?: unknown };
 
     function bootstrap() {
       initLive2D(container!).catch((e) => {
@@ -44,23 +43,20 @@ export function Live2DMashiro() {
       });
     }
 
-    if (w.Live2DCubismCore) {
+    if (w.Live2D) {
       bootstrap();
       return;
     }
 
-    // 手动注入 cubismcore 脚本，确保在一切之前加载
+    // 手动注入 Cubism 2 核心脚本
     const script = document.createElement("script");
-    script.src = "/live2dcubismcore.min.js";
-    script.async = false; // 同步加载保证全局变量就位
-    script.onload = () => {
-      // 等一个微任务确保全局变量写入
-      setTimeout(bootstrap, 0);
-    };
+    script.src = "/live2d.min.js";
+    script.async = false;
+    script.onload = () => setTimeout(bootstrap, 0);
     script.onerror = () => {
       setError(
-        "缺少 live2dcubismcore.min.js，请从 Live2D 官网下载 Cubism 4 SDK for Web，" +
-          "解压后将 Core/live2dcubismcore.min.js 放到 public/ 目录"
+        "缺少 live2d.min.js。请从 Live2D 官网下载 Cubism 2.1 SDK for Web，" +
+          "解压后将 lib/live2d.min.js 放到 public/ 目录"
       );
     };
     document.head.appendChild(script);
@@ -83,18 +79,17 @@ export function Live2DMashiro() {
 }
 
 async function initLive2D(container: HTMLDivElement) {
-  const w = window as Window & { Live2DCubismCore?: unknown };
-  if (!w.Live2DCubismCore) {
-    throw new Error("Cubism Core 未加载");
+  const w = window as Window & { Live2D?: unknown };
+  if (!w.Live2D) {
+    throw new Error("Cubism 2 Core 未加载");
   }
 
   const [{ Application, Ticker }, { Live2DModel }] =
     await Promise.all([
       import("pixi.js"),
-      import("pixi-live2d-display/cubism4"),
+      import("pixi-live2d-display/cubism2"),
     ]);
 
-  // 注册 Ticker（类型兼容性用 any 绕开）
   Live2DModel.registerTicker(Ticker as any);
 
   const canvasWidth = 300;
