@@ -133,6 +133,16 @@ export function WriteArticleButton() {
       setImages([]);
       setOpen(false);
       setSuccess(true);
+      // 通知 Live2D 看板娘：得意！
+      window.dispatchEvent(
+        new CustomEvent("mashiro:reaction", {
+          detail: {
+            motion: "kime",
+            expression: "kime",
+            duration: 4000,
+          },
+        })
+      );
       setTimeout(() => {
         setSuccess(false);
         window.location.reload();

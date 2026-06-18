@@ -36,8 +36,17 @@ export function CommentForm({ slug, userName }: CommentFormProps) {
         return;
       }
 
-      // 成功 — 清空输入框，刷新页面
+      // 成功 — 清空输入框，通知 Live2D，刷新页面
       setContent("");
+      window.dispatchEvent(
+        new CustomEvent("mashiro:reaction", {
+          detail: {
+            motion: "kime",
+            expression: "kime",
+            duration: 4000,
+          },
+        })
+      );
       window.location.reload();
     } catch {
       setError("网络错误，请重试");
