@@ -36,7 +36,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         {user && (
-          <div className="fixed bottom-20 right-3 sm:bottom-24 sm:right-6 z-50">
+          <div className="fixed bottom-20 right-3 sm:bottom-24 sm:right-6 z-[70]">
             <WriteArticleButton />
           </div>
         )}

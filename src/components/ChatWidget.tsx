@@ -44,7 +44,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
   // 未登录：显示小提示条
   if (!user) {
     return (
-      <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50">
+      <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[70]">
         <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 shadow-lg dark:border-zinc-700 dark:bg-zinc-800">
           <img src="/mashiro.svg" alt="Mashiro" className="h-6 w-6 rounded-full" />
           <span className="text-xs text-zinc-400">登录后可与我对话</span>
@@ -54,7 +54,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
   }
 
   return (
-    <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50">
+    <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[70]">
       {/* 折叠：圆形按钮 */}
       {!open && (
         <button
