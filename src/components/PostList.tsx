@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useLoadingReaction } from "@/lib/useLive2DReaction";
+import { AuthorLink } from "@/components/AuthorLink";
 
 type Category = "tech" | "life";
 
@@ -142,20 +143,11 @@ export function PostList({
 
               {/* 底部信息 */}
               <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-500">
-                {post.author.avatar ? (
-                  <img
-                    src={post.author.avatar}
-                    alt=""
-                    className="h-5 w-5 rounded-full object-cover"
-                  />
-                ) : (
-                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] font-semibold text-white">
-                    {post.author.name?.charAt(0) || "?"}
-                  </span>
-                )}
-                <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                  {post.author.name}
-                </span>
+                <AuthorLink
+                  userId={post.author.id}
+                  name={post.author.name || "User"}
+                  avatar={post.author.avatar}
+                />
                 <span aria-hidden="true">·</span>
                 <span>{post._count.comments} 条评论</span>
                 <span aria-hidden="true">·</span>
