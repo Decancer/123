@@ -24,9 +24,10 @@ const features: FeatureCard[] = [
     href: "/chat-room",
   },
   {
-    icon: "✍️",
-    title: "富文本写作",
-    desc: "所见即所得的 TipTap 编辑器，支持代码高亮和图片嵌入，写技术博客从未如此顺手～",
+    icon: "👗",
+    title: "更衣室",
+    desc: "想给 Mashiro 换衣服吗？冬季校服、夏季校服、SSR、UR… 来帮她挑选今天的造型吧～",
+    href: "/dressing-room",
   },
   {
     icon: "🎭",

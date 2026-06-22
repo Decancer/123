@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useLive2DContext } from "@/lib/Live2DContext";
 
 const MOTION_GROUPS = [
   "smile", "surprised", "angry", "cry", "sad",
@@ -23,6 +24,7 @@ export function Live2DMashiro() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cleanupRef = useRef<(() => void) | null>(null);
   const pathname = usePathname();
+  const { modelPath } = useLive2DContext();
 
   // 监听屏幕宽度
   useEffect(() => {
@@ -113,9 +115,7 @@ export function Live2DMashiro() {
         container!.innerHTML = "";
         container!.appendChild(app.view as HTMLCanvasElement);
 
-        const model = await Live2DModel.from(
-          "/live2d4/mashiro.model.json"
-        );
+        const model = await Live2DModel.from(modelPath);
         if (cancelled) {
           app.destroy(true, { children: true });
           return;
@@ -206,7 +206,7 @@ export function Live2DMashiro() {
       cleanupRef.current = null;
       setError(null);
     };
-  }, [isWide]);
+  }, [isWide, modelPath]);
 
   if (!mounted) return null;
   if (!isWide) return null;

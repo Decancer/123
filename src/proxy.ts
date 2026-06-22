@@ -27,7 +27,7 @@ const PUBLIC_PATHS = [
 ];
 
 // 页面路径（不依赖 API，直接可访问）
-const PUBLIC_PAGES = ["/chat-room", "/features", "/users", "/icon.svg"];
+const PUBLIC_PAGES = ["/chat-room", "/features", "/dressing-room", "/users", "/icon.svg"];
 
 function isPublicPath(pathname: string) {
   if (

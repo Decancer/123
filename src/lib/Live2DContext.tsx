@@ -1,0 +1,43 @@
+"use client";
+
+import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+
+export const OUTFITS = {
+  ur:     { id: "ur" as const,     name: "UR 事件313",   path: "/live2d4/mashiro.model.json",               icon: "✨", desc: "优雅独特的设计，活动限定 UR 造型，细节满满的华丽装扮～" },
+  ssr:    { id: "ssr" as const,    name: "SSR 限定",     path: "/live2d3/mashiro.model.json",               icon: "🎤", desc: "闪亮的舞台服装，SSR 稀有度，偶像气场全开～" },
+  winter: { id: "winter" as const, name: "冬季校服",     path: "/mashiro live2d/mashiro.model.json",        icon: "❄️", desc: "温暖的深色外套配围巾，经典冬季校服，Mashiro 的日常穿搭～" },
+  summer: { id: "summer" as const, name: "夏季校服",     path: "/live2d2/mashiro.model.json",               icon: "☀️", desc: "清凉的白色短袖衬衫，夏日限定的轻便造型～" },
+} as const;
+
+export type OutfitId = keyof typeof OUTFITS;
+
+interface Live2DContextValue {
+  modelPath: string;
+  outfitId: OutfitId;
+  setOutfit: (id: OutfitId) => void;
+}
+
+const Live2DContext = createContext<Live2DContextValue>({
+  modelPath: OUTFITS.ur.path,
+  outfitId: "ur",
+  setOutfit: () => {},
+});
+
+export function Live2DProvider({ children }: { children: ReactNode }) {
+  const [outfitId, setOutfitId] = useState<OutfitId>("ur");
+  const modelPath = OUTFITS[outfitId].path;
+
+  const setOutfit = useCallback((id: OutfitId) => {
+    setOutfitId(id);
+  }, []);
+
+  return (
+    <Live2DContext.Provider value={{ modelPath, outfitId, setOutfit }}>
+      {children}
+    </Live2DContext.Provider>
+  );
+}
+
+export function useLive2DContext() {
+  return useContext(Live2DContext);
+}
