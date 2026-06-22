@@ -134,10 +134,10 @@ export function Live2DMashiro() {
         model.anchor.set(0.5, 0.5);
 
         app.stage.addChild(model as any);
-        model.motion("idle", 0);
+        model.motion("serious", 0);
 
         // ---- 交互 ----
-        let currentGroup = "idle";
+        let currentGroup = "serious";
         let motionTimer: ReturnType<typeof setTimeout> | null = null;
 
         function onModelClick() {
