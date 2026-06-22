@@ -14,12 +14,12 @@ export type OutfitId = keyof typeof OUTFITS;
 const STORAGE_KEY = "mashiro-outfit";
 
 function readOutfit(): OutfitId {
-  if (typeof window === "undefined") return "ur";
+  if (typeof window === "undefined") return "winter";
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw && raw in OUTFITS) return raw as OutfitId;
   } catch { /* localStorage blocked */ }
-  return "ur";
+  return "winter";
 }
 
 interface Live2DContextValue {
@@ -29,8 +29,8 @@ interface Live2DContextValue {
 }
 
 const Live2DContext = createContext<Live2DContextValue>({
-  modelPath: OUTFITS.ur.path,
-  outfitId: "ur",
+  modelPath: OUTFITS.winter.path,
+  outfitId: "winter",
   setOutfit: () => {},
 });
 
