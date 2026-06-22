@@ -19,7 +19,6 @@ interface ChatRoomClientProps {
   currentUser: { id: number; name: string; avatar: string | null } | null;
 }
 
-const POLL_INTERVAL = 2000; // 2s 消息轮询
 const HB_INTERVAL = 10_000; // 10s 心跳 + 在线人数
 
 export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
@@ -30,36 +29,36 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
   const [error, setError] = useState("");
   const [initialLoaded, setInitialLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const latestIdRef = useRef<number | null>(null); // 已拉取的最新消息 id，用于增量轮询
-  const timersRef = useRef<{ msg: ReturnType<typeof setInterval> | null; hb: ReturnType<typeof setInterval> | null }>({ msg: null, hb: null });
+  const latestIdRef = useRef<number | null>(null);
+  const hbTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const activeRef = useRef(true); // 页面是否可见
 
   // ---------------------------------------------------------------
-  // 拉取消息（首次全量，后续增量）
+  // 长轮询：请求 → 等待 → 返回 → 立刻再请求（循环）
   // ---------------------------------------------------------------
-  const fetchMessages = useCallback(async () => {
+  const longPoll = useCallback(async () => {
+    if (latestIdRef.current == null) return; // 首次加载还没完成时不启动
+
+    if (!activeRef.current) return; // 页面不可见，不发起请求
+
     try {
-      const url = latestIdRef.current != null
-        ? `/api/chat-room/messages?since=${latestIdRef.current}`
-        : "/api/chat-room/messages";
-
-      const res = await fetch(url);
+      const res = await fetch(
+        `/api/chat-room/messages?since=${latestIdRef.current}&wait=1`
+      );
       if (!res.ok) return;
       const data = await res.json();
 
       if (data.messages && data.messages.length > 0) {
-        if (latestIdRef.current != null) {
-          // 增量模式：追加新消息
-          setMessages((prev) => [...prev, ...data.messages]);
-        } else {
-          // 全量模式：初始加载
-          setMessages(data.messages);
-        }
-        // 更新最新 id
-        const newLatest = data.latest ?? data.messages[data.messages.length - 1].id;
-        latestIdRef.current = newLatest;
+        setMessages((prev) => [...prev, ...data.messages]);
+        latestIdRef.current = data.latest;
       }
     } catch {
-      // 轮询失败静默忽略
+      // 网络错误静默忽略
+    }
+
+    // 无论有无新消息，立刻开始下一轮长轮询
+    if (activeRef.current) {
+      longPoll();
     }
   }, []);
 
@@ -72,72 +71,94 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
       if (!res.ok) return;
       const data: OnlineInfo = await res.json();
       setOnlineCount(data.count);
-    } catch {
-      // 静默忽略
-    }
+    } catch {}
   }, []);
 
   const sendHeartbeat = useCallback(async () => {
     if (!currentUser) return;
     try {
       await fetch("/api/chat-room/heartbeat", { method: "POST" });
-    } catch {
-      // 静默忽略
-    }
+    } catch {}
   }, [currentUser]);
-
-  // ---------------------------------------------------------------
-  // 启停轮询
-  // ---------------------------------------------------------------
-  const startTimers = useCallback(() => {
-    if (timersRef.current.msg) clearInterval(timersRef.current.msg);
-    if (timersRef.current.hb) clearInterval(timersRef.current.hb);
-    timersRef.current.msg = setInterval(fetchMessages, POLL_INTERVAL);
-    timersRef.current.hb = setInterval(() => {
-      fetchOnlineCount();
-      if (currentUser) sendHeartbeat();
-    }, HB_INTERVAL);
-  }, [fetchMessages, fetchOnlineCount, sendHeartbeat, currentUser]);
-
-  const stopTimers = useCallback(() => {
-    if (timersRef.current.msg) { clearInterval(timersRef.current.msg); timersRef.current.msg = null; }
-    if (timersRef.current.hb) { clearInterval(timersRef.current.hb); timersRef.current.hb = null; }
-  }, []);
 
   // ---------------------------------------------------------------
   // 初始加载
   // ---------------------------------------------------------------
   useEffect(() => {
-    fetchMessages().then(() => setInitialLoaded(true));
+    let cancelled = false;
+
+    async function init() {
+      try {
+        const res = await fetch("/api/chat-room/messages");
+        if (!res.ok || cancelled) return;
+        const data = await res.json();
+        if (data.messages) {
+          setMessages(data.messages);
+          latestIdRef.current =
+            data.latest ??
+            (data.messages.length > 0
+              ? data.messages[data.messages.length - 1].id
+              : null);
+        }
+      } catch {} finally {
+        if (!cancelled) setInitialLoaded(true);
+      }
+    }
+
+    init();
     fetchOnlineCount();
     if (currentUser) sendHeartbeat();
+
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------
-  // 页面可见性：隐藏时停轮询，回来立即刷新
+  // 初始加载完后启动长轮询 + 心跳定时器
   // ---------------------------------------------------------------
   useEffect(() => {
-    startTimers();
+    if (!initialLoaded) return;
 
+    // 启动长轮询
+    activeRef.current = true;
+    longPoll();
+
+    // 启动心跳定时器
+    hbTimerRef.current = setInterval(() => {
+      fetchOnlineCount();
+      if (currentUser) sendHeartbeat();
+    }, HB_INTERVAL);
+
+    // 页面可见性：隐藏时标记不活跃，显示时恢复
     function handleVisibility() {
-      if (document.hidden) {
-        stopTimers();
-      } else {
-        // 回来先立即拉一次，再重启定时器
-        fetchMessages();
-        fetchOnlineCount();
-        if (currentUser) sendHeartbeat();
-        startTimers();
+      activeRef.current = !document.hidden;
+      if (!document.hidden) {
+        // 回来先立刻拉一次最新（不用 wait 模式，秒回）
+        fetch(`/api/chat-room/messages?since=${latestIdRef.current ?? 0}`)
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.messages?.length > 0) {
+              setMessages((prev) => [...prev, ...data.messages]);
+              latestIdRef.current = data.latest;
+            }
+          })
+          .catch(() => {})
+          .finally(() => {
+            fetchOnlineCount();
+            if (currentUser) sendHeartbeat();
+            // 恢复长轮询
+            longPoll();
+          });
       }
     }
 
     document.addEventListener("visibilitychange", handleVisibility);
     return () => {
       document.removeEventListener("visibilitychange", handleVisibility);
-      stopTimers();
+      if (hbTimerRef.current) clearInterval(hbTimerRef.current);
+      activeRef.current = false;
     };
-  }, [startTimers, stopTimers, fetchMessages, fetchOnlineCount, sendHeartbeat, currentUser]);
+  }, [initialLoaded, currentUser, longPoll, fetchOnlineCount, sendHeartbeat]);
 
   // ---------------------------------------------------------------
   // 新消息自动滚到底部
@@ -177,8 +198,15 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
         })
       );
 
-      // 立即拉取（用增量模式）
-      await fetchMessages();
+      // 立即增量拉取（不用 wait，秒回），longPoll 会在返回后继续
+      const fres = await fetch(
+        `/api/chat-room/messages?since=${latestIdRef.current ?? 0}`
+      );
+      const data = await fres.json();
+      if (data.messages?.length > 0) {
+        setMessages((prev) => [...prev, ...data.messages]);
+        latestIdRef.current = data.latest;
+      }
     } catch {
       setError("网络错误，请重试");
     } finally {
@@ -191,7 +219,7 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
   // ---------------------------------------------------------------
   return (
     <div className="flex flex-col mx-auto" style={{ height: "calc(100vh - 7rem)" }}>
-      {/* 头部：标题 + 在线人数 */}
+      {/* 头部 */}
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
           💬 聊天室
