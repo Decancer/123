@@ -1,0 +1,86 @@
+{
+  "type": "Live2D Model Setting",
+  "name": "mashiro_event313",
+  "model": "mashiro_event313.moc",
+  "textures": ["texture_00.png", "texture_01.png"],
+  "physics": "mashiro_event313.physics.json",
+  "pose": "",
+  "motions": {
+    "idle": [
+      {"file": "idle01.mtn"}
+    ],
+    "angry": [
+      {"file": "angry01.mtn"}
+    ],
+    "bye": [
+      {"file": "bye01.mtn"}
+    ],
+    "cry": [
+      {"file": "cry01.mtn"}
+    ],
+    "gacha": [
+      {"file": "gacha01.mtn"}
+    ],
+    "kandou": [
+      {"file": "kandou01.mtn"}
+    ],
+    "kime": [
+      {"file": "kime01.mtn"}
+    ],
+    "nf": [
+      {"file": "nf01.mtn"},
+      {"file": "nf02.mtn"},
+      {"file": "nf03.mtn"},
+      {"file": "nf04.mtn"},
+      {"file": "nf05.mtn"},
+      {"file": "nf_left01.mtn"},
+      {"file": "nf_right01.mtn"}
+    ],
+    "nnf": [
+      {"file": "nnf01.mtn"},
+      {"file": "nnf02.mtn"},
+      {"file": "nnf03.mtn"},
+      {"file": "nnf04.mtn"},
+      {"file": "nnf05.mtn"},
+      {"file": "nnf_left01.mtn"},
+      {"file": "nnf_right01.mtn"}
+    ],
+    "sad": [
+      {"file": "sad01.mtn"},
+      {"file": "sad02.mtn"}
+    ],
+    "serious": [
+      {"file": "serious01.mtn"},
+      {"file": "serious02.mtn"}
+    ],
+    "smile": [
+      {"file": "smile01.mtn"},
+      {"file": "smile02.mtn"},
+      {"file": "smile02_ingameV2.mtn"},
+      {"file": "smile03.mtn"}
+    ],
+    "surprised": [
+      {"file": "surprised01.mtn"}
+    ],
+    "thinking": [
+      {"file": "thinking01.mtn"}
+    ],
+    "uziuzi": [
+      {"file": "uziuzi01.mtn"},
+      {"file": "uziuzi02.mtn"},
+      {"file": "uziuzi03.mtn"},
+      {"file": "uziuzi04.mtn"}
+    ]
+  },
+  "expressions": [
+    {"name": "angry", "file": "angry01.exp.json"},
+    {"name": "cry", "file": "cry01.exp.json"},
+    {"name": "default", "file": "default.exp.json"},
+    {"name": "kime", "file": "kime01.exp.json"},
+    {"name": "sad", "file": "sad01.exp.json"},
+    {"name": "serious", "file": "serious01.exp.json"},
+    {"name": "smile", "file": "smile01.exp.json"},
+    {"name": "surprised", "file": "surprised01.exp.json"},
+    {"name": "reset", "file": "reset.exp.json"}
+  ]
+}

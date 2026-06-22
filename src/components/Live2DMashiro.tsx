@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 
 const MOTION_GROUPS = [
   "smile", "surprised", "angry", "cry", "sad",
-  "serious", "kandou", "kime", "uziuzi", "nf", "nnf", "gacha",
+  "serious", "thinking", "bye", "kandou", "kime",
+  "uziuzi", "nf", "nnf", "gacha",
 ];
 
 function pickRandomGroup(exclude?: string): string {
@@ -113,7 +114,7 @@ export function Live2DMashiro() {
         container!.appendChild(app.view as HTMLCanvasElement);
 
         const model = await Live2DModel.from(
-          "/live2d3/mashiro.model.json"
+          "/live2d4/mashiro.model.json"
         );
         if (cancelled) {
           app.destroy(true, { children: true });
