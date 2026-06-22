@@ -7,76 +7,76 @@
   "pose": "",
   "motions": {
     "idle": [
-      {"file": "../mashiro live2d/idle01.mtn"}
+      {"file": "idle01.mtn"}
     ],
     "angry": [
-      {"file": "../mashiro live2d/angry01.mtn"}
+      {"file": "angry01.mtn"}
     ],
     "bye": [
-      {"file": "../mashiro live2d/bye01.mtn"}
+      {"file": "bye01.mtn"}
     ],
     "cry": [
-      {"file": "../mashiro live2d/cry01.mtn"}
+      {"file": "cry01.mtn"}
     ],
     "kandou": [
-      {"file": "../mashiro live2d/kandou01.mtn"}
+      {"file": "kandou01.mtn"}
     ],
     "kime": [
-      {"file": "../mashiro live2d/kime01.mtn"}
+      {"file": "kime01.mtn"}
     ],
     "nf": [
-      {"file": "../mashiro live2d/nf01.mtn"},
-      {"file": "../mashiro live2d/nf02.mtn"},
-      {"file": "../mashiro live2d/nf03.mtn"},
-      {"file": "../mashiro live2d/nf04.mtn"},
-      {"file": "../mashiro live2d/nf05.mtn"},
-      {"file": "../mashiro live2d/nf_left01.mtn"},
-      {"file": "../mashiro live2d/nf_right01.mtn"}
+      {"file": "nf01.mtn"},
+      {"file": "nf02.mtn"},
+      {"file": "nf03.mtn"},
+      {"file": "nf04.mtn"},
+      {"file": "nf05.mtn"},
+      {"file": "nf_left01.mtn"},
+      {"file": "nf_right01.mtn"}
     ],
     "nnf": [
-      {"file": "../mashiro live2d/nnf01.mtn"},
-      {"file": "../mashiro live2d/nnf02.mtn"},
-      {"file": "../mashiro live2d/nnf03.mtn"},
-      {"file": "../mashiro live2d/nnf04.mtn"},
-      {"file": "../mashiro live2d/nnf05.mtn"},
-      {"file": "../mashiro live2d/nnf_left01.mtn"},
-      {"file": "../mashiro live2d/nnf_right01.mtn"}
+      {"file": "nnf01.mtn"},
+      {"file": "nnf02.mtn"},
+      {"file": "nnf03.mtn"},
+      {"file": "nnf04.mtn"},
+      {"file": "nnf05.mtn"},
+      {"file": "nnf_left01.mtn"},
+      {"file": "nnf_right01.mtn"}
     ],
     "sad": [
-      {"file": "../mashiro live2d/sad01.mtn"},
-      {"file": "../mashiro live2d/sad02.mtn"}
+      {"file": "sad01.mtn"},
+      {"file": "sad02.mtn"}
     ],
     "serious": [
-      {"file": "../mashiro live2d/serious01.mtn"},
-      {"file": "../mashiro live2d/serious02.mtn"}
+      {"file": "serious01.mtn"},
+      {"file": "serious02.mtn"}
     ],
     "smile": [
-      {"file": "../mashiro live2d/smile01.mtn"},
-      {"file": "../mashiro live2d/smile02.mtn"},
-      {"file": "../mashiro live2d/smile03.mtn"}
+      {"file": "smile01.mtn"},
+      {"file": "smile02.mtn"},
+      {"file": "smile03.mtn"}
     ],
     "surprised": [
-      {"file": "../mashiro live2d/surprised01.mtn"}
+      {"file": "surprised01.mtn"}
     ],
     "thinking": [
-      {"file": "../mashiro live2d/thinking01.mtn"}
+      {"file": "thinking01.mtn"}
     ],
     "uziuzi": [
-      {"file": "../mashiro live2d/uziuzi01.mtn"},
-      {"file": "../mashiro live2d/uziuzi02.mtn"},
-      {"file": "../mashiro live2d/uziuzi03.mtn"},
-      {"file": "../mashiro live2d/uziuzi04.mtn"}
+      {"file": "uziuzi01.mtn"},
+      {"file": "uziuzi02.mtn"},
+      {"file": "uziuzi03.mtn"},
+      {"file": "uziuzi04.mtn"}
     ]
   },
   "expressions": [
-    {"name": "angry", "file": "../mashiro live2d/angry01.exp.json"},
-    {"name": "cry", "file": "../mashiro live2d/cry01.exp.json"},
-    {"name": "default", "file": "../mashiro live2d/default.exp.json"},
-    {"name": "kime", "file": "../mashiro live2d/kime01.exp.json"},
-    {"name": "sad", "file": "../mashiro live2d/sad01.exp.json"},
-    {"name": "serious", "file": "../mashiro live2d/serious01.exp.json"},
-    {"name": "smile", "file": "../mashiro live2d/smile01.exp.json"},
-    {"name": "surprised", "file": "../mashiro live2d/surprised01.exp.json"},
-    {"name": "reset", "file": "../mashiro live2d/reset.exp.json"}
+    {"name": "angry", "file": "angry01.exp.json"},
+    {"name": "cry", "file": "cry01.exp.json"},
+    {"name": "default", "file": "default.exp.json"},
+    {"name": "kime", "file": "kime01.exp.json"},
+    {"name": "sad", "file": "sad01.exp.json"},
+    {"name": "serious", "file": "serious01.exp.json"},
+    {"name": "smile", "file": "smile01.exp.json"},
+    {"name": "surprised", "file": "surprised01.exp.json"},
+    {"name": "reset", "file": "reset.exp.json"}
   ]
 }
