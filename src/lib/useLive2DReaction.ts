@@ -15,7 +15,7 @@ export function useLoadingReaction(loading: boolean) {
     // loading 开始：切到思考
     window.dispatchEvent(
       new CustomEvent("mashiro:reaction", {
-        detail: { motion: "thinking" },
+        detail: { motion: "gacha" },
       })
     );
 
