@@ -136,29 +136,6 @@ export function Live2DMashiro() {
         app.stage.addChild(model as any);
         model.motion("idle", 0);
 
-        // DEBUG: 打印所有参数名和默认值（帮助定位手臂姿态问题）
-        try {
-          const im = (model as any).internalModel;
-          const raw = im?._model;
-          if (raw && typeof raw.getParamNum === "function") {
-            const count = raw.getParamNum();
-            const all: string[] = [];
-            for (let i = 0; i < count; i++) {
-              const id: string = raw.getParamId(i);
-              const val: number = raw.getParamFloat(i);
-              all.push(`${id}=${val.toFixed(3)}`);
-              // 尝试把含 ARM/HAND 的参数归零（手臂放到两侧）
-              if (/ARM|HAND/i.test(id) && Math.abs(val) > 0.1) {
-                raw.setParamFloat(i, 0);
-                console.log(`Live2D reset: ${id} ${val.toFixed(3)} → 0`);
-              }
-            }
-            console.log("Live2D all params:", all.join(", "));
-          }
-        } catch (e) {
-          console.log("Live2D param debug failed:", e);
-        }
-
         // ---- 交互 ----
         let currentGroup = "idle";
         let motionTimer: ReturnType<typeof setTimeout> | null = null;
