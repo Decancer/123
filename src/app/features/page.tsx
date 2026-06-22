@@ -12,13 +12,15 @@ interface FeatureCard {
   icon: string;
   title: string;
   desc: string;
+  href?: string;
 }
 
 const features: FeatureCard[] = [
   {
     icon: "💬",
-    title: "AI 猫娘对话",
-    desc: "右下角的 Mashiro 可不是普通装饰哦～她能用 DeepSeek 和你聊天，还能搜索站内文章帮你找答案喵！",
+    title: "聊天室",
+    desc: "实时公共聊天室！在这里和大家聊天交流，看看谁在线～需要登录才能发送消息喵！",
+    href: "/chat-room",
   },
   {
     icon: "✍️",
@@ -122,20 +124,37 @@ export default async function FeaturesPage() {
 
         {/* 功能卡片网格：1 列 mobile / 2 列 sm / 3 列 lg */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
-            <div
-              key={f.title}
-              className="group rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
-            >
-              <div className="mb-3 text-3xl">{f.icon}</div>
-              <h3 className="mb-1.5 text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                {f.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
-                {f.desc}
-              </p>
-            </div>
-          ))}
+          {features.map((f) => {
+            const cardContent = (
+              <>
+                <div className="mb-3 text-3xl">{f.icon}</div>
+                <h3 className="mb-1.5 text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                  {f.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+                  {f.desc}
+                </p>
+                {f.href && (
+                  <span className="mt-2 inline-block text-xs text-blue-500 group-hover:underline">
+                    点击进入 →
+                  </span>
+                )}
+              </>
+            );
+
+            const className =
+              "group rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700";
+
+            return f.href ? (
+              <Link key={f.title} href={f.href} className={className}>
+                {cardContent}
+              </Link>
+            ) : (
+              <div key={f.title} className={className}>
+                {cardContent}
+              </div>
+            );
+          })}
 
           {/* 占位卡片 — 更多功能等你来想 */}
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-5 text-center transition hover:border-blue-300 dark:border-zinc-700 dark:bg-zinc-900/50 dark:hover:border-blue-700">
