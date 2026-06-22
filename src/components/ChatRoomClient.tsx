@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, type FormEvent } from "react";
+import Link from "next/link";
 
 interface ChatMessage {
   id: number;
@@ -254,23 +255,28 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
           {messages.map((msg) => (
             <div key={msg.id} className="flex gap-3">
               <div className="flex-shrink-0">
-                {msg.userAvatar ? (
-                  <img
-                    src={msg.userAvatar}
-                    alt={msg.userName}
-                    className="h-8 w-8 rounded-full object-cover"
-                  />
-                ) : (
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-xs font-semibold text-white">
-                    {msg.userName.charAt(0)}
-                  </span>
-                )}
+                <Link href={`/users/${msg.userId}`} className="block transition hover:opacity-80">
+                  {msg.userAvatar ? (
+                    <img
+                      src={msg.userAvatar}
+                      alt={msg.userName}
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-xs font-semibold text-white">
+                      {msg.userName.charAt(0)}
+                    </span>
+                  )}
+                </Link>
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  <Link
+                    href={`/users/${msg.userId}`}
+                    className="text-sm font-medium text-zinc-900 hover:text-blue-600 hover:underline transition dark:text-zinc-100 dark:hover:text-blue-400"
+                  >
                     {msg.userName}
-                  </span>
+                  </Link>
                   <time className="text-xs text-zinc-400 dark:text-zinc-500">
                     {new Date(msg.createdAt).toLocaleTimeString("zh-CN", {
                       hour: "2-digit",
