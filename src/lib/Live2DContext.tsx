@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 
 export const OUTFITS = {
   ur:     { id: "ur" as const,     name: "UR 事件313",   path: "/live2d4/mashiro.model.json",               icon: "✨", desc: "优雅独特的设计，活动限定 UR 造型，细节满满的华丽装扮～" },
@@ -10,6 +10,17 @@ export const OUTFITS = {
 } as const;
 
 export type OutfitId = keyof typeof OUTFITS;
+
+const STORAGE_KEY = "mashiro-outfit";
+
+function readOutfit(): OutfitId {
+  if (typeof window === "undefined") return "ur";
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw && raw in OUTFITS) return raw as OutfitId;
+  } catch { /* localStorage blocked */ }
+  return "ur";
+}
 
 interface Live2DContextValue {
   modelPath: string;
@@ -24,11 +35,12 @@ const Live2DContext = createContext<Live2DContextValue>({
 });
 
 export function Live2DProvider({ children }: { children: ReactNode }) {
-  const [outfitId, setOutfitId] = useState<OutfitId>("ur");
+  const [outfitId, setOutfitId] = useState<OutfitId>(readOutfit);
   const modelPath = OUTFITS[outfitId].path;
 
   const setOutfit = useCallback((id: OutfitId) => {
     setOutfitId(id);
+    try { localStorage.setItem(STORAGE_KEY, id); } catch { /* ignore */ }
   }, []);
 
   return (
