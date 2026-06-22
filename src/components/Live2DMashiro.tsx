@@ -134,10 +134,10 @@ export function Live2DMashiro() {
         model.anchor.set(0.5, 0.5);
 
         app.stage.addChild(model as any);
-        model.motion("idle", 0);
+        // 不立即播放动作，保持模型默认姿态
 
         // ---- 交互 ----
-        let currentGroup = "idle";
+        let currentGroup = "";
         let motionTimer: ReturnType<typeof setTimeout> | null = null;
 
         function onModelClick() {
