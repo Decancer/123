@@ -64,7 +64,7 @@
       {"file": "idle01.mtn"}
     ],
     "thinking": [
-      {"file": "idle01.mtn"}
+      {"file": "../live2d4/thinking01.mtn"}
     ]
   },
   "expressions": [
