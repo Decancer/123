@@ -4,12 +4,34 @@ import { getCurrentUser } from "@/lib/auth";
 
 const MESSAGE_LIMIT = 100;
 
-/** GET /api/chat-room/messages — 获取最近消息（公开） */
+/** GET /api/chat-room/messages — 获取消息（公开）
+ *  ?since=<id> — 增量拉取，只返回 id > since 的新消息（省带宽）
+ *  ?cursor=<id> — 向前翻页，返回 id < cursor 的历史消息
+ */
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    const sinceStr = searchParams.get("since");
     const cursorStr = searchParams.get("cursor");
 
+    if (sinceStr) {
+      // 增量模式：只返回比 since 更新的消息
+      const sinceId = parseInt(sinceStr, 10);
+      if (isNaN(sinceId)) {
+        return NextResponse.json({ error: "Invalid since param" }, { status: 400 });
+      }
+
+      const messages = await prisma.chatRoomMessage.findMany({
+        where: { id: { gt: sinceId } },
+        orderBy: { id: "asc" },
+        take: MESSAGE_LIMIT,
+      });
+
+      const latest = messages.length > 0 ? messages[messages.length - 1].id : sinceId;
+      return NextResponse.json({ messages, latest, hasMore: false });
+    }
+
+    // 全量模式 — 初始加载 / 翻页
     const where: Record<string, unknown> = {};
     if (cursorStr) {
       const cursorId = parseInt(cursorStr, 10);
@@ -24,14 +46,15 @@ export async function GET(request: NextRequest) {
       take: MESSAGE_LIMIT,
     });
 
-    // 返回时间升序（旧→新）
-    messages.reverse();
+    messages.reverse(); // 旧→新
 
     const oldest = messages.length > 0 ? messages[0].id : null;
+    const latest = messages.length > 0 ? messages[messages.length - 1].id : null;
 
     return NextResponse.json({
       messages,
       cursor: oldest,
+      latest,
       hasMore: messages.length === MESSAGE_LIMIT,
     });
   } catch (error) {

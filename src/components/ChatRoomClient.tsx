@@ -30,22 +30,42 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
   const [error, setError] = useState("");
   const [initialLoaded, setInitialLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const latestIdRef = useRef<number | null>(null); // 已拉取的最新消息 id，用于增量轮询
+  const timersRef = useRef<{ msg: ReturnType<typeof setInterval> | null; hb: ReturnType<typeof setInterval> | null }>({ msg: null, hb: null });
 
-  // 拉取消息
+  // ---------------------------------------------------------------
+  // 拉取消息（首次全量，后续增量）
+  // ---------------------------------------------------------------
   const fetchMessages = useCallback(async () => {
     try {
-      const res = await fetch("/api/chat-room/messages");
+      const url = latestIdRef.current != null
+        ? `/api/chat-room/messages?since=${latestIdRef.current}`
+        : "/api/chat-room/messages";
+
+      const res = await fetch(url);
       if (!res.ok) return;
       const data = await res.json();
-      if (data.messages) {
-        setMessages(data.messages);
+
+      if (data.messages && data.messages.length > 0) {
+        if (latestIdRef.current != null) {
+          // 增量模式：追加新消息
+          setMessages((prev) => [...prev, ...data.messages]);
+        } else {
+          // 全量模式：初始加载
+          setMessages(data.messages);
+        }
+        // 更新最新 id
+        const newLatest = data.latest ?? data.messages[data.messages.length - 1].id;
+        latestIdRef.current = newLatest;
       }
     } catch {
       // 轮询失败静默忽略
     }
   }, []);
 
-  // 拉取在线人数
+  // ---------------------------------------------------------------
+  // 在线人数 + 心跳
+  // ---------------------------------------------------------------
   const fetchOnlineCount = useCallback(async () => {
     try {
       const res = await fetch("/api/chat-room/heartbeat");
@@ -57,7 +77,6 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
     }
   }, []);
 
-  // 发送心跳
   const sendHeartbeat = useCallback(async () => {
     if (!currentUser) return;
     try {
@@ -67,7 +86,27 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
     }
   }, [currentUser]);
 
+  // ---------------------------------------------------------------
+  // 启停轮询
+  // ---------------------------------------------------------------
+  const startTimers = useCallback(() => {
+    if (timersRef.current.msg) clearInterval(timersRef.current.msg);
+    if (timersRef.current.hb) clearInterval(timersRef.current.hb);
+    timersRef.current.msg = setInterval(fetchMessages, POLL_INTERVAL);
+    timersRef.current.hb = setInterval(() => {
+      fetchOnlineCount();
+      if (currentUser) sendHeartbeat();
+    }, HB_INTERVAL);
+  }, [fetchMessages, fetchOnlineCount, sendHeartbeat, currentUser]);
+
+  const stopTimers = useCallback(() => {
+    if (timersRef.current.msg) { clearInterval(timersRef.current.msg); timersRef.current.msg = null; }
+    if (timersRef.current.hb) { clearInterval(timersRef.current.hb); timersRef.current.hb = null; }
+  }, []);
+
+  // ---------------------------------------------------------------
   // 初始加载
+  // ---------------------------------------------------------------
   useEffect(() => {
     fetchMessages().then(() => setInitialLoaded(true));
     fetchOnlineCount();
@@ -75,26 +114,41 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 轮询
+  // ---------------------------------------------------------------
+  // 页面可见性：隐藏时停轮询，回来立即刷新
+  // ---------------------------------------------------------------
   useEffect(() => {
-    const msgTimer = setInterval(fetchMessages, POLL_INTERVAL);
-    const hbTimer = setInterval(() => {
-      fetchOnlineCount();
-      if (currentUser) sendHeartbeat();
-    }, HB_INTERVAL);
+    startTimers();
 
+    function handleVisibility() {
+      if (document.hidden) {
+        stopTimers();
+      } else {
+        // 回来先立即拉一次，再重启定时器
+        fetchMessages();
+        fetchOnlineCount();
+        if (currentUser) sendHeartbeat();
+        startTimers();
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibility);
     return () => {
-      clearInterval(msgTimer);
-      clearInterval(hbTimer);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      stopTimers();
     };
-  }, [currentUser, fetchMessages, fetchOnlineCount, sendHeartbeat]);
+  }, [startTimers, stopTimers, fetchMessages, fetchOnlineCount, sendHeartbeat, currentUser]);
 
+  // ---------------------------------------------------------------
   // 新消息自动滚到底部
+  // ---------------------------------------------------------------
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // ---------------------------------------------------------------
   // 发送消息
+  // ---------------------------------------------------------------
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!input.trim() || !currentUser) return;
@@ -117,14 +171,13 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
       setInput("");
       setError("");
 
-      // 触发 Live2D 反应
       window.dispatchEvent(
         new CustomEvent("mashiro:reaction", {
           detail: { motion: "kandou", expression: "kandou", duration: 3000 },
         })
       );
 
-      // 立即拉取新消息（不等下次轮询）
+      // 立即拉取（用增量模式）
       await fetchMessages();
     } catch {
       setError("网络错误，请重试");
@@ -133,6 +186,9 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
     }
   }
 
+  // ---------------------------------------------------------------
+  // 渲染
+  // ---------------------------------------------------------------
   return (
     <div className="flex flex-col mx-auto" style={{ height: "calc(100vh - 7rem)" }}>
       {/* 头部：标题 + 在线人数 */}
@@ -169,7 +225,6 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
         <div className="space-y-3">
           {messages.map((msg) => (
             <div key={msg.id} className="flex gap-3">
-              {/* 头像 */}
               <div className="flex-shrink-0">
                 {msg.userAvatar ? (
                   <img
@@ -183,7 +238,6 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
                   </span>
                 )}
               </div>
-              {/* 内容 */}
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline gap-2">
                   <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
