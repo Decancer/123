@@ -20,12 +20,24 @@ const PUBLIC_PATHS = [
   "/api/posts",
   "/api/comments",
   "/api/profile",
+  "/api/chat-room",
+  "/api/users",
   "/_next",
   "/favicon.ico",
 ];
 
+// 页面路径（不依赖 API，直接可访问）
+const PUBLIC_PAGES = ["/chat-room", "/features", "/users", "/icon.svg"];
+
 function isPublicPath(pathname: string) {
-  if (pathname === "/" || pathname.startsWith("/posts") || pathname.startsWith("/_next")) {
+  if (
+    pathname === "/" ||
+    pathname.startsWith("/posts") ||
+    pathname.startsWith("/_next")
+  ) {
+    return true;
+  }
+  if (PUBLIC_PAGES.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
     return true;
   }
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
