@@ -19,12 +19,24 @@ function pickRandomGroup(exclude?: string): string {
 
 export function Live2DMashiro() {
   const [error, setError] = useState<string | null>(null);
+  const [isWide, setIsWide] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const initializedRef = useRef(false);
   const restoreRef = useRef<(() => void) | null>(null);
   const pathname = usePathname();
 
-  // 路由变化时自动恢复 idle（处理页面导航后残留的状态）
+  // 监听屏幕宽度：≥768px 才挂载 PIXI（与 md: 断点一致）
+  useEffect(() => {
+    const mql = matchMedia("(min-width: 768px)");
+    setIsWide(mql.matches);
+    setMounted(true);
+    const handler = (e: MediaQueryListEvent) => setIsWide(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
+  // 路由变化时自动恢复 idle
   const prevPathnameRef = useRef(pathname);
   useEffect(() => {
     if (pathname !== prevPathnameRef.current) {
@@ -33,7 +45,9 @@ export function Live2DMashiro() {
     }
   }, [pathname]);
 
+  // 初始化 PIXI + Live2D
   useEffect(() => {
+    if (!isWide) return; // 小屏不初始化
     if (initializedRef.current) return;
     initializedRef.current = true;
 
@@ -66,12 +80,24 @@ export function Live2DMashiro() {
       );
     };
     document.head.appendChild(script);
-  }, []);
+
+    return () => {
+      // 组件卸载（切回小屏）时清理标记，下次切回大屏可重新初始化
+      initializedRef.current = false;
+      if (container) container.innerHTML = "";
+    };
+  }, [isWide]);
+
+  // SSR 期间不渲染（避免 hydration mismatch）
+  if (!mounted) return null;
+
+  // 小屏完全不渲染，大屏全新挂载
+  if (!isWide) return null;
 
   return (
     <div
       ref={containerRef}
-      className="fixed bottom-0 right-4 z-[60] select-none pointer-events-auto hidden md:block"
+      className="fixed bottom-0 right-4 z-[60] select-none pointer-events-auto"
       style={{ width: 280, height: 350 }}
     >
       {error && (
@@ -155,7 +181,6 @@ async function initLive2D(
   let reactionTimer: ReturnType<typeof setTimeout> | null = null;
   function handleReaction(e: CustomEvent) {
     const { motion, expression, duration } = e.detail || {};
-    // 清除旧的恢复定时 & 点击动作定时
     if (reactionTimer) clearTimeout(reactionTimer);
     if (motionTimer) clearTimeout(motionTimer);
     if (expression) model.expression(expression);
@@ -172,7 +197,6 @@ async function initLive2D(
     }
   }
 
-  // 暴露恢复方法：直接恢复 expression + motion，跳过事件总线的时序问题
   restoreRef.current = () => {
     if (reactionTimer) clearTimeout(reactionTimer);
     if (motionTimer) clearTimeout(motionTimer);
