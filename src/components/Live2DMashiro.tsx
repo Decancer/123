@@ -114,7 +114,7 @@ export function Live2DMashiro() {
         container!.appendChild(app.view as HTMLCanvasElement);
 
         const model = await Live2DModel.from(
-          "/live2d2/mashiro.model.json"
+          "/mashiro live2d/mashiro.model.json"
         );
         if (cancelled) {
           app.destroy(true, { children: true });
