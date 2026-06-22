@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, type FormEvent } from "react";
-import Link from "next/link";
+import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
+import { useLoadingReaction } from "@/lib/useLive2DReaction";
 
 interface ChatMessage {
   id: number;
@@ -29,6 +31,17 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
   const [onlineCount, setOnlineCount] = useState(0);
   const [error, setError] = useState("");
   const [initialLoaded, setInitialLoaded] = useState(false);
+  const [navigateTo, setNavigateTo] = useState<string | null>(null);
+  const router = useRouter();
+  const navigatorLoading = navigateTo !== null;
+  useLoadingReaction(navigatorLoading);
+
+  // navigateTo 设置后，等 Portal 渲染再跳转
+  useEffect(() => {
+    if (navigateTo) {
+      router.push(navigateTo);
+    }
+  }, [navigateTo, router]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const latestIdRef = useRef<number | null>(null);
   const hbTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -220,6 +233,18 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
   // ---------------------------------------------------------------
   return (
     <div className="flex flex-col mx-auto" style={{ height: "calc(100vh - 7rem)" }}>
+      {/* 导航加载动画 */}
+      {navigatorLoading &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+            <img
+              src="/mashiro.svg"
+              alt="加载中"
+              className="h-20 w-20 animate-spin"
+            />
+          </div>,
+          document.body
+        )}
       {/* 头部 */}
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
@@ -255,7 +280,11 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
           {messages.map((msg) => (
             <div key={msg.id} className="flex gap-3">
               <div className="flex-shrink-0">
-                <Link href={`/users/${msg.userId}`} className="block transition hover:opacity-80">
+                <a
+                  href={`/users/${msg.userId}`}
+                  onClick={(e) => { e.preventDefault(); setNavigateTo(`/users/${msg.userId}`); }}
+                  className="block cursor-pointer transition hover:opacity-80"
+                >
                   {msg.userAvatar ? (
                     <img
                       src={msg.userAvatar}
@@ -267,16 +296,17 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
                       {msg.userName.charAt(0)}
                     </span>
                   )}
-                </Link>
+                </a>
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline gap-2">
-                  <Link
+                  <a
                     href={`/users/${msg.userId}`}
-                    className="text-sm font-medium text-zinc-900 hover:text-blue-600 hover:underline transition dark:text-zinc-100 dark:hover:text-blue-400"
+                    onClick={(e) => { e.preventDefault(); setNavigateTo(`/users/${msg.userId}`); }}
+                    className="cursor-pointer text-sm font-medium text-zinc-900 hover:text-blue-600 hover:underline transition dark:text-zinc-100 dark:hover:text-blue-400"
                   >
                     {msg.userName}
-                  </Link>
+                  </a>
                   <time className="text-xs text-zinc-400 dark:text-zinc-500">
                     {new Date(msg.createdAt).toLocaleTimeString("zh-CN", {
                       hour: "2-digit",

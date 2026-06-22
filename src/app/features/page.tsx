@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/auth";
 import Link from "next/link";
+import { FeatureCardLink } from "@/components/FeatureCardLink";
 import { UserMenu } from "@/components/UserMenu";
 import { NavHomeLink } from "@/components/NavHomeLink";
 import { NavFeatureLink } from "@/components/NavFeatureLink";
@@ -146,9 +147,9 @@ export default async function FeaturesPage() {
               "group rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700";
 
             return f.href ? (
-              <Link key={f.title} href={f.href} className={className}>
+              <FeatureCardLink key={f.title} href={f.href} className={className}>
                 {cardContent}
-              </Link>
+              </FeatureCardLink>
             ) : (
               <div key={f.title} className={className}>
                 {cardContent}
