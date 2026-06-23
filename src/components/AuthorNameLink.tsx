@@ -37,7 +37,7 @@ export function AuthorNameLink({
     <>
       {loading &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
             <img
               src="/mashiro.svg"
               alt="加载中"
@@ -53,7 +53,7 @@ export function AuthorNameLink({
         onKeyDown={(e) => {
           if (e.key === "Enter") handleClick(e as unknown as React.MouseEvent);
         }}
-        className={`cursor-pointer transition hover:text-blue-600 hover:underline ${className ?? ""}`}
+        className={`cursor-pointer transition hover:text-primary-500 hover:underline ${className ?? ""}`}
       >
         {name}
       </span>

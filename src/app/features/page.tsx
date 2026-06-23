@@ -70,20 +70,20 @@ export default async function FeaturesPage() {
   const currentUser = await getCurrentUser();
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950 relative">
+    <div className="flex min-h-screen flex-col bg-primary-50 dark:bg-[#0f0f1e] relative">
       <BackgroundMonsters />
 
       {/* 导航 */}
-      <header className="sticky top-0 z-10 border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80">
+      <header className="sticky top-0 z-10 border-b border-border bg-primary-50/80 backdrop-blur-md dark:border-[#2a2a45] dark:bg-[#0f0f1e]/80">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
-          <span className="text-lg font-bold tracking-tight">
+          <span className="text-lg font-bold tracking-tight text-ink dark:text-[#e0e0f0]">
             🐾 Mashiro Chat
           </span>
-          <nav className="flex items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
+          <nav className="flex items-center gap-4 text-sm text-muted dark:text-[#9090a8]">
             <NavHomeLink />
             <NavFeatureLink />
 
-            <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
+            <span className="mx-1 h-4 w-px bg-border dark:bg-[#2a2a45]" />
 
             {currentUser ? (
               <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
@@ -91,13 +91,13 @@ export default async function FeaturesPage() {
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="rounded-lg bg-zinc-900 px-3 py-1.5 text-white transition hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97] dark:bg-primary-400 dark:text-[#0f0f1e] dark:hover:bg-primary-300"
                 >
                   登录
                 </Link>
                 <Link
                   href="/register"
-                  className="rounded-lg border border-zinc-300 px-3 py-1.5 transition hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                  className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted transition hover:border-primary-300 hover:bg-primary-50 hover:text-ink active:scale-[0.97] dark:border-[#2a2a45] dark:text-[#9090a8] dark:hover:border-primary-500 dark:hover:bg-[#1a1a35] dark:hover:text-[#e0e0f0]"
                 >
                   注册
                 </Link>
@@ -114,12 +114,12 @@ export default async function FeaturesPage() {
           <img
             src="/mashiro.svg"
             alt="Mashiro"
-            className="mx-auto mb-4 h-20 w-20 rounded-full shadow-lg"
+            className="mx-auto mb-4 h-20 w-20 rounded-full shadow-glow"
           />
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+          <h1 className="text-3xl font-bold text-ink dark:text-[#e0e0f0]">
             ✨ 我能做什么？
           </h1>
-          <p className="mt-2 text-zinc-500 dark:text-zinc-400">
+          <p className="mt-2 text-muted dark:text-[#9090a8]">
             来看看 Mashiro Chat 为你准备了哪些好玩的功能吧～
           </p>
         </div>
@@ -130,14 +130,14 @@ export default async function FeaturesPage() {
             const cardContent = (
               <>
                 <div className="mb-3 text-3xl">{f.icon}</div>
-                <h3 className="mb-1.5 text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                <h3 className="mb-1.5 text-base font-semibold text-ink dark:text-[#e0e0f0]">
                   {f.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+                <p className="text-sm leading-relaxed text-muted dark:text-[#9090a8]">
                   {f.desc}
                 </p>
                 {f.href && (
-                  <span className="mt-2 inline-block text-xs text-blue-500 group-hover:underline">
+                  <span className="mt-2 inline-block text-xs font-medium text-primary-500 group-hover:underline">
                     点击进入 →
                   </span>
                 )}
@@ -145,7 +145,7 @@ export default async function FeaturesPage() {
             );
 
             const className =
-              "group rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700";
+              "group rounded-2xl border border-border bg-surface p-5 shadow-card transition-all duration-300 hover:shadow-card-hover hover:border-primary-300 dark:border-[#2a2a45] dark:bg-[#1a1a30] dark:hover:border-primary-500";
 
             return f.href ? (
               <FeatureCardLink key={f.title} href={f.href} className={className}>
@@ -158,13 +158,13 @@ export default async function FeaturesPage() {
             );
           })}
 
-          {/* 占位卡片 — 更多功能等你来想 */}
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-5 text-center transition hover:border-blue-300 dark:border-zinc-700 dark:bg-zinc-900/50 dark:hover:border-blue-700">
+          {/* 占位卡片 */}
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-primary-200 bg-primary-50/50 p-5 text-center transition hover:border-primary-300 dark:border-[#2a2a45] dark:bg-[#1a1a30]/50 dark:hover:border-primary-500">
             <div className="mb-2 text-3xl opacity-40">🐾</div>
-            <p className="text-sm font-medium text-zinc-400 dark:text-zinc-500">
+            <p className="text-sm font-medium text-muted dark:text-[#9090a8]">
               还有更多……
             </p>
-            <p className="mt-1 text-xs text-zinc-300 dark:text-zinc-600">
+            <p className="mt-1 text-xs text-muted/60 dark:text-[#9090a8]/60">
               新功能陆续添加中
             </p>
           </div>
@@ -172,7 +172,7 @@ export default async function FeaturesPage() {
       </main>
 
       {/* 页脚 */}
-      <footer className="border-t border-zinc-200 py-8 text-center text-sm text-zinc-400 dark:border-zinc-800">
+      <footer className="border-t border-border py-8 text-center text-sm text-muted/70 dark:border-[#2a2a45] dark:text-[#9090a8]/70">
         Built with Next.js + Prisma + SQLite
       </footer>
     </div>

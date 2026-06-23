@@ -41,7 +41,7 @@ export function AuthorLink({
     <>
       {loading &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
             <img
               src="/mashiro.svg"
               alt="加载中"
@@ -57,17 +57,17 @@ export function AuthorLink({
         onKeyDown={(e) => {
           if (e.key === "Enter") handleClick(e as unknown as React.MouseEvent);
         }}
-        className="inline-flex cursor-pointer items-center gap-1.5 font-medium text-zinc-700 transition hover:text-blue-600 group dark:text-zinc-300"
+        className="inline-flex cursor-pointer items-center gap-1.5 font-medium text-ink/80 transition hover:text-primary-500 dark:text-[#e0e0f0]/80 dark:hover:text-primary-400"
       >
         {avatar ? (
           <img
             src={avatar}
             alt=""
-            className={`${avatarSize} rounded-full object-cover`}
+            className={`${avatarSize} rounded-full object-cover ring-1 ring-primary-100 dark:ring-primary-500/20`}
           />
         ) : (
           <span
-            className={`inline-flex ${avatarSize} items-center justify-center rounded-full bg-blue-500 ${initialsSize} font-semibold text-white`}
+            className={`inline-flex ${avatarSize} items-center justify-center rounded-full bg-primary-500 ${initialsSize} font-semibold text-white`}
           >
             {name.charAt(0) || "?"}
           </span>

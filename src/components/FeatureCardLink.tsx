@@ -36,7 +36,7 @@ export function FeatureCardLink({
     <>
       {loading &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
             <img
               src="/mashiro.svg"
               alt="加载中"

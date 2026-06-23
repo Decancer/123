@@ -218,7 +218,7 @@ export function Live2DMashiro() {
       style={{ width: 280, height: 350 }}
     >
       {error && (
-        <div className="flex h-full items-center justify-center rounded-xl bg-white/80 p-4 text-xs text-zinc-400 dark:bg-zinc-900/80">
+        <div className="flex h-full items-center justify-center rounded-xl bg-primary-50/80 p-4 text-xs text-muted dark:bg-[#1a1a30]/80">
           {error}
         </div>
       )}

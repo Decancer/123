@@ -45,9 +45,9 @@ export function ChatWidget({ user }: ChatWidgetProps) {
   if (!user) {
     return (
       <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[70]">
-        <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 shadow-lg dark:border-zinc-700 dark:bg-zinc-800">
+        <div className="flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 shadow-card dark:border-[#2a2a45] dark:bg-[#1a1a30]">
           <img src="/mashiro.svg" alt="Mashiro" className="h-6 w-6 rounded-full" />
-          <span className="text-xs text-zinc-400">登录后可与我对话</span>
+          <span className="text-xs text-muted dark:text-[#9090a8]">登录后可与我对话</span>
         </div>
       </div>
     );
@@ -77,7 +77,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
               })
             )
           }
-          className="h-14 w-14 rounded-full shadow-lg transition hover:scale-110 hover:shadow-xl overflow-hidden"
+          className="h-14 w-14 rounded-full shadow-card transition hover:scale-110 hover:shadow-glow overflow-hidden ring-2 ring-primary-200 hover:ring-primary-400 dark:ring-primary-500/30 dark:hover:ring-primary-400/50"
           aria-label="打开 AI 聊天"
         >
           <img src="/mashiro.svg" alt="Mashiro" className="h-full w-full object-cover" />
@@ -86,18 +86,18 @@ export function ChatWidget({ user }: ChatWidgetProps) {
 
       {/* 展开：聊天面板 */}
       {open && (
-        <div className="flex h-[500px] w-[calc(100vw-1.5rem)] sm:w-[380px] flex-col rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex h-[500px] w-[calc(100vw-1.5rem)] sm:w-[380px] flex-col rounded-2xl border border-border bg-surface shadow-xl dark:border-[#2a2a45] dark:bg-[#1a1a30]">
           {/* 头部 */}
-          <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
+          <div className="flex items-center justify-between border-b border-border px-4 py-3 dark:border-[#2a2a45]">
             <div className="flex items-center gap-2">
               <img src="/mashiro.svg" alt="Mashiro" className="h-7 w-7 rounded-full" />
-              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              <span className="text-sm font-medium text-ink dark:text-[#e0e0f0]">
                 Mashiro
               </span>
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="rounded-lg p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-lg p-1 text-muted/60 transition hover:bg-primary-50 hover:text-ink dark:hover:bg-[#2a2a45] dark:hover:text-[#e0e0f0]"
               aria-label="关闭聊天"
             >
               <svg
@@ -121,7 +121,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
             {messages.length === 0 && (
               <div className="text-center py-8">
                 <img src="/mashiro.svg" alt="Mashiro" className="mx-auto h-12 w-12 rounded-full" />
-                <p className="mt-2 text-sm text-zinc-400">
+                <p className="mt-2 text-sm text-muted dark:text-[#9090a8]">
                   你好，{user.name}！有什么我可以帮你的吗？
                 </p>
               </div>
@@ -137,8 +137,8 @@ export function ChatWidget({ user }: ChatWidgetProps) {
                 <div
                   className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
                     m.role === "user"
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                      ? "bg-primary-500 text-white"
+                      : "bg-primary-50 text-ink dark:bg-[#2a2a45] dark:text-[#e0e0f0]"
                   }`}
                 >
                   {getMessageText(m)}
@@ -149,18 +149,18 @@ export function ChatWidget({ user }: ChatWidgetProps) {
             {/* 加载动画 */}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="rounded-2xl bg-zinc-100 px-4 py-2.5 dark:bg-zinc-800">
+                <div className="rounded-2xl bg-primary-50 px-4 py-2.5 dark:bg-[#2a2a45]">
                   <span className="inline-flex gap-1">
                     <span
-                      className="h-2 w-2 animate-bounce rounded-full bg-zinc-400"
+                      className="h-2 w-2 animate-bounce rounded-full bg-primary-400"
                       style={{ animationDelay: "0ms" }}
                     />
                     <span
-                      className="h-2 w-2 animate-bounce rounded-full bg-zinc-400"
+                      className="h-2 w-2 animate-bounce rounded-full bg-primary-400"
                       style={{ animationDelay: "150ms" }}
                     />
                     <span
-                      className="h-2 w-2 animate-bounce rounded-full bg-zinc-400"
+                      className="h-2 w-2 animate-bounce rounded-full bg-primary-400"
                       style={{ animationDelay: "300ms" }}
                     />
                   </span>
@@ -170,7 +170,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
 
             {/* 错误提示 */}
             {error && (
-              <div className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
+              <div className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-950/40 dark:text-red-400">
                 {error.message || "发送失败，请重试"}
               </div>
             )}
@@ -181,7 +181,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
           {/* 输入区 */}
           <form
             onSubmit={handleSubmit}
-            className="border-t border-zinc-200 p-3 dark:border-zinc-800"
+            className="border-t border-border p-3 dark:border-[#2a2a45]"
           >
             <div className="flex gap-2">
               <input
@@ -189,12 +189,12 @@ export function ChatWidget({ user }: ChatWidgetProps) {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="输入消息..."
                 disabled={isLoading}
-                className="flex-1 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm outline-none transition placeholder:text-zinc-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:placeholder:text-zinc-600 dark:focus:border-blue-500"
+                className="flex-1 rounded-xl border border-border bg-primary-50/50 px-3.5 py-2 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#2a2a45] dark:bg-[#0f0f1e] dark:text-[#e0e0f0] dark:placeholder:text-[#9090a8]/50 dark:focus:border-primary-400"
               />
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+                className="rounded-xl bg-primary-500 px-3.5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 active:scale-95 disabled:opacity-50 dark:bg-primary-400 dark:text-[#0f0f1e] dark:hover:bg-primary-300"
               >
                 发送
               </button>

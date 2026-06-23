@@ -57,7 +57,7 @@ export function PostList({
     <>
       {/* 全屏加载动画 */}
       {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
           <img
             src="/mashiro.svg"
             alt="加载中"
@@ -68,7 +68,7 @@ export function PostList({
 
       {/* 分类 Tab */}
       <div className="mb-10">
-        <div className="inline-flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
+        <div className="inline-flex items-center gap-1 rounded-xl bg-primary-100/50 p-1 dark:bg-[#1a1a35]">
           {([
             { key: null, label: "全部" },
             { key: "tech", label: "💻 技术" },
@@ -77,10 +77,10 @@ export function PostList({
             <button
               key={String(key)}
               onClick={() => setActiveCategory(key)}
-              className={`rounded-lg px-4 py-1.5 text-sm font-medium transition ${
+              className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
                 activeCategory === key
-                  ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-zinc-100"
-                  : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+                  ? "bg-surface text-ink shadow-card dark:bg-[#2a2a45] dark:text-[#e0e0f0]"
+                  : "text-muted hover:text-ink dark:text-[#9090a8] dark:hover:text-[#e0e0f0]"
               }`}
             >
               {label}
@@ -91,29 +91,29 @@ export function PostList({
 
       {/* 文章列表 */}
       {filtered.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
-          <p className="text-zinc-500">
+        <div className="rounded-2xl border border-dashed border-primary-200 p-12 text-center dark:border-[#2a2a45]">
+          <p className="text-muted dark:text-[#9090a8]">
             {activeCategory === null
               ? "还没有文章，运行 npm run db:seed 创建示例数据"
               : "该分类下还没有文章"}
           </p>
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-5">
           {filtered.map((post) => (
             <Link
               key={post.id}
               href={`/posts/${post.slug}`}
               onClick={() => setLoading(true)}
-              className="block rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition active:scale-[0.98] hover:shadow-md hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
+              className="group block rounded-2xl border border-border bg-surface p-6 shadow-card transition-all duration-300 active:scale-[0.98] hover:shadow-card-hover hover:border-primary-300 dark:border-[#2a2a45] dark:bg-[#1a1a30] dark:hover:border-primary-500"
             >
               {/* 分区徽章 + 标签 */}
               <div className="mb-3 flex flex-wrap items-center gap-1.5">
                 <span
-                  className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${
+                  className={`inline-flex items-center rounded-lg px-2 py-0.5 text-xs font-medium ${
                     post.category === "life"
-                      ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
-                      : "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                      ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+                      : "bg-primary-50 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300"
                   }`}
                 >
                   {post.category === "life" ? "🌿 生活" : "💻 技术"}
@@ -121,7 +121,7 @@ export function PostList({
                 {post.tags.map(({ tag }) => (
                   <span
                     key={tag.id}
-                    className="inline-flex items-center rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+                    className="inline-flex items-center rounded-lg bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-[#2a2a45] dark:text-primary-300"
                   >
                     {tag.name}
                   </span>
@@ -129,19 +129,19 @@ export function PostList({
               </div>
 
               {/* 标题 */}
-              <h2 className="mb-2 text-xl font-semibold leading-snug tracking-tight text-zinc-900 dark:text-zinc-100">
+              <h2 className="mb-2 text-xl font-semibold leading-snug tracking-tight text-ink group-hover:text-primary-600 transition-colors dark:text-[#e0e0f0] dark:group-hover:text-primary-400">
                 {post.title}
               </h2>
 
               {/* 摘要 */}
               {post.excerpt && (
-                <p className="mb-4 leading-relaxed text-zinc-600 dark:text-zinc-400">
+                <p className="mb-4 leading-relaxed text-muted dark:text-[#9090a8]">
                   {post.excerpt}
                 </p>
               )}
 
               {/* 底部信息 */}
-              <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-500">
+              <div className="flex items-center gap-2 text-sm text-muted/80 dark:text-[#9090a8]/80">
                 {post.author.avatar ? (
                   <img
                     src={post.author.avatar}
@@ -149,11 +149,11 @@ export function PostList({
                     className="h-5 w-5 rounded-full object-cover"
                   />
                 ) : (
-                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] font-semibold text-white">
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-[10px] font-semibold text-white">
                     {post.author.name?.charAt(0) || "?"}
                   </span>
                 )}
-                <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                <span className="font-medium text-ink/80 dark:text-[#e0e0f0]/80">
                   {post.author.name}
                 </span>
                 <span aria-hidden="true">·</span>

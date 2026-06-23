@@ -25,7 +25,7 @@ export function BackToHomeLink() {
     <>
       {goBack &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
             <img
               src="/mashiro.svg"
               alt="加载中"
@@ -41,7 +41,7 @@ export function BackToHomeLink() {
         onKeyDown={(e) => {
           if (e.key === "Enter") handleClick(e as unknown as React.MouseEvent);
         }}
-        className="mb-8 inline-flex cursor-pointer items-center gap-1 text-sm text-zinc-500 transition hover:text-zinc-900 dark:hover:text-zinc-100"
+        className="mb-8 inline-flex cursor-pointer items-center gap-1 text-sm text-muted transition hover:text-ink dark:text-[#9090a8] dark:hover:text-[#e0e0f0]"
       >
         ← 返回
       </span>

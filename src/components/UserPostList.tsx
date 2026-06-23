@@ -24,7 +24,7 @@ export function UserPostList({ posts }: { posts: PostSummary[] }) {
     <>
       {loadingPath && (
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
             <img
               src="/mashiro.svg"
               alt="加载中"
@@ -36,38 +36,38 @@ export function UserPostList({ posts }: { posts: PostSummary[] }) {
       )}
 
       {posts.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
-          <p className="text-zinc-400">暂无已发布文章</p>
+        <div className="rounded-2xl border border-dashed border-primary-200 p-12 text-center dark:border-[#2a2a45]">
+          <p className="text-muted dark:text-[#9090a8]">暂无已发布文章</p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {posts.map((post) => (
             <Link
               key={post.id}
               href={`/posts/${post.slug}`}
               onClick={() => setLoadingPath(post.slug)}
-              className="block rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-300 active:scale-[0.98] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
+              className="block rounded-2xl border border-border bg-surface p-5 shadow-card transition-all duration-300 hover:shadow-card-hover hover:border-primary-300 active:scale-[0.98] dark:border-[#2a2a45] dark:bg-[#1a1a30] dark:hover:border-primary-500"
             >
               <div className="mb-2 flex flex-wrap items-center gap-1.5">
                 <span
-                  className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${
+                  className={`inline-flex items-center rounded-lg px-2 py-0.5 text-xs font-medium ${
                     post.category === "life"
-                      ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
-                      : "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                      ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+                      : "bg-primary-50 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300"
                   }`}
                 >
                   {post.category === "life" ? "🌿 生活" : "💻 技术"}
                 </span>
               </div>
-              <h3 className="mb-1.5 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+              <h3 className="mb-1.5 text-lg font-semibold text-ink dark:text-[#e0e0f0]">
                 {post.title}
               </h3>
               {post.excerpt && (
-                <p className="mb-3 text-sm text-zinc-500 dark:text-zinc-400">
+                <p className="mb-3 text-sm text-muted dark:text-[#9090a8]">
                   {post.excerpt}
                 </p>
               )}
-              <div className="flex items-center gap-2 text-xs text-zinc-400">
+              <div className="flex items-center gap-2 text-xs text-muted/70 dark:text-[#9090a8]/70">
                 <time dateTime={new Date(post.createdAt).toISOString()}>
                   {new Date(post.createdAt).toLocaleDateString("zh-CN")}
                 </time>

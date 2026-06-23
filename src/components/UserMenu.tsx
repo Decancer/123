@@ -73,10 +73,10 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
 
   return (
     <>
-      {/* 全屏加载动画（Portal 到 body 避免被 header 的 backdrop-blur 限制固定定位范围） */}
+      {/* 全屏加载动画 */}
       {navLoading &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-zinc-950/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
             <img
               src="/mashiro.svg"
               alt="加载中"
@@ -89,24 +89,24 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
       {/* 触发按钮 */}
       <button
         onClick={() => { setOpen(!open); setShowConfirm(false); setShowLogoutConfirm(false); }}
-        className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm transition hover:bg-primary-50 dark:hover:bg-[#2a2a45]"
       >
         {avatar ? (
           <img
             src={avatar}
             alt=""
-            className="h-6 w-6 rounded-full object-cover"
+            className="h-6 w-6 rounded-full object-cover ring-2 ring-primary-100 dark:ring-primary-500/20"
           />
         ) : (
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary-100 text-xs font-medium text-primary-700 dark:bg-primary-500/20 dark:text-primary-300">
             {initial}
           </span>
         )}
-        <span className="hidden text-zinc-700 dark:text-zinc-300 sm:inline">
+        <span className="hidden text-ink/80 dark:text-[#e0e0f0]/80 sm:inline">
           {userName}
         </span>
         <svg
-          className={`h-3.5 w-3.5 text-zinc-400 transition ${open ? "rotate-180" : ""}`}
+          className={`h-3.5 w-3.5 text-muted/60 transition ${open ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -117,10 +117,10 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
 
       {/* 下拉菜单 */}
       {open && (
-        <div className="absolute right-0 top-full mt-1.5 w-44 rounded-xl border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-800">
+        <div className="absolute right-0 top-full mt-1.5 w-44 rounded-2xl border border-border bg-surface py-1 shadow-lg dark:border-[#2a2a45] dark:bg-[#1a1a30]">
           {/* 用户信息 */}
-          <div className="border-b border-zinc-100 px-4 py-2 dark:border-zinc-700">
-            <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
+          <div className="border-b border-border px-4 py-2 dark:border-[#2a2a45]">
+            <p className="text-sm font-medium text-ink dark:text-[#e0e0f0] truncate">
               {userName}
             </p>
           </div>
@@ -128,7 +128,7 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
           {/* 个人主页 */}
           <button
             onClick={() => { setNavLoading(true); router.push("/profile"); setOpen(false); }}
-            className="flex w-full items-center gap-2 px-4 py-2 text-sm text-zinc-600 transition hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="flex w-full items-center gap-2 px-4 py-2 text-sm text-muted transition hover:bg-primary-50 hover:text-ink dark:text-[#9090a8] dark:hover:bg-[#2a2a45] dark:hover:text-[#e0e0f0]"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -140,10 +140,10 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
           <button
             onClick={handleLogout}
             disabled={loading === "logout"}
-            className="flex w-full items-center gap-2 px-4 py-2 text-sm text-zinc-600 transition hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="flex w-full items-center gap-2 px-4 py-2 text-sm text-muted transition hover:bg-primary-50 hover:text-ink disabled:opacity-50 dark:text-[#9090a8] dark:hover:bg-[#2a2a45] dark:hover:text-[#e0e0f0]"
           >
             {loading === "logout" ? (
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-600" />
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-200 border-t-primary-500" />
             ) : (
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -159,7 +159,7 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
             className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-500 transition hover:bg-red-50 disabled:opacity-50 dark:hover:bg-red-950/30"
           >
             {loading === "delete" ? (
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-red-300 border-t-red-600" />
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-red-300 border-t-red-500" />
             ) : (
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
+/* ================================================================
+   Mashiro Morning · 真白之晨
+   白 + Periwinkle Blue (#6677cc) 主题
+   ================================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f3f4ff;
+  --foreground: #1a1a2e;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* ── 品牌色阶：Periwinkle ── */
+  --color-primary-50: #f3f4ff;
+  --color-primary-100: #e6e8ff;
+  --color-primary-200: #cdd0f8;
+  --color-primary-300: #aeb3ee;
+  --color-primary-400: #8a90e0;
+  --color-primary-500: #6677cc;
+  --color-primary-600: #545ea8;
+  --color-primary-700: #434985;
+  --color-primary-800: #323562;
+  --color-primary-900: #212340;
+
+  /* ── 语义色（表面/文字/边框） ── */
+  --color-surface: #ffffff;
+  --color-surface-alt: #fafbff;
+  --color-ink: #1a1a2e;
+  --color-muted: #6b6b80;
+  --color-border: #e2e4f0;
+  --color-border-hover: #6677cc;
+
+  /* ── 字体 ── */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* ── 阴影（带 periwinkle 色调） ── */
+  --shadow-glow: 0 0 20px rgba(102, 119, 204, 0.15);
+  --shadow-card: 0 1px 3px rgba(102, 119, 204, 0.06), 0 1px 2px rgba(102, 119, 204, 0.04);
+  --shadow-card-hover: 0 4px 20px rgba(102, 119, 204, 0.12), 0 0 0 1px rgba(102, 119, 204, 0.15);
 }
 
+/* ================================================================
+   暗色模式
+   ================================================================ */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f0f1e;
+    --foreground: #e0e0f0;
+  }
+
+  @theme inline {
+    --color-surface: #1a1a30;
+    --color-surface-alt: #141428;
+    --color-ink: #e0e0f0;
+    --color-muted: #9090a8;
+    --color-border: #2a2a45;
+    --color-border-hover: #6677cc;
   }
 }
 
+/* ================================================================
+   基础
+   ================================================================ */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── 全局滚动条 ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cdd0f8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aeb3ee;
+}
+
+/* ── 选中文字色 ── */
+::selection {
+  background: rgba(102, 119, 204, 0.2);
+  color: #1a1a2e;
+}
+
+/* ── 全局过渡 ── */
+* {
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
 }
