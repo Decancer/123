@@ -236,7 +236,7 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
       {/* 导航加载动画 */}
       {navigatorLoading &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#16162a]/80">
             <img
               src="/mashiro.svg"
               alt="加载中"
@@ -247,17 +247,17 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
         )}
       {/* 头部 */}
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-ink dark:text-[#e0e0f0]">
+        <h1 className="text-xl font-bold text-ink dark:text-[#e8e8f8]">
           💬 聊天室
         </h1>
-        <div className="flex items-center gap-2 text-sm text-muted dark:text-[#9090a8]">
+        <div className="flex items-center gap-2 text-sm text-muted dark:text-[#a0a0c0]">
           <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.5)]" />
           {onlineCount} 人在线
         </div>
       </div>
 
       {/* 消息列表 */}
-      <div className="mb-4 flex-1 overflow-y-auto rounded-2xl border border-border bg-surface p-4 shadow-card dark:border-[#2a2a45] dark:bg-[#1a1a30]">
+      <div className="mb-4 flex-1 overflow-y-auto rounded-2xl border border-border bg-surface p-4 shadow-card dark:border-[#3a3a58] dark:bg-[#222240]">
         {!initialLoaded && (
           <div className="flex items-center justify-center py-16">
             <img
@@ -270,7 +270,7 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
 
         {initialLoaded && messages.length === 0 && (
           <div className="py-16 text-center">
-            <p className="text-muted dark:text-[#9090a8]">
+            <p className="text-muted dark:text-[#a0a0c0]">
               还没有消息，来发第一条吧喵~
             </p>
           </div>
@@ -303,18 +303,18 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
                   <a
                     href={`/users/${msg.userId}`}
                     onClick={(e) => { e.preventDefault(); setNavigateTo(`/users/${msg.userId}`); }}
-                    className="cursor-pointer text-sm font-medium text-ink hover:text-primary-500 hover:underline transition dark:text-[#e0e0f0] dark:hover:text-primary-400"
+                    className="cursor-pointer text-sm font-medium text-ink hover:text-primary-500 hover:underline transition dark:text-[#e8e8f8] dark:hover:text-primary-400"
                   >
                     {msg.userName}
                   </a>
-                  <time className="text-xs text-muted/70 dark:text-[#9090a8]/70">
+                  <time className="text-xs text-muted/70 dark:text-[#a0a0c0]/70">
                     {new Date(msg.createdAt).toLocaleTimeString("zh-CN", {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                   </time>
                 </div>
-                <p className="break-words text-sm leading-relaxed text-ink/90 dark:text-[#e0e0f0]/90">
+                <p className="break-words text-sm leading-relaxed text-ink/90 dark:text-[#e8e8f8]/90">
                   {msg.content}
                 </p>
               </div>
@@ -341,18 +341,18 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
               placeholder="输入消息… 和大家打个招呼吧~"
               maxLength={500}
               disabled={loading}
-              className="flex-1 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#2a2a45] dark:bg-[#1a1a30] dark:text-[#e0e0f0] dark:placeholder:text-[#9090a8]/50 dark:focus:border-primary-400"
+              className="flex-1 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#222240] dark:text-[#e8e8f8] dark:placeholder:text-[#a0a0c0]/50 dark:focus:border-primary-400"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="rounded-xl bg-primary-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 active:scale-95 disabled:opacity-50 dark:bg-primary-400 dark:text-[#0f0f1e] dark:hover:bg-primary-300"
+              className="rounded-xl bg-primary-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 active:scale-95 disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
             >
               {loading ? "发送中…" : "发送"}
             </button>
           </>
         ) : (
-          <div className="flex-1 rounded-xl border border-dashed border-primary-200 bg-primary-50/50 px-4 py-2.5 text-center text-sm text-muted dark:border-[#2a2a45] dark:bg-[#0f0f1e]/50 dark:text-[#9090a8]">
+          <div className="flex-1 rounded-xl border border-dashed border-primary-200 bg-primary-50/50 px-4 py-2.5 text-center text-sm text-muted dark:border-[#3a3a58] dark:bg-[#16162a]/50 dark:text-[#a0a0c0]">
             <a href="/login" className="font-medium text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300">
               登录
             </a>

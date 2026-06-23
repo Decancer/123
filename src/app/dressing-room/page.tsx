@@ -44,7 +44,7 @@ export default function DressingRoomPage() {
       {switching &&
         mounted &&
         createPortal(
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#16162a]/80">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/mashiro.svg"
@@ -56,28 +56,28 @@ export default function DressingRoomPage() {
         )}
 
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-border bg-primary-50/80 backdrop-blur-md dark:border-[#2a2a45] dark:bg-[#0f0f1e]/80">
+      <header className="sticky top-0 z-40 border-b border-border bg-primary-50/80 backdrop-blur-md dark:border-[#3a3a58] dark:bg-[#16162a]/80">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <span className="select-none text-lg font-bold tracking-tight text-ink dark:text-[#e0e0f0]">
+          <span className="select-none text-lg font-bold tracking-tight text-ink dark:text-[#e8e8f8]">
             🐾 Mashiro Chat
           </span>
-          <nav className="flex items-center gap-4 text-sm text-muted dark:text-[#9090a8]">
+          <nav className="flex items-center gap-4 text-sm text-muted dark:text-[#a0a0c0]">
             <NavHomeLink />
             <NavFeatureLink />
-            <span className="mx-1 h-4 w-px bg-border dark:bg-[#2a2a45]" />
+            <span className="mx-1 h-4 w-px bg-border dark:bg-[#3a3a58]" />
             {currentUser ? (
               <UserMenu userName={currentUser.name} avatar={currentUser.avatar ?? null} />
             ) : (
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97] dark:bg-primary-400 dark:text-[#0f0f1e] dark:hover:bg-primary-300"
+                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97] dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
                 >
                   登录
                 </Link>
                 <Link
                   href="/register"
-                  className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted transition hover:border-primary-300 hover:bg-primary-50 hover:text-ink active:scale-[0.97] dark:border-[#2a2a45] dark:text-[#9090a8] dark:hover:border-primary-500 dark:hover:bg-[#1a1a35] dark:hover:text-[#e0e0f0]"
+                  className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted transition hover:border-primary-300 hover:bg-primary-50 hover:text-ink active:scale-[0.97] dark:border-[#3a3a58] dark:text-[#a0a0c0] dark:hover:border-primary-500 dark:hover:bg-[#2a2a48] dark:hover:text-[#e8e8f8]"
                 >
                   注册
                 </Link>
@@ -88,7 +88,7 @@ export default function DressingRoomPage() {
       </header>
 
       {/* Main */}
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 bg-primary-50 dark:bg-[#0f0f1e]">
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 bg-primary-50 dark:bg-[#16162a]">
         {/* 返回 */}
         <div className="mb-6">
           <BackToHomeLink />
@@ -102,10 +102,10 @@ export default function DressingRoomPage() {
             alt="Mashiro"
             className="mx-auto mb-4 h-20 w-20 drop-shadow-[0_0_12px_rgba(102,119,204,0.3)]"
           />
-          <h1 className="mb-2 text-3xl font-bold tracking-tight text-ink dark:text-[#e0e0f0]">
+          <h1 className="mb-2 text-3xl font-bold tracking-tight text-ink dark:text-[#e8e8f8]">
             👗 Mashiro 的更衣室
           </h1>
-          <p className="text-muted dark:text-[#9090a8]">
+          <p className="text-muted dark:text-[#a0a0c0]">
             帮她挑选一套喜欢的衣服吧～右下角的 Mashiro 会立刻换上新造型哦
           </p>
         </div>
@@ -120,19 +120,19 @@ export default function DressingRoomPage() {
                 className={`relative flex flex-col items-center rounded-2xl border-2 p-6 transition-all duration-300 ${
                   isActive
                     ? "border-primary-500 bg-primary-50 shadow-glow dark:border-primary-400 dark:bg-primary-500/10"
-                    : "border-border bg-surface shadow-card hover:border-primary-300 hover:shadow-card-hover dark:border-[#2a2a45] dark:bg-[#1a1a30] dark:hover:border-primary-500"
+                    : "border-border bg-surface shadow-card hover:border-primary-300 hover:shadow-card-hover dark:border-[#3a3a58] dark:bg-[#222240] dark:hover:border-primary-500"
                 } ${switching ? "pointer-events-none opacity-70" : ""}`}
               >
                 {/* 图标 */}
                 <span className="mb-3 text-5xl">{outfit.icon}</span>
 
                 {/* 名称 */}
-                <h3 className="mb-1 text-base font-semibold text-ink dark:text-[#e0e0f0]">
+                <h3 className="mb-1 text-base font-semibold text-ink dark:text-[#e8e8f8]">
                   {outfit.name}
                 </h3>
 
                 {/* 描述 */}
-                <p className="mb-4 text-center text-sm leading-relaxed text-muted dark:text-[#9090a8]">
+                <p className="mb-4 text-center text-sm leading-relaxed text-muted dark:text-[#a0a0c0]">
                   {outfit.desc}
                 </p>
 
@@ -144,7 +144,7 @@ export default function DressingRoomPage() {
                 ) : (
                   <button
                     onClick={() => handleSelect(outfit.id)}
-                    className="inline-block cursor-pointer rounded-full border border-border px-5 py-1.5 text-sm font-medium text-muted transition hover:border-primary-400 hover:bg-primary-50 hover:text-primary-600 active:scale-95 dark:border-[#2a2a45] dark:text-[#9090a8] dark:hover:border-primary-400 dark:hover:bg-primary-500/10 dark:hover:text-primary-300"
+                    className="inline-block cursor-pointer rounded-full border border-border px-5 py-1.5 text-sm font-medium text-muted transition hover:border-primary-400 hover:bg-primary-50 hover:text-primary-600 active:scale-95 dark:border-[#3a3a58] dark:text-[#a0a0c0] dark:hover:border-primary-400 dark:hover:bg-primary-500/10 dark:hover:text-primary-300"
                     disabled={switching}
                   >
                     选择
@@ -156,16 +156,16 @@ export default function DressingRoomPage() {
         </div>
 
         {/* 提示 */}
-        <p className="mt-6 text-center text-sm text-muted/80 dark:text-[#9090a8]/80">
+        <p className="mt-6 text-center text-sm text-muted/80 dark:text-[#a0a0c0]/80">
           💡 切换服装后，右下角的 Mashiro 会立即穿上新衣服哦～
         </p>
-        <p className="mt-1 text-center text-xs text-muted/50 dark:text-[#9090a8]/50 md:hidden">
+        <p className="mt-1 text-center text-xs text-muted/50 dark:text-[#a0a0c0]/50 md:hidden">
           请在电脑端查看 Mashiro 模型效果
         </p>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border py-6 text-center text-sm text-muted/70 dark:border-[#2a2a45] dark:text-[#9090a8]/70 bg-primary-50 dark:bg-[#0f0f1e]">
+      <footer className="border-t border-border py-6 text-center text-sm text-muted/70 dark:border-[#3a3a58] dark:text-[#a0a0c0]/70 bg-primary-50 dark:bg-[#16162a]">
         Built with Next.js + Prisma + SQLite
       </footer>
 

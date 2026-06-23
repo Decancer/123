@@ -21,7 +21,7 @@ export function NavHomeLink() {
     <>
       {loading &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#0f0f1e]/80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm dark:bg-[#16162a]/80">
             <img
               src="/mashiro.svg"
               alt="加载中"
@@ -33,7 +33,7 @@ export function NavHomeLink() {
       <Link
         href="/"
         onClick={handleClick}
-        className="text-muted hover:text-ink dark:text-[#9090a8] dark:hover:text-[#e0e0f0]"
+        className="text-muted hover:text-ink dark:text-[#a0a0c0] dark:hover:text-[#e8e8f8]"
       >
         首页
       </Link>

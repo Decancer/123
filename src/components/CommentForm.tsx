@@ -65,7 +65,7 @@ export function CommentForm({ slug, userName }: CommentFormProps) {
 
   return (
     <div className="mb-8">
-      <p className="mb-2 text-sm font-medium text-ink/80 dark:text-[#e0e0f0]/80">
+      <p className="mb-2 text-sm font-medium text-ink/80 dark:text-[#e8e8f8]/80">
         发表评论（{userName}）
       </p>
 
@@ -86,14 +86,14 @@ export function CommentForm({ slug, userName }: CommentFormProps) {
             onChange={(e) => setContent(e.target.value)}
             placeholder="写下你的想法..."
             rows={3}
-            className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm leading-relaxed text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#2a2a45] dark:bg-[#1a1a30] dark:text-[#e0e0f0] dark:placeholder:text-[#9090a8]/50 dark:focus:border-primary-400"
+            className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm leading-relaxed text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#222240] dark:text-[#e8e8f8] dark:placeholder:text-[#a0a0c0]/50 dark:focus:border-primary-400"
           />
 
           <div className="mt-2 flex items-center gap-2">
             <button
               type="submit"
               disabled={loading}
-              className="rounded-xl bg-primary-500 px-4 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 active:scale-95 disabled:opacity-50 dark:bg-primary-400 dark:text-[#0f0f1e] dark:hover:bg-primary-300"
+              className="rounded-xl bg-primary-500 px-4 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 active:scale-95 disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
             >
               {loading ? "提交中..." : "发表评论"}
             </button>

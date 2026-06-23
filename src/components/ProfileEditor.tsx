@@ -53,7 +53,7 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
       {/* 背景区 — 整块区域可点击换背景 */}
       <div
         onClick={() => bgInputRef.current?.click()}
-        className="group relative mb-6 h-40 w-full cursor-pointer overflow-hidden rounded-2xl border border-border dark:border-[#2a2a45]"
+        className="group relative mb-6 h-40 w-full cursor-pointer overflow-hidden rounded-2xl border border-border dark:border-[#3a3a58]"
         style={
           user.background
             ? {
@@ -92,7 +92,7 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
           <img
             src={avatarUrl}
             alt="头像"
-            className="h-20 w-20 rounded-full border-4 border-surface bg-surface object-cover shadow-md dark:border-[#1a1a30]"
+            className="h-20 w-20 rounded-full border-4 border-surface bg-surface object-cover shadow-md dark:border-[#222240]"
           />
           <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/30 text-xs text-white opacity-0 transition group-hover:opacity-100">
             {uploading === "avatar" ? "..." : "更换"}
@@ -111,10 +111,10 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
         </div>
 
         <div className="pb-1">
-          <h1 className="text-xl font-bold text-ink dark:text-[#e0e0f0]">
+          <h1 className="text-xl font-bold text-ink dark:text-[#e8e8f8]">
             {user.name || "用户"}
           </h1>
-          <p className="text-sm text-muted dark:text-[#9090a8]">
+          <p className="text-sm text-muted dark:text-[#a0a0c0]">
             {user.email}
           </p>
         </div>
@@ -129,8 +129,8 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
 
       {/* Bio */}
       {user.bio && (
-        <div className="mt-4 rounded-2xl border border-border bg-surface p-4 shadow-card dark:border-[#2a2a45] dark:bg-[#1a1a30]">
-          <p className="text-sm text-muted dark:text-[#9090a8]">{user.bio}</p>
+        <div className="mt-4 rounded-2xl border border-border bg-surface p-4 shadow-card dark:border-[#3a3a58] dark:bg-[#222240]">
+          <p className="text-sm text-muted dark:text-[#a0a0c0]">{user.bio}</p>
         </div>
       )}
     </div>

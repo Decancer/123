@@ -2,33 +2,33 @@
 
 /* ================================================================
    Mashiro Morning · 真白之晨
-   白 + Periwinkle Blue (#6677cc) 主题
+   白 + Periwinkle Blue (#6677cc) 主题 — 轻盈亮调
    ================================================================ */
 
 :root {
-  --background: #f3f4ff;
-  --foreground: #1a1a2e;
+  --background: #f8f9ff;
+  --foreground: #33334d;
 }
 
 @theme inline {
-  /* ── 品牌色阶：Periwinkle ── */
-  --color-primary-50: #f3f4ff;
-  --color-primary-100: #e6e8ff;
-  --color-primary-200: #cdd0f8;
-  --color-primary-300: #aeb3ee;
-  --color-primary-400: #8a90e0;
+  /* ── 品牌色阶：Periwinkle（提亮版） ── */
+  --color-primary-50: #f5f7ff;
+  --color-primary-100: #eceeff;
+  --color-primary-200: #dde0fa;
+  --color-primary-300: #c4c8f4;
+  --color-primary-400: #a3a8ea;
   --color-primary-500: #6677cc;
-  --color-primary-600: #545ea8;
-  --color-primary-700: #434985;
-  --color-primary-800: #323562;
-  --color-primary-900: #212340;
+  --color-primary-600: #5c6db8;
+  --color-primary-700: #4d5c9e;
+  --color-primary-800: #3d4a80;
+  --color-primary-900: #2d375e;
 
   /* ── 语义色（表面/文字/边框） ── */
   --color-surface: #ffffff;
   --color-surface-alt: #fafbff;
-  --color-ink: #1a1a2e;
-  --color-muted: #6b6b80;
-  --color-border: #e2e4f0;
+  --color-ink: #3b3b55;
+  --color-muted: #9393ad;
+  --color-border: #e8eaf6;
   --color-border-hover: #6677cc;
 
   /* ── 字体 ── */
@@ -36,26 +36,26 @@
   --font-mono: var(--font-geist-mono);
 
   /* ── 阴影（带 periwinkle 色调） ── */
-  --shadow-glow: 0 0 20px rgba(102, 119, 204, 0.15);
-  --shadow-card: 0 1px 3px rgba(102, 119, 204, 0.06), 0 1px 2px rgba(102, 119, 204, 0.04);
+  --shadow-glow: 0 0 24px rgba(102, 119, 204, 0.18);
+  --shadow-card: 0 1px 3px rgba(102, 119, 204, 0.05), 0 1px 2px rgba(102, 119, 204, 0.04);
   --shadow-card-hover: 0 4px 20px rgba(102, 119, 204, 0.12), 0 0 0 1px rgba(102, 119, 204, 0.15);
 }
 
 /* ================================================================
-   暗色模式
+   暗色模式（提亮版）
    ================================================================ */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f0f1e;
-    --foreground: #e0e0f0;
+    --background: #16162a;
+    --foreground: #e8e8f8;
   }
 
   @theme inline {
-    --color-surface: #1a1a30;
-    --color-surface-alt: #141428;
-    --color-ink: #e0e0f0;
-    --color-muted: #9090a8;
-    --color-border: #2a2a45;
+    --color-surface: #222240;
+    --color-surface-alt: #1c1c36;
+    --color-ink: #e8e8f8;
+    --color-muted: #a0a0c0;
+    --color-border: #3a3a58;
     --color-border-hover: #6677cc;
   }
 }
@@ -79,17 +79,17 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cdd0f8;
+  background: #dde0fa;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #aeb3ee;
+  background: #c4c8f4;
 }
 
 /* ── 选中文字色 ── */
 ::selection {
   background: rgba(102, 119, 204, 0.2);
-  color: #1a1a2e;
+  color: #3b3b55;
 }
 
 /* ── 全局过渡 ── */

@@ -91,7 +91,7 @@ export default function LoginPage() {
   }, [unverifiedEmail]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4 dark:bg-[#0f0f1e]">
+    <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4 dark:bg-[#16162a]">
       <div className="w-full max-w-sm">
         <div className="mb-10 text-center">
           <img
@@ -99,15 +99,15 @@ export default function LoginPage() {
             alt="Mashiro"
             className="mx-auto mb-4 h-16 w-16 rounded-full shadow-glow"
           />
-          <h1 className="text-2xl font-bold tracking-tight text-ink dark:text-[#e0e0f0]">欢迎回来</h1>
-          <p className="mt-2 text-sm text-muted dark:text-[#9090a8]">
+          <h1 className="text-2xl font-bold tracking-tight text-ink dark:text-[#e8e8f8]">欢迎回来</h1>
+          <p className="mt-2 text-sm text-muted dark:text-[#a0a0c0]">
             登录以继续访问 Mashiro Chat
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-border bg-surface p-6 shadow-card dark:border-[#2a2a45] dark:bg-[#1a1a30]"
+          className="rounded-2xl border border-border bg-surface p-6 shadow-card dark:border-[#3a3a58] dark:bg-[#222240]"
         >
           {/* 错误提示 */}
           {error && (
@@ -138,7 +138,7 @@ export default function LoginPage() {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="mb-1.5 block text-sm font-medium text-ink/80 dark:text-[#e0e0f0]/80"
+              className="mb-1.5 block text-sm font-medium text-ink/80 dark:text-[#e8e8f8]/80"
             >
               邮箱
             </label>
@@ -150,7 +150,7 @@ export default function LoginPage() {
               placeholder="you@example.com"
               required
               autoComplete="email"
-              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#2a2a45] dark:bg-[#0f0f1e] dark:text-[#e0e0f0] dark:focus:border-primary-400"
+              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:focus:border-primary-400"
             />
           </div>
 
@@ -158,7 +158,7 @@ export default function LoginPage() {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="mb-1.5 block text-sm font-medium text-ink/80 dark:text-[#e0e0f0]/80"
+              className="mb-1.5 block text-sm font-medium text-ink/80 dark:text-[#e8e8f8]/80"
             >
               密码
             </label>
@@ -171,7 +171,7 @@ export default function LoginPage() {
               placeholder="输入密码"
               required
               autoComplete="current-password"
-              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#2a2a45] dark:bg-[#0f0f1e] dark:text-[#e0e0f0] dark:focus:border-primary-400"
+              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:focus:border-primary-400"
             />
           </div>
 
@@ -179,14 +179,14 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-400 dark:text-[#0f0f1e] dark:hover:bg-primary-300"
+            className="w-full rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
           >
             {loading ? "登录中..." : "登 录"}
           </button>
         </form>
 
         {/* 去注册 */}
-        <p className="mt-6 text-center text-sm text-muted dark:text-[#9090a8]">
+        <p className="mt-6 text-center text-sm text-muted dark:text-[#a0a0c0]">
           还没有账号？{" "}
           <Link
             href="/register"
@@ -197,14 +197,14 @@ export default function LoginPage() {
         </p>
 
         {/* 提示 */}
-        <p className="mt-4 text-center text-xs text-muted/60 dark:text-[#9090a8]/60">
+        <p className="mt-4 text-center text-xs text-muted/60 dark:text-[#a0a0c0]/60">
           演示账号：alice@example.com / password123
         </p>
 
         <div className="mt-6 text-center">
           <Link
             href="/"
-            className="text-sm text-muted transition hover:text-ink dark:text-[#9090a8] dark:hover:text-[#e0e0f0]"
+            className="text-sm text-muted transition hover:text-ink dark:text-[#a0a0c0] dark:hover:text-[#e8e8f8]"
           >
             ← 返回首页
           </Link>
