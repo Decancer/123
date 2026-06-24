@@ -40,6 +40,8 @@ interface SlenderMonsterProps {
   showFeet?: boolean;
   /** 是否显示黑色横条嘴 */
   showMouth?: boolean;
+  /** 嘴的形状："line" 横条 | "cat" 猫猫嘴（∧） */
+  mouthType?: "line" | "cat";
   /** 嘴的宽度 */
   mouthWidth?: number;
   /** 嘴的移动幅度倍率（默认 1） */
@@ -66,6 +68,7 @@ export function SlenderMonster({
   accentColor,
   showFeet = true,
   showMouth = false,
+  mouthType = "line",
   mouthWidth = 28,
   mouthSensitivity = 1,
   className,
@@ -222,8 +225,8 @@ export function SlenderMonster({
         />
       </div>
 
-      {/* 黑色横条嘴 */}
-      {showMouth && (
+      {/* 嘴 */}
+      {showMouth && mouthType === "line" && (
         <div
           style={{
             width: mouthWidth,
@@ -231,6 +234,20 @@ export function SlenderMonster({
             backgroundColor: "#1a1a1a",
             borderRadius: 3,
             marginTop: 10,
+            transform: `translate(${mouthX}px, ${mouthY}px)`,
+            transition: "transform 0.15s ease-out",
+          }}
+        />
+      )}
+      {showMouth && mouthType === "cat" && (
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: `${Math.round(mouthWidth / 2)}px solid transparent`,
+            borderRight: `${Math.round(mouthWidth / 2)}px solid transparent`,
+            borderBottom: `${Math.round(mouthWidth * 0.55)}px solid #1a1a1a`,
+            marginTop: 8,
             transform: `translate(${mouthX}px, ${mouthY}px)`,
             transition: "transform 0.15s ease-out",
           }}
