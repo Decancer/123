@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 
 const MESSAGE_LIMIT = 100;
 const LONG_POLL_TIMEOUT = 8000;
-const DB_POLL_INTERVAL = 500;
+const DB_POLL_INTERVAL = 200; // 每 200ms 查一次 DB，保证消息及时送达
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
