@@ -26,7 +26,7 @@ function appendMessages(prev: ChatMessage[], incoming: ChatMessage[]): ChatMessa
 }
 
 interface ChatRoomClientProps {
-  currentUser: { id: number; name: string; avatar: string | null } | null;
+  currentUser: { id: number; name: string; avatar: string | null; isAdmin: boolean } | null;
 }
 
 const HB_INTERVAL = 10_000; // 10s 心跳 + 在线人数
@@ -262,6 +262,27 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
   }
 
   // ---------------------------------------------------------------
+  // 管理员清空聊天室
+  // ---------------------------------------------------------------
+  const [clearLoading, setClearLoading] = useState(false);
+
+  async function clearAll() {
+    if (!confirm("确定要清空聊天室所有消息吗？此操作不可撤销。")) return;
+    setClearLoading(true);
+    try {
+      const res = await fetch("/api/chat-room/messages", { method: "DELETE" });
+      if (res.ok) {
+        setMessages([]);
+        latestIdRef.current = null;
+      }
+    } catch {
+      // 静默忽略
+    } finally {
+      setClearLoading(false);
+    }
+  }
+
+  // ---------------------------------------------------------------
   // 渲染
   // ---------------------------------------------------------------
   return (
@@ -300,6 +321,17 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
               className={`h-5 w-5 rounded-full ${aiLoading ? "animate-spin" : ""}`}
             />
             召唤AI
+          </button>
+          )}
+          {/* 清空按钮 — 仅管理员可见 */}
+          {currentUser?.isAdmin && (
+          <button
+            onClick={clearAll}
+            disabled={clearLoading}
+            title="清空聊天室"
+            className="inline-flex items-center gap-1 rounded-xl border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-500 transition hover:bg-red-100 hover:border-red-300 active:scale-95 disabled:opacity-50"
+          >
+            {clearLoading ? "..." : "🗑"}
           </button>
           )}
         </div>

@@ -54,7 +54,7 @@ export default async function ChatRoomPage() {
         <ChatRoomClient
           currentUser={
             user
-              ? { id: user.id, name: user.name || "User", avatar: user.avatar }
+              ? { id: user.id, name: user.name || "User", avatar: user.avatar, isAdmin: user.role === "admin" }
               : null
           }
         />

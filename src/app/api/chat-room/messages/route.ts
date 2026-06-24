@@ -145,3 +145,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "发送消息失败" }, { status: 500 });
   }
 }
+
+/** DELETE /api/chat-room/messages — 清空聊天室（仅管理员） */
+export async function DELETE(_request: NextRequest) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: "请先登录" }, { status: 401 });
+    }
+    if (user.role !== "admin") {
+      return NextResponse.json({ error: "仅管理员可执行此操作" }, { status: 403 });
+    }
+
+    await prisma.chatRoomMessage.deleteMany();
+
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("清空聊天室失败:", error);
+    return NextResponse.json({ error: "清空失败" }, { status: 500 });
+  }
+}
