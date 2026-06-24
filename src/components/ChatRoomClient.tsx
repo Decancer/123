@@ -284,49 +284,70 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
         )}
 
         <div className="space-y-3">
-          {messages.map((msg) => (
-            <div key={msg.id} className="flex gap-3">
-              <div className="flex-shrink-0">
-                <a
-                  href={`/users/${msg.userId}`}
-                  onClick={(e) => { e.preventDefault(); setNavigateTo(`/users/${msg.userId}`); }}
-                  className="block cursor-pointer transition hover:opacity-80"
-                >
-                  {msg.userAvatar ? (
-                    <img
-                      src={msg.userAvatar}
-                      alt={msg.userName}
-                      className="h-8 w-8 rounded-full object-cover ring-2 ring-primary-100"
-                    />
-                  ) : (
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-500 text-xs font-semibold text-white">
-                      {msg.userName.charAt(0)}
-                    </span>
-                  )}
-                </a>
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-baseline gap-2">
+          {messages.map((msg) => {
+            const isMe = currentUser && msg.userId === currentUser.id;
+            return (
+            <div key={msg.id} className={`flex gap-3 ${isMe ? "flex-row-reverse" : ""}`}>
+              {!isMe && (
+                <div className="flex-shrink-0">
                   <a
                     href={`/users/${msg.userId}`}
                     onClick={(e) => { e.preventDefault(); setNavigateTo(`/users/${msg.userId}`); }}
-                    className="cursor-pointer text-sm font-medium text-ink hover:text-primary-500 hover:underline transition"
+                    className="block cursor-pointer transition hover:opacity-80"
                   >
-                    {msg.userName}
+                    {msg.userAvatar ? (
+                      <img
+                        src={msg.userAvatar}
+                        alt={msg.userName}
+                        className="h-8 w-8 rounded-full object-cover ring-2 ring-primary-100"
+                      />
+                    ) : (
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-500 text-xs font-semibold text-white">
+                        {msg.userName.charAt(0)}
+                      </span>
+                    )}
                   </a>
-                  <time className="text-xs text-muted/70">
-                    {new Date(msg.createdAt).toLocaleTimeString("zh-CN", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </time>
                 </div>
-                <p className="break-words text-sm leading-relaxed text-ink/90">
-                  {msg.content}
-                </p>
+              )}
+              <div className={`min-w-0 ${isMe ? "" : "flex-1"}`}>
+                {!isMe && (
+                  <div className="flex items-baseline gap-2">
+                    <a
+                      href={`/users/${msg.userId}`}
+                      onClick={(e) => { e.preventDefault(); setNavigateTo(`/users/${msg.userId}`); }}
+                      className="cursor-pointer text-sm font-medium text-ink hover:text-primary-500 hover:underline transition"
+                    >
+                      {msg.userName}
+                    </a>
+                    <time className="text-xs text-muted/70">
+                      {new Date(msg.createdAt).toLocaleTimeString("zh-CN", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </time>
+                  </div>
+                )}
+                {isMe ? (
+                  <div className="flex items-end gap-2 justify-end">
+                    <time className="text-xs text-muted/70">
+                      {new Date(msg.createdAt).toLocaleTimeString("zh-CN", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </time>
+                    <p className="break-words text-sm leading-relaxed rounded-2xl rounded-br-md bg-primary-500 text-white px-3.5 py-2 max-w-[75%]">
+                      {msg.content}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="break-words text-sm leading-relaxed text-ink/90">
+                    {msg.content}
+                  </p>
+                )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
         <div ref={messagesEndRef} />
       </div>
