@@ -1,13 +1,24 @@
 "use client";
 
 import { SlenderMonster } from "@/components/SlenderMonster";
-import { useMonsters, type MonsterConfig } from "@/lib/MonsterContext";
+import { useMonsters, getShapeProps, type MonsterShape } from "@/lib/MonsterContext";
 
-function getEyeConfig(m: MonsterConfig) {
-  const ratio = m.width / 60;
-  const base = m.shape === "wide" ? 40 : m.shape === "slender" ? 28 : m.shape === "round" ? 34 : 36;
-  const sz = Math.round(base * ratio);
-  return { eyeSize: sz, pupilSize: Math.round(sz * 0.35) };
+function getEyeConfig(shape: MonsterShape) {
+  switch (shape) {
+    case "slender": return { eyeSize: 28, pupilSize: 10 };
+    case "wide":    return { eyeSize: 40, pupilSize: 14 };
+    case "round":   return { eyeSize: 34, pupilSize: 12 };
+    case "classic": return { eyeSize: 36, pupilSize: 12 };
+  }
+}
+
+function getExtra(shape: MonsterShape) {
+  switch (shape) {
+    case "slender": return { showMouth: false, showFeet: false };
+    case "wide":    return { showMouth: true, mouthWidth: 28, mouthSensitivity: 1.2, showFeet: false };
+    case "round":   return { showMouth: true, mouthWidth: 24, mouthSensitivity: 1, showFeet: true };
+    case "classic": return { showMouth: false, showFeet: true };
+  }
 }
 
 export function BackgroundMonsters() {
@@ -15,14 +26,9 @@ export function BackgroundMonsters() {
 
   if (monsters.length === 0) return null;
 
-  const startLeft = 4;
+  // 从左往右排列，间距约 46-50px
+  const startLeft = 4; // %
   const gapPx = 50;
-
-  function borderRadius(m: MonsterConfig): string {
-    if (m.headShape === "square") return "0 0 0 0";
-    const r = Math.round(m.width * 0.35);
-    return `${r}px ${r}px 0 0`;
-  }
 
   return (
     <div
@@ -31,9 +37,10 @@ export function BackgroundMonsters() {
       style={{ zIndex: 0 }}
     >
       {monsters.map((m, i) => {
-        const eye = getEyeConfig(m);
+        const shape = getShapeProps(m.shape);
+        const eye = getEyeConfig(m.shape);
+        const extra = getExtra(m.shape);
         const left = i === 0 ? `${startLeft}%` : `calc(${startLeft}% + ${i * gapPx}px)`;
-        const isWide = m.width >= 80;
 
         return (
           <SlenderMonster
@@ -41,20 +48,15 @@ export function BackgroundMonsters() {
             color={m.color}
             name={`怪兽 ${i + 1}`}
             left={left}
-            bottom={isWide ? "5%" : "3%"}
-            width={m.width}
-            height={m.height}
+            bottom={m.shape === "wide" ? "5%" : "3%"}
+            width={shape.width}
+            height={shape.height}
             eyeSize={eye.eyeSize}
             pupilSize={eye.pupilSize}
-            eyeType={m.eyeType}
-            mouthType={m.mouthType}
-            mouthWidth={isWide ? 28 : 22}
-            mouthSensitivity={isWide ? 1.2 : 1}
             zIndex={1}
-            maxSkew={isWide ? 3 : 5}
-            borderRadius={borderRadius(m)}
-            showFeet={m.width >= 60}
-            showMouth={m.mouthType !== "none"}
+            maxSkew={m.shape === "wide" ? 3 : 5}
+            borderRadius={shape.borderRadius}
+            {...extra}
           />
         );
       })}
