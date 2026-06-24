@@ -422,23 +422,23 @@ export function MessagesClient({ currentUser }: MessagesClientProps) {
   const isValidTo = toUserId !== null && !isNaN(toUserId);
 
   const [navigateTo, setNavigateTo] = useState<string | null>(null);
-  const navigateToRef = useRef<string | null>(null);
   useLoadingReaction(navigateTo !== null);
 
   // 导航 effect
   useEffect(() => {
     if (navigateTo) {
-      navigateToRef.current = navigateTo;
       router.push(navigateTo);
     }
   }, [navigateTo, router]);
 
-  // 导航完成后清除
+  // URL 到达目标后清除加载遮罩（同页面软导航不会卸载组件，必须手动清）
   useEffect(() => {
-    if (!navigateTo && navigateToRef.current) {
-      navigateToRef.current = null;
+    if (!navigateTo) return;
+    const currentPath = toUserId ? `/messages?to=${toUserId}` : "/messages";
+    if (navigateTo === currentPath) {
+      setNavigateTo(null);
     }
-  }, [navigateTo]);
+  }, [navigateTo, toUserId]);
 
   function handleSelectConversation(partnerId: number) {
     setNavigateTo(`/messages?to=${partnerId}`);
