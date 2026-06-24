@@ -292,13 +292,14 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
             onClick={summonAI}
             disabled={aiLoading}
             title="召唤 Mashiro"
-            className="inline-flex items-center transition active:scale-90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-primary-100 border border-primary-200 px-3 py-1.5 text-xs font-medium text-primary-600 transition hover:bg-primary-200 hover:shadow-glow active:scale-95 disabled:opacity-50"
           >
             <img
               src="/mashiro.svg"
               alt="召唤 Mashiro"
-              className={`h-7 w-7 rounded-full shadow-sm ring-2 ring-primary-200 hover:ring-primary-400 hover:shadow-glow transition ${aiLoading ? "animate-spin" : ""}`}
+              className={`h-5 w-5 rounded-full ${aiLoading ? "animate-spin" : ""}`}
             />
+            召唤AI
           </button>
           )}
         </div>
@@ -376,7 +377,7 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
                         minute: "2-digit",
                       })}
                     </time>
-                    <p className="break-words text-sm leading-relaxed rounded-2xl rounded-br-md bg-primary-500 text-white px-3.5 py-2 max-w-[75%]">
+                    <p className="break-words text-sm leading-relaxed rounded-2xl rounded-br-md bg-primary-300 text-white px-3.5 py-2 max-w-[75%]">
                       {msg.content}
                     </p>
                   </div>
