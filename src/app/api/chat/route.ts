@@ -11,12 +11,13 @@ const deepseek = createOpenAI({
 
 const searchPosts = tool({
   description:
-    "搜索 Mashiro Chat 博客中的文章。按关键词匹配标题和内容。用户问「有哪些XXX文章」「网站里有没有XXX」时调用。",
+    "搜索 Mashiro Chat 博客中的文章。按关键词匹配标题和内容，可按作者名和分类筛选。用户问「有哪些XXX文章」「XXX写了什么」「搜XXX的文章」时调用。",
   inputSchema: z.object({
     keyword: z.string().describe("搜索关键词"),
     category: z.enum(["tech", "life"]).optional().describe("按分类筛选：tech 技术 / life 生活"),
+    authorName: z.string().optional().describe("按作者名筛选，匹配用户昵称"),
   }),
-  execute: async ({ keyword, category }) => {
+  execute: async ({ keyword, category, authorName }) => {
     const posts = await prisma.post.findMany({
       where: {
         published: true,
@@ -25,6 +26,7 @@ const searchPosts = tool({
           { content: { contains: keyword } },
         ],
         ...(category ? { category } : {}),
+        ...(authorName ? { author: { name: { contains: authorName } } } : {}),
       },
       select: {
         title: true,
