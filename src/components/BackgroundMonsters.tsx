@@ -37,7 +37,7 @@ export function BackgroundMonsters() {
         pupilSize={14}
         eyeColor="transparent"
         zIndex={1}
-        maxSkew={3}
+        maxSkew={6}
         borderRadius="80px 80px 0 0"
         showFeet={false}
         showMouth
@@ -52,10 +52,11 @@ export function BackgroundMonsters() {
         left="calc(4% + 136px)"
         bottom="5%"
         width={90}
-        height={160}
+        height={200}
         eyeSize={40}
         pupilSize={14}
         eyeColor="transparent"
+        eyeMaxDistance={16}
         zIndex={1}
         maxSkew={3}
         borderRadius="80px 80px 0 0"

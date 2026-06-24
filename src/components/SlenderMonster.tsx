@@ -30,6 +30,8 @@ interface SlenderMonsterProps {
   pupilSize?: number;
   /** CSS transform origin */
   transformOrigin?: string;
+  /** 眼睛运动最大距离（默认 8） */
+  eyeMaxDistance?: number;
   /** 最大偏斜角度 */
   maxSkew?: number;
   /** 圆角大小 */
@@ -64,6 +66,7 @@ export function SlenderMonster({
   pupilSize = 12,
   transformOrigin = "bottom center",
   maxSkew = 5,
+  eyeMaxDistance = 8,
   borderRadius = "12px 12px 0 0",
   accentColor,
   showFeet = true,
@@ -212,14 +215,14 @@ export function SlenderMonster({
         <EyeBall
           size={eyeSize}
           pupilSize={pupilSize}
-          maxDistance={8}
+          maxDistance={eyeMaxDistance}
           eyeColor={eyeColor}
           isBlinking={blinking}
         />
         <EyeBall
           size={eyeSize}
           pupilSize={pupilSize}
-          maxDistance={8}
+          maxDistance={eyeMaxDistance}
           eyeColor={eyeColor}
           isBlinking={blinking}
         />
