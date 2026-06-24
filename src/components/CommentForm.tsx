@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
 
 interface CommentFormProps {
   slug: string;
@@ -9,7 +8,6 @@ interface CommentFormProps {
 }
 
 export function CommentForm({ slug, userName }: CommentFormProps) {
-  const router = useRouter();
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,10 +37,14 @@ export function CommentForm({ slug, userName }: CommentFormProps) {
         return;
       }
 
-      // 成功 — 显示提示，通知 Live2D，刷新数据
+      const data = await res.json();
+
+      // 成功 — 通知 CommentSection 立即追加新评论
       setContent("");
-      setLoading(false);
       setSuccess(true);
+      window.dispatchEvent(
+        new CustomEvent("comment:posted", { detail: data })
+      );
       window.dispatchEvent(
         new CustomEvent("mashiro:reaction", {
           detail: {
@@ -52,10 +54,7 @@ export function CommentForm({ slug, userName }: CommentFormProps) {
           },
         })
       );
-      setTimeout(() => {
-        setSuccess(false);
-        router.refresh();
-      }, 1200);
+      setTimeout(() => setSuccess(false), 1200);
     } catch {
       setError("网络错误，请重试");
     } finally {

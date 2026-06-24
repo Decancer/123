@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CommentItem } from "@/components/CommentItem";
 
 interface Comment {
@@ -30,6 +30,21 @@ export function CommentSection({
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [loading, setLoading] = useState(false);
+
+  // 监听新评论事件，立即追加到列表
+  useEffect(() => {
+    function handleNewComment(e: CustomEvent) {
+      const comment = e.detail as Comment;
+      if (!comment || !comment.id) return;
+      setComments((prev) => {
+        // 去重
+        if (prev.some((c) => c.id === comment.id)) return prev;
+        return [...prev, comment];
+      });
+    }
+    window.addEventListener("comment:posted", handleNewComment as EventListener);
+    return () => window.removeEventListener("comment:posted", handleNewComment as EventListener);
+  }, []);
 
   async function loadMore() {
     setLoading(true);
