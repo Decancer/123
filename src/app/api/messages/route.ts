@@ -73,7 +73,11 @@ export async function GET(request: NextRequest) {
       const oldest = messages.length > 0 ? messages[0].id : null;
       const latest = messages.length > 0 ? messages[messages.length - 1].id : null;
 
-      return NextResponse.json({ messages, cursor: oldest, latest, hasMore: messages.length === MESSAGE_LIMIT });
+      return NextResponse.json({ messages, cursor: oldest, latest, hasMore: messages.length === MESSAGE_LIMIT }, {
+        headers: {
+          "Cache-Control": "private, s-maxage=5, stale-while-revalidate=30",
+        },
+      });
     }
 
     // 增量模式

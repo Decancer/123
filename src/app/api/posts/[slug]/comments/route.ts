@@ -42,7 +42,11 @@ export async function GET(
     const hasMore = comments.length > take;
     if (hasMore) comments.pop();
 
-    return NextResponse.json({ comments, hasMore });
+    return NextResponse.json({ comments, hasMore }, {
+      headers: {
+        "Cache-Control": "public, s-maxage=30, stale-while-revalidate=300",
+      },
+    });
   } catch (error) {
     console.error("获取评论失败:", error);
     return NextResponse.json({ error: "获取评论失败" }, { status: 500 });

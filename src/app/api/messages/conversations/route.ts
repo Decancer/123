@@ -64,7 +64,11 @@ export async function GET() {
       (a, b) => b.lastMessage.id - a.lastMessage.id
     );
 
-    return NextResponse.json({ conversations });
+    return NextResponse.json({ conversations }, {
+      headers: {
+        "Cache-Control": "private, s-maxage=10, stale-while-revalidate=30",
+      },
+    });
   } catch (error) {
     console.error("获取私信会话列表失败:", error);
     return NextResponse.json({ error: "获取会话列表失败" }, { status: 500 });

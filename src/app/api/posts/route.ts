@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       prisma.post.findMany({
         where,
         select: {
-          id: true, title: true, slug: true, content: true, excerpt: true,
+          id: true, title: true, slug: true, excerpt: true,
           category: true, viewCount: true, createdAt: true,
           author: { select: { id: true, name: true, avatar: true } },
           tags: { include: { tag: true } },
@@ -43,13 +43,21 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
-    return NextResponse.json({
-      posts,
-      total,
-      page,
-      pageSize,
-      totalPages: Math.ceil(total / pageSize),
-    });
+    return NextResponse.json(
+      {
+        posts,
+        total,
+        page,
+        pageSize,
+        totalPages: Math.ceil(total / pageSize),
+      },
+      {
+        headers: {
+          // Edge 缓存 60s，过期后 stale 再验 300s，减少源站调用
+          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+        },
+      }
+    );
   } catch (error) {
     console.error("获取文章失败:", error);
     return NextResponse.json({ error: "获取文章失败" }, { status: 500 });
@@ -123,7 +131,7 @@ export async function POST(request: NextRequest) {
       },
       select: {
         id: true, title: true, slug: true, content: true, excerpt: true,
-        images: true, category: true, viewCount: true, createdAt: true,
+        category: true, viewCount: true, createdAt: true,
         author: { select: { id: true, name: true, avatar: true } },
         tags: { include: { tag: true } },
         _count: { select: { comments: true } },

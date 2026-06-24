@@ -20,7 +20,11 @@ export async function GET() {
       }),
     ]);
 
-    return NextResponse.json({ count, users });
+    return NextResponse.json({ count, users }, {
+      headers: {
+        "Cache-Control": "public, s-maxage=3, stale-while-revalidate=10",
+      },
+    });
   } catch (error) {
     console.error("获取在线人数失败:", error);
     return NextResponse.json({ error: "获取在线人数失败" }, { status: 500 });

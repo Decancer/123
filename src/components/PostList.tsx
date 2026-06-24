@@ -24,7 +24,6 @@ interface Post {
   title: string;
   slug: string;
   excerpt: string | null;
-  content: string;
   category: string;
   viewCount: number;
   createdAt: Date | string;

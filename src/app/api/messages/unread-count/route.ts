@@ -17,7 +17,11 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json({ count });
+    return NextResponse.json({ count }, {
+      headers: {
+        "Cache-Control": "private, s-maxage=5, stale-while-revalidate=15",
+      },
+    });
   } catch (error) {
     console.error("获取未读私信数失败:", error);
     return NextResponse.json({ count: 0, error: "获取失败" }, { status: 500 });

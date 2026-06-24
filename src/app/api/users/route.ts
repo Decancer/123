@@ -11,7 +11,11 @@ export async function GET() {
         createdAt: true, updatedAt: true,
       },
     });
-    return NextResponse.json(users);
+    return NextResponse.json(users, {
+      headers: {
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+      },
+    });
   } catch (error) {
     console.error("获取用户失败:", error);
     return NextResponse.json({ error: "获取用户失败" }, { status: 500 });
