@@ -35,6 +35,7 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
   const [onlineCount, setOnlineCount] = useState(0);
   const [error, setError] = useState("");
   const [initialLoaded, setInitialLoaded] = useState(false);
@@ -236,6 +237,31 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
   }
 
   // ---------------------------------------------------------------
+  // 召唤 AI 助手
+  // ---------------------------------------------------------------
+  async function summonAI() {
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/chat-room/ai-reply", { method: "POST" });
+      if (res.ok) {
+        // 立即增量拉取，不等长轮询周期
+        const fres = await fetch(
+          `/api/chat-room/messages?since=${latestIdRef.current ?? 0}`
+        );
+        const data = await fres.json();
+        if (data.messages?.length > 0) {
+          setMessages((prev) => appendMessages(prev, data.messages));
+          latestIdRef.current = data.latest;
+        }
+      }
+    } catch {
+      // 静默忽略
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
+  // ---------------------------------------------------------------
   // 渲染
   // ---------------------------------------------------------------
   return (
@@ -257,9 +283,24 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
         <h1 className="text-xl font-bold text-ink">
           💬 聊天室
         </h1>
-        <div className="flex items-center gap-2 text-sm text-muted">
+        <div className="flex items-center gap-3 text-sm text-muted">
           <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.5)]" />
           {onlineCount} 人在线
+          {/* 召唤 AI 按钮 — 仅登录用户可见 */}
+          {currentUser && (
+          <button
+            onClick={summonAI}
+            disabled={aiLoading}
+            title="召唤 Mashiro"
+            className="inline-flex items-center transition active:scale-90 disabled:opacity-50"
+          >
+            <img
+              src="/mashiro.svg"
+              alt="召唤 Mashiro"
+              className={`h-7 w-7 rounded-full shadow-sm ring-2 ring-primary-200 hover:ring-primary-400 hover:shadow-glow transition ${aiLoading ? "animate-spin" : ""}`}
+            />
+          </button>
+          )}
         </div>
       </div>
 
