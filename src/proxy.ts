@@ -73,9 +73,9 @@ export const config = {
   matcher: [
     /*
      * 匹配所有路径，除了：
-     * - 静态资源 (images, fonts, etc.)
+     * - 静态资源 (svg/png/jpg/gif/ico/webp/woff2/ttf/moc/mtn/bundle/asset/json)
      * - Next.js 内部路由
      */
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|ico|webp|woff2?|ttf|eot|moc|mtn|bundle|asset|json)$).*)",
   ],
 };
