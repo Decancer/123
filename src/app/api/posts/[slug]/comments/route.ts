@@ -2,13 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
-// GET /api/posts/[slug]/comments — 获取评论列表（公开）
+// GET /api/posts/[slug]/comments?cursor=<id>&take=20 — 获取评论列表（公开，支持分页）
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const cursorStr = searchParams.get("cursor");
+    const take = Math.min(parseInt(searchParams.get("take") || "20", 10) || 20, 50);
 
     const post = await prisma.post.findUnique({
       where: { slug },
@@ -19,15 +22,27 @@ export async function GET(
       return NextResponse.json({ error: "文章不存在" }, { status: 404 });
     }
 
+    const where: Record<string, unknown> = { postId: post.id };
+    if (cursorStr) {
+      const cursorId = parseInt(cursorStr, 10);
+      if (!isNaN(cursorId)) {
+        where.id = { gt: cursorId };
+      }
+    }
+
     const comments = await prisma.comment.findMany({
-      where: { postId: post.id },
+      where,
       include: {
         author: { select: { id: true, name: true, avatar: true } },
       },
       orderBy: { createdAt: "asc" },
+      take: take + 1, // 多取一条判断 hasMore
     });
 
-    return NextResponse.json(comments);
+    const hasMore = comments.length > take;
+    if (hasMore) comments.pop();
+
+    return NextResponse.json({ comments, hasMore });
   } catch (error) {
     console.error("获取评论失败:", error);
     return NextResponse.json({ error: "获取评论失败" }, { status: 500 });

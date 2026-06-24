@@ -6,7 +6,7 @@ import { UserMenu } from "@/components/UserMenu";
 import { CommentForm } from "@/components/CommentForm";
 import { EmailVerificationBanner } from "@/components/EmailVerificationBanner";
 import { PostActions } from "@/components/PostActions";
-import { CommentItem } from "@/components/CommentItem";
+import { CommentSection } from "@/components/CommentSection";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 import { BackToHomeLink } from "@/components/BackToHomeLink";
 import { AuthorNameLink } from "@/components/AuthorNameLink";
@@ -31,11 +31,13 @@ export default async function PostPage({ params }: PageProps) {
         images: true, category: true, viewCount: true, createdAt: true, updatedAt: true,
         author: { select: { id: true, name: true, avatar: true, bio: true } },
         tags: { include: { tag: true } },
+        _count: { select: { comments: true } },
         comments: {
           include: {
             author: { select: { id: true, name: true, avatar: true } },
           },
           orderBy: { createdAt: "asc" },
+          take: 21, // 多取 1 条判断 hasMore
         },
       },
     });
@@ -56,6 +58,12 @@ export default async function PostPage({ params }: PageProps) {
   if (!post) {
     notFound();
   }
+
+  // 评论分页：首屏取 21 条，若满 21 则有更多
+  const COMMENT_PAGE_SIZE = 20;
+  const hasMoreComments = post.comments.length > COMMENT_PAGE_SIZE;
+  const firstComments = hasMoreComments ? post.comments.slice(0, COMMENT_PAGE_SIZE) : post.comments;
+  const totalComments = post._count.comments;
 
   let images: string[] = [];
   try {
@@ -230,46 +238,28 @@ export default async function PostPage({ params }: PageProps) {
         />
 
         {/* 评论区域 */}
-        <section className="mt-16 border-t border-border pt-10">
-          <h3 className="mb-6 text-lg font-semibold text-ink">
-            评论 ({post.comments.length})
-          </h3>
+        {/* 评论表单（须登录） */}
+        {currentUser ? (
+          <CommentForm slug={slug} userName={currentUser.name || "User"} />
+        ) : (
+          <div className="mb-8 rounded-xl border border-dashed border-primary-200 p-4 text-center">
+            <p className="text-sm text-muted">
+              <Link href="/login" className="font-medium text-primary-500 hover:text-primary-600">
+                登录
+              </Link>
+              {" "}后即可发表评论
+            </p>
+          </div>
+        )}
 
-          {/* 评论表单（须登录） */}
-          {currentUser ? (
-            <CommentForm slug={slug} userName={currentUser.name || "User"} />
-          ) : (
-            <div className="mb-8 rounded-xl border border-dashed border-primary-200 p-4 text-center">
-              <p className="text-sm text-muted">
-                <Link href="/login" className="font-medium text-primary-500 hover:text-primary-600">
-                  登录
-                </Link>
-                {" "}后即可发表评论
-              </p>
-            </div>
-          )}
-
-          {/* 评论列表 */}
-          {post.comments.length === 0 ? (
-            <p className="text-sm text-muted">暂无评论，来发表第一条吧</p>
-          ) : (
-            <div className="space-y-5">
-              {post.comments.map((comment) => (
-                <CommentItem
-                  key={comment.id}
-                  comment={{
-                    id: comment.id,
-                    content: comment.content,
-                    createdAt: comment.createdAt,
-                    author: comment.author,
-                  }}
-                  currentUserId={currentUser?.id}
-                  currentUserRole={currentUser?.role}
-                />
-              ))}
-            </div>
-          )}
-        </section>
+        <CommentSection
+          slug={slug}
+          initialComments={firstComments}
+          initialHasMore={hasMoreComments}
+          totalCount={totalComments}
+          currentUserId={currentUser?.id}
+          currentUserRole={currentUser?.role}
+        />
       </main>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted/70">
