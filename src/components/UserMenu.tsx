@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useLoadingReaction } from "@/lib/useLive2DReaction";
@@ -17,10 +17,21 @@ export function UserMenu({ userId, userName, avatar }: UserMenuProps) {
   const [loading, setLoading] = useState<"logout" | "delete" | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const pathname = usePathname();
   const [navLoading, setNavLoading] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const navigateTargetRef = useRef<string | null>(null);
   useLoadingReaction(navLoading);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // URL 到达目标后清除加载（同页面软导航不会卸载组件）
+  useEffect(() => {
+    if (!navLoading || !navigateTargetRef.current) return;
+    if (pathname === navigateTargetRef.current || pathname === "/") {
+      setNavLoading(false);
+      navigateTargetRef.current = null;
+    }
+  }, [pathname, navLoading]);
 
   // 下拉打开时拉取未读私信数
   useEffect(() => {
@@ -138,7 +149,7 @@ export function UserMenu({ userId, userName, avatar }: UserMenuProps) {
 
           {/* 个人主页 */}
           <button
-            onClick={() => { setNavLoading(true); router.push("/profile"); setOpen(false); }}
+            onClick={() => { navigateTargetRef.current = "/profile"; setNavLoading(true); router.push("/profile"); setOpen(false); }}
             className="flex w-full items-center gap-2 px-4 py-2 text-sm text-muted transition hover:bg-primary-50 hover:text-ink"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +160,7 @@ export function UserMenu({ userId, userName, avatar }: UserMenuProps) {
 
           {/* 私信 */}
           <button
-            onClick={() => { setNavLoading(true); router.push("/messages"); setOpen(false); }}
+            onClick={() => { navigateTargetRef.current = "/messages"; setNavLoading(true); router.push("/messages"); setOpen(false); }}
             className={`flex w-full items-center gap-2 px-4 py-2 text-sm transition hover:bg-primary-50 hover:text-ink ${
               unreadCount > 0 ? "text-primary-500 font-medium" : "text-muted"
             }`}
