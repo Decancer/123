@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
 import { Live2DProvider } from "@/lib/Live2DContext";
-import { MonsterProvider } from "@/lib/MonsterContext";
 import { Live2DMashiroWrapper } from "@/components/Live2DMashiroWrapper";
 import { WidgetArea } from "@/components/WidgetArea";
 
@@ -36,13 +35,11 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Live2DProvider>
-          <MonsterProvider>
-            {children}
-            <WidgetArea
-              user={user ? { id: user.id, name: user.name || "User" } : null}
-            />
-            <Live2DMashiroWrapper />
-          </MonsterProvider>
+          {children}
+          <WidgetArea
+            user={user ? { id: user.id, name: user.name || "User" } : null}
+          />
+          <Live2DMashiroWrapper />
         </Live2DProvider>
       </body>
     </html>
