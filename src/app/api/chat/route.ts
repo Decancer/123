@@ -11,23 +11,43 @@ const deepseek = createOpenAI({
 
 const searchPosts = tool({
   description:
-    "搜索 Mashiro Chat 博客中的文章。按关键词匹配标题和内容，可按作者名和分类筛选。用户问「有哪些XXX文章」「XXX写了什么」「搜XXX的文章」时调用。",
+    "搜索 Mashiro Chat 博客中的文章。可按关键词、作者名、分类组合筛选。用户问「有哪些XXX文章」「XXX写了什么」「搜XXX的文章」「Deca写了什么」时调用。注意：keyword 和 authorName 至少提供一个。",
   inputSchema: z.object({
-    keyword: z.string().describe("搜索关键词"),
+    keyword: z.string().optional().describe("搜索关键词，匹配标题和内容。仅按作者搜时可不传"),
     category: z.enum(["tech", "life"]).optional().describe("按分类筛选：tech 技术 / life 生活"),
-    authorName: z.string().optional().describe("按作者名筛选，匹配用户昵称"),
+    authorName: z.string().optional().describe("按作者名筛选，匹配用户昵称。搜某人文章时使用"),
   }),
   execute: async ({ keyword, category, authorName }) => {
-    const posts = await prisma.post.findMany({
-      where: {
-        published: true,
+    // 动态构建 WHERE 条件
+    const AND: Record<string, unknown>[] = [{ published: true }];
+
+    // 关键词搜索：匹配标题或内容
+    if (keyword && keyword.trim()) {
+      AND.push({
         OR: [
-          { title: { contains: keyword } },
-          { content: { contains: keyword } },
+          { title: { contains: keyword.trim() } },
+          { content: { contains: keyword.trim() } },
         ],
-        ...(category ? { category } : {}),
-        ...(authorName ? { author: { name: { contains: authorName } } } : {}),
-      },
+      });
+    }
+
+    // 分类筛选
+    if (category) {
+      AND.push({ category });
+    }
+
+    // 作者名筛选
+    if (authorName && authorName.trim()) {
+      AND.push({ author: { name: { contains: authorName.trim() } } });
+    }
+
+    // 至少需要 keyword 或 authorName 之一（没有筛选条件就搜最近文章）
+    if ((!keyword || !keyword.trim()) && (!authorName || !authorName.trim())) {
+      // 无条件时返回最近文章
+    }
+
+    const posts = await prisma.post.findMany({
+      where: { AND },
       select: {
         title: true,
         slug: true,
