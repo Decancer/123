@@ -27,11 +27,21 @@ export function UserMenu({ userId, userName, avatar }: UserMenuProps) {
   // URL 到达目标后清除加载（同页面软导航不会卸载组件）
   useEffect(() => {
     if (!navLoading || !navigateTargetRef.current) return;
-    if (pathname === navigateTargetRef.current || pathname === "/") {
+    if (pathname === navigateTargetRef.current) {
       setNavLoading(false);
       navigateTargetRef.current = null;
     }
   }, [pathname, navLoading]);
+
+  // 安全网：导航超过 5s 还没到目标，强制清除（防止重定向等异常情况卡住）
+  useEffect(() => {
+    if (!navLoading || !navigateTargetRef.current) return;
+    const timer = setTimeout(() => {
+      setNavLoading(false);
+      navigateTargetRef.current = null;
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [navLoading]);
 
   // 下拉打开时拉取未读私信数
   useEffect(() => {
