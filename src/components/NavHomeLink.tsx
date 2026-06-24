@@ -33,9 +33,9 @@ export function NavHomeLink() {
       <Link
         href="/"
         onClick={handleClick}
-        className="text-muted hover:text-ink"
+        className="inline-flex items-center gap-1 rounded-lg border border-primary-200 bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-600 shadow-sm transition hover:bg-primary-100 hover:border-primary-300 hover:shadow-glow active:scale-95"
       >
-        首页
+        🏠 首页
       </Link>
     </>
   );
