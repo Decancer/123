@@ -42,10 +42,17 @@ interface MessagesClientProps {
 }
 
 // ================================================================
-// Constants
+// Helpers
 // ================================================================
 
 const LONG_POLL_TIMEOUT = 8000;
+
+/** 追加消息并去重（防止长轮询和增量拉取拿到同一条消息） */
+function appendMessages(prev: Message[], incoming: Message[]): Message[] {
+  const existingIds = new Set(prev.map((m) => m.id));
+  const fresh = incoming.filter((m) => !existingIds.has(m.id));
+  return [...prev, ...fresh];
+}
 
 // ================================================================
 // Sub-component: ChatView (when ?to= is set)
@@ -131,7 +138,7 @@ function ChatView({
       if (!res.ok) return;
       const data = await res.json();
       if (data.messages?.length > 0) {
-        setMessages((prev) => [...prev, ...data.messages]);
+        setMessages((prev) => appendMessages(prev, data.messages));
         if (data.latest != null) latestIdRef.current = data.latest;
       }
     } catch {
@@ -162,7 +169,7 @@ function ChatView({
             if (res.ok) {
               const data = await res.json();
               if (data.messages?.length > 0) {
-                setMessages((prev) => [...prev, ...data.messages]);
+                setMessages((prev) => appendMessages(prev, data.messages));
                 if (data.latest != null) latestIdRef.current = data.latest;
               }
             }
@@ -206,7 +213,7 @@ function ChatView({
       if (refresh.ok) {
         const data = await refresh.json();
         if (data.messages?.length > 0) {
-          setMessages((prev) => [...prev, ...data.messages]);
+          setMessages((prev) => appendMessages(prev, data.messages));
           if (data.latest != null) latestIdRef.current = data.latest;
         }
       }

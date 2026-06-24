@@ -18,6 +18,13 @@ interface OnlineInfo {
   count: number;
 }
 
+/** 追加消息并去重（防止长轮询和增量拉取竞态） */
+function appendMessages(prev: ChatMessage[], incoming: ChatMessage[]): ChatMessage[] {
+  const existingIds = new Set(prev.map((m) => m.id));
+  const fresh = incoming.filter((m) => !existingIds.has(m.id));
+  return [...prev, ...fresh];
+}
+
 interface ChatRoomClientProps {
   currentUser: { id: number; name: string; avatar: string | null } | null;
 }
@@ -63,7 +70,7 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
       const data = await res.json();
 
       if (data.messages && data.messages.length > 0) {
-        setMessages((prev) => [...prev, ...data.messages]);
+        setMessages((prev) => appendMessages(prev, data.messages));
         latestIdRef.current = data.latest;
       }
     } catch {
@@ -152,7 +159,7 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
           .then((r) => r.json())
           .then((data) => {
             if (data.messages?.length > 0) {
-              setMessages((prev) => [...prev, ...data.messages]);
+              setMessages((prev) => appendMessages(prev, data.messages));
               latestIdRef.current = data.latest;
             }
           })
@@ -218,7 +225,7 @@ export function ChatRoomClient({ currentUser }: ChatRoomClientProps) {
       );
       const data = await fres.json();
       if (data.messages?.length > 0) {
-        setMessages((prev) => [...prev, ...data.messages]);
+        setMessages((prev) => appendMessages(prev, data.messages));
         latestIdRef.current = data.latest;
       }
     } catch {
