@@ -1,0 +1,86 @@
+{
+  "type": "Live2D Model Setting",
+  "name": "mashiro_event234",
+  "model": "mashiro_event234.moc",
+  "textures": ["texture_00.png", "texture_01.png"],
+  "physics": "mashiro_event234.physics.json",
+  "pose": "",
+  "motions": {
+    "idle": [
+      {"file": "../live2d4/idle01.mtn"}
+    ],
+    "angry": [
+      {"file": "../live2d4/angry01.mtn"}
+    ],
+    "bye": [
+      {"file": "../live2d4/bye01.mtn"}
+    ],
+    "cry": [
+      {"file": "../live2d4/cry01.mtn"}
+    ],
+    "gacha": [
+      {"file": "gacha01.mtn"}
+    ],
+    "kandou": [
+      {"file": "../live2d4/kandou01.mtn"}
+    ],
+    "kime": [
+      {"file": "../live2d4/kime01.mtn"}
+    ],
+    "nf": [
+      {"file": "../live2d4/nf01.mtn"},
+      {"file": "../live2d4/nf02.mtn"},
+      {"file": "../live2d4/nf03.mtn"},
+      {"file": "../live2d4/nf04.mtn"},
+      {"file": "../live2d4/nf05.mtn"},
+      {"file": "../live2d4/nf_left01.mtn"},
+      {"file": "../live2d4/nf_right01.mtn"}
+    ],
+    "nnf": [
+      {"file": "../live2d4/nnf01.mtn"},
+      {"file": "../live2d4/nnf02.mtn"},
+      {"file": "../live2d4/nnf03.mtn"},
+      {"file": "../live2d4/nnf04.mtn"},
+      {"file": "../live2d4/nnf05.mtn"},
+      {"file": "../live2d4/nnf_left01.mtn"},
+      {"file": "../live2d4/nnf_right01.mtn"}
+    ],
+    "sad": [
+      {"file": "../live2d4/sad01.mtn"},
+      {"file": "../live2d4/sad02.mtn"}
+    ],
+    "serious": [
+      {"file": "../live2d4/serious01.mtn"},
+      {"file": "../live2d4/serious02.mtn"}
+    ],
+    "smile": [
+      {"file": "../live2d4/smile01.mtn"},
+      {"file": "../live2d4/smile02.mtn"},
+      {"file": "../live2d4/smile02_ingameV2.mtn"},
+      {"file": "../live2d4/smile03.mtn"}
+    ],
+    "surprised": [
+      {"file": "../live2d4/surprised01.mtn"}
+    ],
+    "thinking": [
+      {"file": "../live2d4/thinking01.mtn"}
+    ],
+    "uziuzi": [
+      {"file": "../live2d4/uziuzi01.mtn"},
+      {"file": "../live2d4/uziuzi02.mtn"},
+      {"file": "../live2d4/uziuzi03.mtn"},
+      {"file": "../live2d4/uziuzi04.mtn"}
+    ]
+  },
+  "expressions": [
+    {"name": "angry", "file": "angry01.exp.json"},
+    {"name": "cry", "file": "cry01.exp.json"},
+    {"name": "default", "file": "default.exp.json"},
+    {"name": "kime", "file": "kime01.exp.json"},
+    {"name": "sad", "file": "sad01.exp.json"},
+    {"name": "serious", "file": "serious01.exp.json"},
+    {"name": "smile", "file": "smile01.exp.json"},
+    {"name": "surprised", "file": "surprised01.exp.json"},
+    {"name": "reset", "file": "reset.exp.json"}
+  ]
+}
