@@ -35,41 +35,6 @@ const features: FeatureCard[] = [
     desc: "想和某位用户单独聊聊？在 TA 的个人主页点击私信按钮，或者在这里查看你的所有私信对话～",
     href: "/messages",
   },
-  {
-    icon: "🎭",
-    title: "Live2D 看板娘",
-    desc: "全站右下角驻扎！点击她会切换表情动作，害羞、惊讶、生气… 还会对页面操作做出反应呢～",
-  },
-  {
-    icon: "👁️",
-    title: "眼动小怪物",
-    desc: "首页背景里藏着两只小生物，它们的眼睛会跟着你的鼠标转来转去，试着晃晃光标跟它们玩吧！",
-  },
-  {
-    icon: "🖼️",
-    title: "图片上传压缩",
-    desc: "最多 6 张配图，上传自动压缩到合适大小。详情页自适应网格排列，1 张铺满、2 张并排、3+ 张瀑布～",
-  },
-  {
-    icon: "🔐",
-    title: "安全认证",
-    desc: "JWT + httpOnly Cookie + bcryptjs 密码加密。注册需要邮箱验证，Resend 发送验证邮件，安全感拉满！",
-  },
-  {
-    icon: "💭",
-    title: "评论互动",
-    desc: "登录后就能评论啦～作者和管理员可以编辑或删除，大家都是文明人，好好交流喵～",
-  },
-  {
-    icon: "👤",
-    title: "个人主页",
-    desc: "上传头像和背景图，写一段个人简介，你的所有文章都会展示在这里，让别人认识你吧！",
-  },
-  {
-    icon: "📱",
-    title: "响应式适配",
-    desc: "从手机到宽屏，Tailwind CSS v4 让每一处都恰到好处。移动端也能愉快浏览和聊天～",
-  },
 ];
 
 export default async function FeaturesPage() {
@@ -163,17 +128,6 @@ export default async function FeaturesPage() {
               </div>
             );
           })}
-
-          {/* 占位卡片 */}
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-primary-200 bg-primary-50/50 p-5 text-center transition hover:border-primary-300">
-            <div className="mb-2 text-3xl opacity-40">🐾</div>
-            <p className="text-sm font-medium text-muted">
-              还有更多……
-            </p>
-            <p className="mt-1 text-xs text-muted/60">
-              新功能陆续添加中
-            </p>
-          </div>
         </div>
       </main>
 
