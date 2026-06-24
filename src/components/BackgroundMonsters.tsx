@@ -65,17 +65,17 @@ export function BackgroundMonsters() {
         mouthSensitivity={1.2}
       />
 
-      {/* 紫色宽矮 — 最右，超宽超矮 */}
+      {/* 紫色宽矮 — 最后面，超宽超矮，叠在其他三个上面 */}
       <SlenderMonster
         color="#a855f7"
         name="紫色宽矮"
-        left="calc(4% + 228px)"
+        left="4%"
         bottom="3%"
-        width={120}
-        height={100}
+        width={240}
+        height={70}
         eyeSize={28}
         pupilSize={10}
-        zIndex={1}
+        zIndex={2}
         maxSkew={4}
         borderRadius="12px 12px 0 0"
         showFeet={false}
