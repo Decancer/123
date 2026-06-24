@@ -72,11 +72,14 @@ function ChatView({
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
   const [initialLoaded, setInitialLoaded] = useState(false);
+  const router = useRouter();
   const [partner, setPartner] = useState<{ name: string; avatar: string | null } | null>(null);
+  const [navLoading, setNavLoading] = useState(false);
   const latestIdRef = useRef<number | null>(null);
   const activeRef = useRef(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  useLoadingReaction(navLoading);
 
   // 自动滚到底部
   useEffect(() => {
@@ -182,6 +185,13 @@ function ChatView({
     return () => document.removeEventListener("visibilitychange", handleVisibility);
   }, [partnerId, longPoll]);
 
+  // 导航到对方主页的 loading 效果
+  useEffect(() => {
+    if (navLoading) {
+      router.push(`/users/${partnerId}`);
+    }
+  }, [navLoading, router, partnerId]);
+
   // 发送消息
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -231,6 +241,14 @@ function ChatView({
 
   return (
     <div className="flex flex-col h-[calc(100vh-14rem)]">
+      {/* 导航加载遮罩 */}
+      {navLoading && createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50/80 backdrop-blur-sm">
+          <img src="/mashiro.svg" alt="加载中" className="h-20 w-20 animate-spin" />
+        </div>,
+        document.body
+      )}
+
       {/* 顶部：返回 + 对方信息 */}
       <div className="flex items-center gap-3 mb-4 pb-3 border-b border-border">
         <button
@@ -243,7 +261,11 @@ function ChatView({
           </svg>
         </button>
         {partner && (
-          <div className="flex items-center gap-2">
+          <button
+            onClick={() => setNavLoading(true)}
+            className="flex items-center gap-2 rounded-lg px-1.5 py-0.5 transition hover:bg-primary-100 cursor-pointer"
+            title={`查看 ${partner.name} 的主页`}
+          >
             {partner.avatar ? (
               <img src={partner.avatar} alt="" className="h-8 w-8 rounded-full object-cover" />
             ) : (
@@ -252,7 +274,7 @@ function ChatView({
               </span>
             )}
             <span className="font-medium text-ink">{partner.name}</span>
-          </div>
+          </button>
         )}
       </div>
 
