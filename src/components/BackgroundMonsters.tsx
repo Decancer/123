@@ -1,86 +1,94 @@
 "use client";
 
 import { SlenderMonster } from "@/components/SlenderMonster";
+import { useMonsterPals } from "@/lib/MonsterPalsContext";
+
+const PAL_PROPS = {
+  rui: {
+    left: "4%" as const,
+    bottom: "3%" as const,
+    width: 42,
+    height: 320,
+    eyeSize: 28,
+    pupilSize: 10,
+    zIndex: 1 as const,
+    maxSkew: 5,
+    borderRadius: "5px 5px 0 0" as const,
+    showFeet: false,
+  },
+  nanami: {
+    left: "calc(4% + 44px)" as const,
+    bottom: "5%" as const,
+    width: 90,
+    height: 160,
+    eyeSize: 40,
+    pupilSize: 14,
+    eyeColor: "transparent" as const,
+    zIndex: 1 as const,
+    maxSkew: 6,
+    borderRadius: "80px 80px 0 0" as const,
+    showFeet: false,
+    showMouth: true,
+    mouthWidth: 28,
+    mouthSensitivity: 1.2,
+  },
+  toko: {
+    left: "calc(4% + 136px)" as const,
+    bottom: "5%" as const,
+    width: 90,
+    height: 200,
+    eyeSize: 40,
+    pupilSize: 14,
+    eyeColor: "transparent" as const,
+    eyeMaxDistance: 16,
+    zIndex: 1 as const,
+    maxSkew: 3,
+    borderRadius: "80px 80px 0 0" as const,
+    showFeet: false,
+    showMouth: true,
+    mouthWidth: 28,
+    mouthSensitivity: 1.2,
+  },
+  tsukushi: {
+    left: "4%" as const,
+    bottom: "3%" as const,
+    width: 240,
+    height: 70,
+    eyeSize: 28,
+    pupilSize: 10,
+    zIndex: 2 as const,
+    maxSkew: 4,
+    borderRadius: "12px 12px 0 0" as const,
+    showFeet: false,
+  },
+};
+
+const PAL_ORDER = ["rui", "nanami", "toko", "tsukushi"] as const;
 
 export function BackgroundMonsters() {
+  const { pals } = useMonsterPals();
+  const visibleIds = new Set(pals.filter((p) => p.visible).map((p) => p.id));
+
+  if (visibleIds.size === 0) return null;
+
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 overflow-hidden hidden md:block"
       style={{ zIndex: 0 }}
     >
-      {/* 蓝色瘦高 — 外（左） */}
-      <SlenderMonster
-        color="#669988"
-        name="青色瘦高"
-        left="4%"
-        bottom="3%"
-        width={42}
-        height={320}
-        eyeSize={28}
-        pupilSize={10}
-        zIndex={1}
-        maxSkew={5}
-        borderRadius="5px 5px 0 0"
-        showFeet={false}
-      />
-
-      {/* 橙色矮胖 — 紧挨着蓝色 */}
-      <SlenderMonster
-        color="#EE7744"
-        name="橙色矮胖"
-        left="calc(4% + 44px)"
-        bottom="5%"
-        width={90}
-        height={160}
-        eyeSize={40}
-        pupilSize={14}
-        eyeColor="transparent"
-        zIndex={1}
-        maxSkew={6}
-        borderRadius="80px 80px 0 0"
-        showFeet={false}
-        showMouth
-        mouthWidth={28}
-        mouthSensitivity={1.2}
-      />
-
-      {/* 黄色矮胖 — 紧挨着橙色，同形状 */}
-      <SlenderMonster
-        color="#fef9c3"
-        name="黄色矮胖"
-        left="calc(4% + 136px)"
-        bottom="5%"
-        width={90}
-        height={200}
-        eyeSize={40}
-        pupilSize={14}
-        eyeColor="transparent"
-        eyeMaxDistance={16}
-        zIndex={1}
-        maxSkew={3}
-        borderRadius="80px 80px 0 0"
-        showFeet={false}
-        showMouth
-        mouthWidth={28}
-        mouthSensitivity={1.2}
-      />
-
-      {/* 紫色宽矮 — 最后面，超宽超矮，叠在其他三个上面 */}
-      <SlenderMonster
-        color="#7c3aed"
-        name="紫色宽矮"
-        left="4%"
-        bottom="3%"
-        width={240}
-        height={70}
-        eyeSize={28}
-        pupilSize={10}
-        zIndex={2}
-        maxSkew={4}
-        borderRadius="12px 12px 0 0"
-        showFeet={false}
-      />
+      {PAL_ORDER.filter((id) => visibleIds.has(id)).map((id) => {
+        const pal = pals.find((p) => p.id === id)!;
+        const props = PAL_PROPS[id];
+        return (
+          <SlenderMonster
+            key={id}
+            color={pal.color}
+            name={pal.name}
+            {...props}
+          />
+        );
+      })}
     </div>
   );
 }

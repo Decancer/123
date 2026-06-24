@@ -35,6 +35,12 @@ const features: FeatureCard[] = [
     desc: "想和某位用户单独聊聊？在 TA 的个人主页点击私信按钮，或者在这里查看你的所有私信对话～",
     href: "/messages",
   },
+  {
+    icon: "👾",
+    title: "Mashiro 的小伙伴",
+    desc: "左下角的小家伙们也不是一直要在哦～来认识 rui、nanami、toko 和 tsukushi，自由控制它们的出现与隐藏！",
+    href: "/monster-pals",
+  },
 ];
 
 export default async function FeaturesPage() {
