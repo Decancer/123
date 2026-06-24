@@ -61,7 +61,7 @@ export function PostActions({ post, currentUserId, currentUserRole }: PostAction
         {isOwn && (
           <button
             onClick={() => setEditing(true)}
-            className="rounded-md p-1 text-muted/40 transition hover:bg-primary-50 hover:text-primary-500 dark:hover:bg-[#3a3a58] dark:hover:text-primary-400"
+            className="rounded-md p-1 text-muted/40 transition hover:bg-primary-50 hover:text-primary-500"
             title="编辑文章"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@ export function PostActions({ post, currentUserId, currentUserRole }: PostAction
           ) : (
             <button
               onClick={() => setDeleteConfirm(true)}
-              className="rounded-md p-1 text-muted/40 transition hover:bg-primary-50 hover:text-red-500 dark:hover:bg-[#3a3a58] dark:hover:text-red-400"
+              className="rounded-md p-1 text-muted/40 transition hover:bg-primary-50 hover:text-red-500"
               title="删除文章"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

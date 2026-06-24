@@ -42,11 +42,11 @@ export default async function PostPage({ params }: PageProps) {
   } catch (err) {
     console.error("文章详情查询失败:", err);
     return (
-      <div className="flex min-h-screen items-center justify-center bg-primary-50 dark:bg-[#16162a]">
+      <div className="flex min-h-screen items-center justify-center bg-primary-50">
         <div className="text-center">
           <div className="mb-4 text-5xl">😿</div>
-          <h1 className="text-xl font-bold text-ink dark:text-[#e8e8f8]">页面加载失败</h1>
-          <p className="mt-2 text-sm text-muted dark:text-[#a0a0c0]">{(err as Error).message || "请稍后重试"}</p>
+          <h1 className="text-xl font-bold text-ink">页面加载失败</h1>
+          <p className="mt-2 text-sm text-muted">{(err as Error).message || "请稍后重试"}</p>
           <BackToHomeLink />
         </div>
       </div>
@@ -77,20 +77,20 @@ export default async function PostPage({ params }: PageProps) {
   const currentUser = await getCurrentUser();
 
   return (
-    <div className="flex min-h-screen flex-col bg-primary-50 dark:bg-[#16162a] relative">
+    <div className="flex min-h-screen flex-col bg-primary-50 relative">
       {/* 背景装饰生物 */}
       <BackgroundMonsters />
       {/* 导航 */}
-      <header className="sticky top-0 z-10 border-b border-border bg-primary-50/80 backdrop-blur-md dark:border-[#3a3a58] dark:bg-[#16162a]/80">
+      <header className="sticky top-0 z-10 border-b border-border bg-primary-50/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
-          <span className="text-lg font-bold tracking-tight text-ink dark:text-[#e8e8f8]">
+          <span className="text-lg font-bold tracking-tight text-ink">
             🐾 Mashiro Chat
           </span>
-          <nav className="flex items-center gap-4 text-sm text-muted dark:text-[#a0a0c0]">
+          <nav className="flex items-center gap-4 text-sm text-muted">
             <NavHomeLink />
             <NavFeatureLink />
 
-            <span className="mx-1 h-4 w-px bg-border dark:bg-[#3a3a58]" />
+            <span className="mx-1 h-4 w-px bg-border" />
 
             {currentUser ? (
               <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
@@ -98,13 +98,13 @@ export default async function PostPage({ params }: PageProps) {
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97] dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97]"
                 >
                   登录
                 </Link>
                 <Link
                   href="/register"
-                  className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted transition hover:border-primary-300 hover:bg-primary-50 hover:text-ink active:scale-[0.97] dark:border-[#3a3a58] dark:text-[#a0a0c0] dark:hover:border-primary-500 dark:hover:bg-[#2a2a48] dark:hover:text-[#e8e8f8]"
+                  className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted transition hover:border-primary-300 hover:bg-primary-50 hover:text-ink active:scale-[0.97]"
                 >
                   注册
                 </Link>
@@ -131,8 +131,8 @@ export default async function PostPage({ params }: PageProps) {
             <span
               className={`inline-flex items-center rounded-lg px-2 py-0.5 text-xs font-medium ${
                 post.category === "life"
-                  ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
-                  : "bg-primary-50 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300"
+                  ? "bg-emerald-50 text-emerald-700"
+                  : "bg-primary-50 text-primary-700"
               }`}
             >
               {post.category === "life" ? "🌿 生活" : "💻 技术"}
@@ -140,7 +140,7 @@ export default async function PostPage({ params }: PageProps) {
             {post.tags.map(({ tag }) => (
               <span
                 key={tag.id}
-                className="inline-flex items-center rounded-lg bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-[#3a3a58] dark:text-primary-300"
+                className="inline-flex items-center rounded-lg bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700"
               >
                 {tag.name}
               </span>
@@ -148,7 +148,7 @@ export default async function PostPage({ params }: PageProps) {
           </div>
 
           <div className="mb-4 flex items-start gap-2">
-            <h1 className="text-3xl font-bold leading-tight tracking-tight text-ink dark:text-[#e8e8f8]">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-ink">
               {post.title}
             </h1>
             {currentUser && (
@@ -176,7 +176,7 @@ export default async function PostPage({ params }: PageProps) {
               <img
                 src={post.author.avatar}
                 alt=""
-                className="h-9 w-9 rounded-full object-cover ring-2 ring-primary-100 dark:ring-primary-500/20"
+                className="h-9 w-9 rounded-full object-cover ring-2 ring-primary-100"
               />
             ) : (
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary-500 text-sm font-semibold text-white">
@@ -187,9 +187,9 @@ export default async function PostPage({ params }: PageProps) {
               <AuthorNameLink
                 userId={post.author.id}
                 name={post.author.name || "User"}
-                className="text-sm font-medium text-ink/80 dark:text-[#e8e8f8]/80"
+                className="text-sm font-medium text-ink/80"
               />
-              <div className="flex items-center gap-2 text-xs text-muted/70 dark:text-[#a0a0c0]/70">
+              <div className="flex items-center gap-2 text-xs text-muted/70">
                 <time dateTime={post.createdAt.toISOString()}>
                   {new Date(post.createdAt).toLocaleDateString("zh-CN", {
                     year: "numeric",
@@ -212,7 +212,7 @@ export default async function PostPage({ params }: PageProps) {
             "grid-cols-3"
           }`}>
             {images.map((img, i) => (
-              <div key={i} className="overflow-hidden rounded-xl border border-border dark:border-[#3a3a58]">
+              <div key={i} className="overflow-hidden rounded-xl border border-border">
                 <img
                   src={img}
                   alt={`图片 ${i + 1}`}
@@ -225,13 +225,13 @@ export default async function PostPage({ params }: PageProps) {
 
         {/* 正文 */}
         <article
-          className="prose prose-zinc max-w-none dark:prose-invert leading-relaxed text-ink/85 dark:text-[#e8e8f8]/85"
+          className="prose prose-zinc max-w-none leading-relaxed text-ink/85"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
         {/* 评论区域 */}
-        <section className="mt-16 border-t border-border pt-10 dark:border-[#3a3a58]">
-          <h3 className="mb-6 text-lg font-semibold text-ink dark:text-[#e8e8f8]">
+        <section className="mt-16 border-t border-border pt-10">
+          <h3 className="mb-6 text-lg font-semibold text-ink">
             评论 ({post.comments.length})
           </h3>
 
@@ -239,9 +239,9 @@ export default async function PostPage({ params }: PageProps) {
           {currentUser ? (
             <CommentForm slug={slug} userName={currentUser.name || "User"} />
           ) : (
-            <div className="mb-8 rounded-xl border border-dashed border-primary-200 p-4 text-center dark:border-[#3a3a58]">
-              <p className="text-sm text-muted dark:text-[#a0a0c0]">
-                <Link href="/login" className="font-medium text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300">
+            <div className="mb-8 rounded-xl border border-dashed border-primary-200 p-4 text-center">
+              <p className="text-sm text-muted">
+                <Link href="/login" className="font-medium text-primary-500 hover:text-primary-600">
                   登录
                 </Link>
                 {" "}后即可发表评论
@@ -251,7 +251,7 @@ export default async function PostPage({ params }: PageProps) {
 
           {/* 评论列表 */}
           {post.comments.length === 0 ? (
-            <p className="text-sm text-muted dark:text-[#a0a0c0]">暂无评论，来发表第一条吧</p>
+            <p className="text-sm text-muted">暂无评论，来发表第一条吧</p>
           ) : (
             <div className="space-y-5">
               {post.comments.map((comment) => (
@@ -272,7 +272,7 @@ export default async function PostPage({ params }: PageProps) {
         </section>
       </main>
 
-      <footer className="border-t border-border py-8 text-center text-sm text-muted/70 dark:border-[#3a3a58] dark:text-[#a0a0c0]/70">
+      <footer className="border-t border-border py-8 text-center text-sm text-muted/70">
         Built with Next.js + Prisma + SQLite
       </footer>
     </div>

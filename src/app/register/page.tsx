@@ -109,17 +109,17 @@ export default function RegisterPage() {
   if (registered) {
     const canResend = resendCountdown === 0 && !resendLoading;
     return (
-      <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4 dark:bg-[#16162a]">
+      <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4">
         <div className="w-full max-w-sm text-center">
           <div className="mb-4 text-5xl">📧</div>
-          <h1 className="text-2xl font-bold tracking-tight text-ink dark:text-[#e8e8f8]">注册成功</h1>
-          <p className="mt-3 text-muted dark:text-[#a0a0c0]">
+          <h1 className="text-2xl font-bold tracking-tight text-ink">注册成功</h1>
+          <p className="mt-3 text-muted">
             验证邮件已发送至
           </p>
-          <p className="font-medium text-ink dark:text-[#e8e8f8]">
+          <p className="font-medium text-ink">
             {registeredEmail}
           </p>
-          <p className="mt-2 text-sm text-muted/80 dark:text-[#a0a0c0]/80">
+          <p className="mt-2 text-sm text-muted/80">
             请查收邮件并点击验证链接，完成后即可登录
           </p>
 
@@ -127,12 +127,12 @@ export default function RegisterPage() {
             <button
               onClick={handleResend}
               disabled={!canResend}
-              className="rounded-xl bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+              className="rounded-xl bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow disabled:opacity-50 "
             >
               {resendLoading ? "发送中..." : resendCountdown > 0 ? `再次发送 (${resendCountdown}s)` : "重新发送验证邮件"}
             </button>
             {resendMessage && (
-              <span className="text-sm text-green-600 dark:text-green-400">
+              <span className="text-sm text-green-600 ">
                 {resendMessage}
               </span>
             )}
@@ -141,7 +141,7 @@ export default function RegisterPage() {
           <div className="mt-10">
             <Link
               href="/login"
-              className="inline-block rounded-xl bg-primary-500 px-5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+              className="inline-block rounded-xl bg-primary-500 px-5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow "
             >
               去登录
             </Link>
@@ -152,7 +152,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4 dark:bg-[#16162a]">
+    <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4">
       <div className="w-full max-w-sm">
         <div className="mb-10 text-center">
           <img
@@ -160,18 +160,18 @@ export default function RegisterPage() {
             alt="Mashiro"
             className="mx-auto mb-4 h-16 w-16 rounded-full shadow-glow"
           />
-          <h1 className="text-2xl font-bold tracking-tight text-ink dark:text-[#e8e8f8]">创建账号</h1>
-          <p className="mt-2 text-sm text-muted dark:text-[#a0a0c0]">
+          <h1 className="text-2xl font-bold tracking-tight text-ink">创建账号</h1>
+          <p className="mt-2 text-sm text-muted">
             注册后即可开始使用 Mashiro Chat
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-border bg-surface p-6 shadow-card dark:border-[#3a3a58] dark:bg-[#222240]"
+          className="rounded-2xl border border-border bg-surface p-6 shadow-card "
         >
           {error && (
-            <div className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600 dark:bg-red-950/40 dark:text-red-400">
+            <div className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600 ">
               {error}
             </div>
           )}
@@ -179,7 +179,7 @@ export default function RegisterPage() {
           <div className="mb-4">
             <label
               htmlFor="name"
-              className="mb-1.5 block text-sm font-medium text-ink/80 dark:text-[#e8e8f8]/80"
+              className="mb-1.5 block text-sm font-medium text-ink/80"
             >
               昵称
             </label>
@@ -191,14 +191,14 @@ export default function RegisterPage() {
               placeholder="你的昵称"
               required
               autoComplete="name"
-              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:focus:border-primary-400"
+              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 "
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="mb-1.5 block text-sm font-medium text-ink/80 dark:text-[#e8e8f8]/80"
+              className="mb-1.5 block text-sm font-medium text-ink/80"
             >
               邮箱
             </label>
@@ -210,14 +210,14 @@ export default function RegisterPage() {
               placeholder="you@example.com"
               required
               autoComplete="email"
-              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:focus:border-primary-400"
+              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 "
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="mb-1.5 block text-sm font-medium text-ink/80 dark:text-[#e8e8f8]/80"
+              className="mb-1.5 block text-sm font-medium text-ink/80"
             >
               密码
             </label>
@@ -230,14 +230,14 @@ export default function RegisterPage() {
               required
               minLength={6}
               autoComplete="new-password"
-              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:focus:border-primary-400"
+              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 "
             />
           </div>
 
           <div className="mb-6">
             <label
               htmlFor="confirmPassword"
-              className="mb-1.5 block text-sm font-medium text-ink/80 dark:text-[#e8e8f8]/80"
+              className="mb-1.5 block text-sm font-medium text-ink/80"
             >
               确认密码
             </label>
@@ -249,24 +249,24 @@ export default function RegisterPage() {
               placeholder="再次输入密码"
               required
               autoComplete="new-password"
-              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:focus:border-primary-400"
+              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 "
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+            className="w-full rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 "
           >
             {loading ? "注册中..." : "注 册"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-muted dark:text-[#a0a0c0]">
+        <p className="mt-6 text-center text-sm text-muted">
           已有账号？{" "}
           <Link
             href="/login"
-            className="font-medium text-primary-500 transition hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300"
+            className="font-medium text-primary-500 transition hover:text-primary-600 "
           >
             立即登录
           </Link>
@@ -275,7 +275,7 @@ export default function RegisterPage() {
         <div className="mt-6 text-center">
           <Link
             href="/"
-            className="text-sm text-muted transition hover:text-ink dark:text-[#a0a0c0] dark:hover:text-[#e8e8f8]"
+            className="text-sm text-muted transition hover:text-ink "
           >
             ← 返回首页
           </Link>

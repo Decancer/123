@@ -82,14 +82,14 @@ export function EmailVerificationBanner() {
   }
 
   return (
-    <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50/50 p-5 dark:border-amber-800 dark:bg-amber-950/30">
+    <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50/50 p-5">
       <div className="flex items-start gap-3">
         <span className="mt-0.5 text-xl">📧</span>
         <div className="flex-1">
-          <p className="font-medium text-amber-800 dark:text-amber-200">
+          <p className="font-medium text-amber-800">
             邮箱尚未验证
           </p>
-          <p className="mt-1 text-sm text-amber-600 dark:text-amber-400">
+          <p className="mt-1 text-sm text-amber-600">
             验证邮箱后才能正常使用博客功能。请检查收件箱（含垃圾箱），或重新发送验证邮件。
           </p>
 
@@ -104,7 +104,7 @@ export function EmailVerificationBanner() {
             </button>
 
             {countdown > 0 && (
-              <span className="text-sm text-green-600 dark:text-green-400">
+              <span className="text-sm text-green-600">
                 ✓ 已发送，请查收
               </span>
             )}

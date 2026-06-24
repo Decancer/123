@@ -163,7 +163,7 @@ export function WriteArticleButton() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="h-14 w-14 rounded-full bg-primary-500 shadow-card transition hover:scale-110 hover:shadow-glow flex items-center justify-center text-white text-2xl ring-2 ring-primary-200 hover:ring-primary-400 dark:ring-primary-500/30 dark:hover:ring-primary-400/50"
+          className="h-14 w-14 rounded-full bg-primary-500 shadow-card transition hover:scale-110 hover:shadow-glow flex items-center justify-center text-white text-2xl ring-2 ring-primary-200 hover:ring-primary-400"
           aria-label="写文章"
         >
           ✏️
@@ -172,15 +172,15 @@ export function WriteArticleButton() {
 
       {/* 展开：写文章面板 */}
       {open && (
-        <div className="flex h-[500px] w-[calc(100vw-1.5rem)] sm:w-[420px] flex-col rounded-2xl border border-border bg-surface shadow-xl dark:border-[#3a3a58] dark:bg-[#222240]">
+        <div className="flex h-[500px] w-[calc(100vw-1.5rem)] sm:w-[420px] flex-col rounded-2xl border border-border bg-surface shadow-xl">
           {/* 头部 */}
-          <div className="flex items-center justify-between border-b border-border px-4 py-3 dark:border-[#3a3a58]">
-            <span className="text-sm font-medium text-ink dark:text-[#e8e8f8]">
+          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <span className="text-sm font-medium text-ink">
               ✏️ 写文章
             </span>
             <button
               onClick={() => { setOpen(false); setError(""); }}
-              className="rounded-lg p-1 text-muted/60 transition hover:bg-primary-50 hover:text-ink dark:hover:bg-[#3a3a58] dark:hover:text-[#e8e8f8]"
+              className="rounded-lg p-1 text-muted/60 transition hover:bg-primary-50 hover:text-ink"
               aria-label="关闭"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -192,12 +192,12 @@ export function WriteArticleButton() {
           {/* 表单区 */}
           <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
             {error && (
-              <div className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-950/40 dark:text-red-400">
+              <div className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600">
                 {error}
               </div>
             )}
             {success && (
-              <div className="rounded-xl bg-emerald-50 px-3 py-2 text-xs text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400">
+              <div className="rounded-xl bg-emerald-50 px-3 py-2 text-xs text-emerald-600">
                 发布成功！正在刷新...
               </div>
             )}
@@ -209,7 +209,7 @@ export function WriteArticleButton() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="文章标题"
               required
-              className="w-full border-b-2 border-primary-200 bg-transparent pb-1.5 text-lg font-semibold text-ink outline-none transition placeholder:text-muted/40 focus:border-primary-400 dark:border-[#3a3a58] dark:text-[#e8e8f8] dark:placeholder:text-[#a0a0c0]/40 dark:focus:border-primary-400"
+              className="w-full border-b-2 border-primary-200 bg-transparent pb-1.5 text-lg font-semibold text-ink outline-none transition placeholder:text-muted/40 focus:border-primary-400"
             />
 
             {/* 摘要 */}
@@ -218,7 +218,7 @@ export function WriteArticleButton() {
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
               placeholder="摘要（可选，留空自动截取正文）"
-              className="w-full bg-transparent text-sm text-muted outline-none placeholder:text-muted/40 dark:text-[#a0a0c0] dark:placeholder:text-[#a0a0c0]/40"
+              className="w-full bg-transparent text-sm text-muted outline-none placeholder:text-muted/40"
             />
 
             {/* 分区 */}
@@ -229,7 +229,7 @@ export function WriteArticleButton() {
                 className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                   category === "tech"
                     ? "bg-primary-500 text-white shadow-sm"
-                    : "bg-primary-50 text-muted hover:bg-primary-100 dark:bg-[#3a3a58] dark:text-[#a0a0c0] dark:hover:bg-[#484868]"
+                    : "bg-primary-50 text-muted hover:bg-primary-100"
                 }`}
               >
                 💻 技术
@@ -240,7 +240,7 @@ export function WriteArticleButton() {
                 className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                   category === "life"
                     ? "bg-emerald-500 text-white shadow-sm"
-                    : "bg-primary-50 text-muted hover:bg-primary-100 dark:bg-[#3a3a58] dark:text-[#a0a0c0] dark:hover:bg-[#484868]"
+                    : "bg-primary-50 text-muted hover:bg-primary-100"
                 }`}
               >
                 🌿 生活
@@ -258,13 +258,13 @@ export function WriteArticleButton() {
               {tags.map((tag, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center gap-0.5 rounded-lg bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-500/15 dark:text-primary-300"
+                  className="inline-flex items-center gap-0.5 rounded-lg bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700"
                 >
                   {tag}
                   <button
                     type="button"
                     onClick={() => removeTag(i)}
-                    className="ml-0.5 text-primary-400 hover:text-primary-600 dark:text-primary-300 dark:hover:text-primary-100"
+                    className="ml-0.5 text-primary-400 hover:text-primary-600"
                   >
                     ×
                   </button>
@@ -277,14 +277,14 @@ export function WriteArticleButton() {
                 onKeyDown={handleTagKeyDown}
                 onBlur={addTag}
                 placeholder={tags.length === 0 ? "添加标签（回车确认）" : "+"}
-                className="w-28 bg-transparent px-1 py-0.5 text-xs text-muted/60 outline-none placeholder:text-muted/40 dark:text-[#a0a0c0]/60 dark:placeholder:text-[#a0a0c0]/40"
+                className="w-28 bg-transparent px-1 py-0.5 text-xs text-muted/60 outline-none placeholder:text-muted/40"
               />
             </div>
 
             {/* 图片上传 */}
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-xs font-medium text-muted dark:text-[#a0a0c0]">
+                <span className="text-xs font-medium text-muted">
                   图片 ({images.length}/{MAX_IMAGES})
                 </span>
                 {images.length < MAX_IMAGES && (
@@ -292,7 +292,7 @@ export function WriteArticleButton() {
                     type="button"
                     onClick={() => imageInputRef.current?.click()}
                     disabled={uploadingImage}
-                    className="rounded-lg bg-primary-50 px-2 py-0.5 text-xs text-muted transition hover:bg-primary-100 disabled:opacity-50 dark:bg-[#3a3a58] dark:text-[#a0a0c0] dark:hover:bg-[#484868]"
+                    className="rounded-lg bg-primary-50 px-2 py-0.5 text-xs text-muted transition hover:bg-primary-100 disabled:opacity-50"
                   >
                     {uploadingImage ? "处理中..." : "+ 添加"}
                   </button>
@@ -313,7 +313,7 @@ export function WriteArticleButton() {
                       <img
                         src={img}
                         alt=""
-                        className="h-16 w-16 rounded-xl object-cover border border-border dark:border-[#3a3a58]"
+                        className="h-16 w-16 rounded-xl object-cover border border-border"
                       />
                       <button
                         type="button"
@@ -333,7 +333,7 @@ export function WriteArticleButton() {
               <button
                 type="submit"
                 disabled={loading}
-                className="rounded-xl bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-95 disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+                className="rounded-xl bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-95 disabled:opacity-50"
               >
                 {loading ? "发布中..." : "发布"}
               </button>

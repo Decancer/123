@@ -148,15 +148,15 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg rounded-2xl border border-border bg-surface shadow-2xl dark:border-[#3a3a58] dark:bg-[#222240] max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-lg rounded-2xl border border-border bg-surface shadow-2xl max-h-[90vh] overflow-y-auto">
         {/* 头部 */}
-        <div className="flex items-center justify-between border-b border-border px-5 py-3 dark:border-[#3a3a58]">
-          <h2 className="text-sm font-semibold text-ink dark:text-[#e8e8f8]">
+        <div className="flex items-center justify-between border-b border-border px-5 py-3">
+          <h2 className="text-sm font-semibold text-ink">
             编辑文章
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-muted/60 transition hover:bg-primary-50 hover:text-ink dark:hover:bg-[#3a3a58] dark:hover:text-[#e8e8f8]"
+            className="rounded-lg p-1 text-muted/60 transition hover:bg-primary-50 hover:text-ink"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -172,7 +172,7 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="文章标题"
             required
-            className="w-full border-b-2 border-primary-200 bg-transparent py-2 text-lg font-semibold text-ink outline-none placeholder:text-muted/40 focus:border-primary-400 dark:border-[#3a3a58] dark:text-[#e8e8f8] dark:placeholder:text-[#a0a0c0]/40 dark:focus:border-primary-400"
+            className="w-full border-b-2 border-primary-200 bg-transparent py-2 text-lg font-semibold text-ink outline-none placeholder:text-muted/40 focus:border-primary-400"
           />
 
           {/* 分区选择 */}
@@ -184,8 +184,8 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
                 onClick={() => setCategory(c)}
                 className={`rounded-lg px-3 py-1 text-xs font-medium transition ${
                   category === c
-                    ? "bg-primary-500 text-white shadow-sm dark:bg-primary-400 dark:text-[#16162a]"
-                    : "bg-primary-50 text-muted hover:bg-primary-100 dark:bg-[#3a3a58] dark:text-[#a0a0c0] dark:hover:bg-[#484868]"
+                    ? "bg-primary-500 text-white shadow-sm"
+                    : "bg-primary-50 text-muted hover:bg-primary-100"
                 }`}
               >
                 {c === "tech" ? "💻 技术" : "🌿 生活"}
@@ -198,7 +198,7 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
             value={excerpt}
             onChange={(e) => setExcerpt(e.target.value)}
             placeholder="文章摘要（可选）"
-            className="w-full rounded-xl border border-border bg-primary-50/50 px-3.5 py-2 text-sm text-ink outline-none placeholder:text-muted/40 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:placeholder:text-[#a0a0c0]/40 dark:focus:border-primary-400"
+            className="w-full rounded-xl border border-border bg-primary-50/50 px-3.5 py-2 text-sm text-ink outline-none placeholder:text-muted/40 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20"
           />
 
           {/* 内容 */}
@@ -213,7 +213,7 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
               {tags.map((t) => (
                 <span
                   key={t}
-                  className="inline-flex items-center gap-1 rounded-lg bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-500/15 dark:text-primary-300"
+                  className="inline-flex items-center gap-1 rounded-lg bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700"
                 >
                   {t}
                   <button type="button" onClick={() => removeTag(t)} className="hover:text-red-500">×</button>
@@ -226,14 +226,14 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
               onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTag(); } }}
               onBlur={() => addTag()}
               placeholder="输入标签后回车"
-              className="w-full rounded-xl border border-border bg-primary-50/50 px-3.5 py-2 text-sm text-ink outline-none placeholder:text-muted/40 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:placeholder:text-[#a0a0c0]/40 dark:focus:border-primary-400"
+              className="w-full rounded-xl border border-border bg-primary-50/50 px-3.5 py-2 text-sm text-ink outline-none placeholder:text-muted/40 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20"
             />
           </div>
 
           {/* 图片 */}
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-medium text-muted dark:text-[#a0a0c0]">
+              <span className="text-xs font-medium text-muted">
                 图片 ({images.length}/{MAX_IMAGES})
               </span>
               {images.length < MAX_IMAGES && (
@@ -241,7 +241,7 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
                   type="button"
                   onClick={() => imageInputRef.current?.click()}
                   disabled={uploadingImage}
-                  className="rounded-lg bg-primary-50 px-2 py-0.5 text-xs text-muted transition hover:bg-primary-100 disabled:opacity-50 dark:bg-[#3a3a58] dark:text-[#a0a0c0] dark:hover:bg-[#484868]"
+                  className="rounded-lg bg-primary-50 px-2 py-0.5 text-xs text-muted transition hover:bg-primary-100 disabled:opacity-50"
                 >
                   {uploadingImage ? "处理中..." : "+ 添加"}
                 </button>
@@ -262,7 +262,7 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
                     <img
                       src={img}
                       alt=""
-                      className="h-16 w-16 rounded-xl object-cover border border-border dark:border-[#3a3a58]"
+                      className="h-16 w-16 rounded-xl object-cover border border-border"
                     />
                     <button
                       type="button"
@@ -278,7 +278,7 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
           </div>
 
           {error && (
-            <div className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-950/40 dark:text-red-400">
+            <div className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600">
               {error}
             </div>
           )}
@@ -287,14 +287,14 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-border px-4 py-2 text-sm text-muted transition hover:bg-primary-50 dark:border-[#3a3a58] dark:text-[#a0a0c0] dark:hover:bg-[#3a3a58]"
+              className="rounded-xl border border-border px-4 py-2 text-sm text-muted transition hover:bg-primary-50"
             >
               取消
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="rounded-xl bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-95 disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+              className="rounded-xl bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-95 disabled:opacity-50"
             >
               {loading ? "保存中..." : "保存"}
             </button>

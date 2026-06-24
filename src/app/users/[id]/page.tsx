@@ -53,23 +53,23 @@ export default async function UserPage({ params }: PageProps) {
   if (!profileUser) notFound();
 
   return (
-    <div className="flex min-h-screen flex-col bg-primary-50 dark:bg-[#16162a] relative">
+    <div className="flex min-h-screen flex-col bg-primary-50 relative">
       <BackgroundMonsters />
 
       {/* 导航 */}
-      <header className="sticky top-0 z-10 border-b border-border bg-primary-50/80 backdrop-blur-md dark:border-[#3a3a58] dark:bg-[#16162a]/80">
+      <header className="sticky top-0 z-10 border-b border-border bg-primary-50/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
-          <span className="text-lg font-bold tracking-tight text-ink dark:text-[#e8e8f8]">
+          <span className="text-lg font-bold tracking-tight text-ink">
             🐾 Mashiro Chat
           </span>
-          <nav className="flex items-center gap-4 text-sm text-muted dark:text-[#a0a0c0]">
+          <nav className="flex items-center gap-4 text-sm text-muted">
             <NavHomeLink />
             <NavFeatureLink />
-            <span className="mx-1 h-4 w-px bg-border dark:bg-[#3a3a58]" />
+            <span className="mx-1 h-4 w-px bg-border" />
             {currentUser ? (
               <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
             ) : (
-              <Link href="/login" className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97] dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300">
+              <Link href="/login" className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97]">
                 登录
               </Link>
             )}
@@ -99,26 +99,26 @@ export default async function UserPage({ params }: PageProps) {
               alt=""
               className={`rounded-full border-4 object-cover ${
                 profileUser.background
-                  ? "h-24 w-24 border-surface dark:border-[#222240]"
-                  : "h-20 w-20 border-surface dark:border-[#222240]"
+                  ? "h-24 w-24 border-surface"
+                  : "h-20 w-20 border-surface"
               }`}
             />
           ) : (
             <span
               className={`inline-flex items-center justify-center rounded-full bg-primary-500 font-bold text-white border-4 ${
                 profileUser.background
-                  ? "h-24 w-24 text-3xl border-surface dark:border-[#222240]"
-                  : "h-20 w-20 text-2xl border-surface dark:border-[#222240]"
+                  ? "h-24 w-24 text-3xl border-surface"
+                  : "h-20 w-20 text-2xl border-surface"
               }`}
             >
               {profileUser.name?.charAt(0) || "?"}
             </span>
           )}
           <div className="pb-1">
-            <h1 className="text-2xl font-bold text-ink dark:text-[#e8e8f8]">
+            <h1 className="text-2xl font-bold text-ink">
               {profileUser.name || "未命名用户"}
             </h1>
-            <p className="text-sm text-muted/70 dark:text-[#a0a0c0]/70">
+            <p className="text-sm text-muted/70">
               加入于 {new Date(profileUser.createdAt).toLocaleDateString("zh-CN", {
                 year: "numeric",
                 month: "long",
@@ -131,22 +131,22 @@ export default async function UserPage({ params }: PageProps) {
 
         {/* Bio */}
         {profileUser.bio && (
-          <p className="mb-8 text-sm leading-relaxed text-muted dark:text-[#a0a0c0]">
+          <p className="mb-8 text-sm leading-relaxed text-muted">
             {profileUser.bio}
           </p>
         )}
 
         {/* 分隔线 */}
-        <div className="mb-8 border-t border-border dark:border-[#3a3a58]" />
+        <div className="mb-8 border-t border-border" />
 
         {/* 文章列表 */}
-        <h2 className="mb-6 text-lg font-semibold text-ink dark:text-[#e8e8f8]">
+        <h2 className="mb-6 text-lg font-semibold text-ink">
           {profileUser.name || "TA"} 的文章 ({profileUser._count.posts})
         </h2>
 
         {profileUser.posts.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-primary-200 p-12 text-center dark:border-[#3a3a58]">
-            <p className="text-muted dark:text-[#a0a0c0]">暂无已发布文章</p>
+          <div className="rounded-2xl border border-dashed border-primary-200 p-12 text-center">
+            <p className="text-muted">暂无已发布文章</p>
           </div>
         ) : (
           <UserPostList
@@ -155,7 +155,7 @@ export default async function UserPage({ params }: PageProps) {
         )}
       </main>
 
-      <footer className="border-t border-border py-8 text-center text-sm text-muted/70 dark:border-[#3a3a58] dark:text-[#a0a0c0]/70">
+      <footer className="border-t border-border py-8 text-center text-sm text-muted/70">
         Built with Next.js + Prisma + SQLite
       </footer>
     </div>

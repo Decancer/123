@@ -72,7 +72,7 @@ export function CommentItem({ comment, currentUserId, currentUserRole }: Comment
   }
 
   return (
-    <div className="rounded-xl border border-border bg-surface p-4 shadow-card dark:border-[#3a3a58] dark:bg-[#222240]">
+    <div className="rounded-xl border border-border bg-surface p-4 shadow-card">
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <AuthorLink
@@ -80,7 +80,7 @@ export function CommentItem({ comment, currentUserId, currentUserRole }: Comment
             name={comment.author.name || "User"}
             avatar={comment.author.avatar}
           />
-          <time className="text-xs text-muted/60 dark:text-[#a0a0c0]/60" dateTime={new Date(comment.createdAt).toISOString()}>
+          <time className="text-xs text-muted/60" dateTime={new Date(comment.createdAt).toISOString()}>
             {new Date(comment.createdAt).toLocaleDateString("zh-CN")}
           </time>
         </div>
@@ -91,7 +91,7 @@ export function CommentItem({ comment, currentUserId, currentUserRole }: Comment
             {isOwn && (
               <button
                 onClick={() => { setEditing(true); setEditText(content); }}
-                className="rounded p-0.5 text-muted/40 transition hover:text-primary-500 dark:text-[#a0a0c0]/40 dark:hover:text-primary-400"
+                className="rounded p-0.5 text-muted/40 transition hover:text-primary-500"
                 title="编辑"
               >
                 <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,14 +104,14 @@ export function CommentItem({ comment, currentUserId, currentUserRole }: Comment
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="rounded px-1.5 py-0.5 text-[10px] font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30"
+                  className="rounded px-1.5 py-0.5 text-[10px] font-medium text-red-500 hover:bg-red-50"
                 >
                   {deleting ? "..." : "确定"}
                 </button>
               ) : (
                 <button
                   onClick={() => setDeleteConfirm(true)}
-                  className="rounded p-0.5 text-muted/40 transition hover:text-red-500 dark:text-[#a0a0c0]/40"
+                  className="rounded p-0.5 text-muted/40 transition hover:text-red-500"
                   title="删除"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,28 +130,28 @@ export function CommentItem({ comment, currentUserId, currentUserRole }: Comment
           <textarea
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
-            className="w-full rounded-xl border border-border bg-primary-50/50 px-3 py-2 text-sm text-ink outline-none focus:border-primary-400 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:focus:border-primary-400"
+            className="w-full rounded-xl border border-border bg-primary-50/50 px-3 py-2 text-sm text-ink outline-none focus:border-primary-400"
             rows={3}
           />
           <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={() => setEditing(false)}
-              className="rounded-lg border border-border px-3 py-1 text-xs text-muted hover:bg-primary-50 dark:border-[#3a3a58] dark:text-[#a0a0c0] dark:hover:bg-[#3a3a58]"
+              className="rounded-lg border border-border px-3 py-1 text-xs text-muted hover:bg-primary-50"
             >
               取消
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="rounded-lg bg-primary-500 px-3 py-1 text-xs font-medium text-white shadow-sm hover:bg-primary-600 disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+              className="rounded-lg bg-primary-500 px-3 py-1 text-xs font-medium text-white shadow-sm hover:bg-primary-600 disabled:opacity-50"
             >
               {saving ? "保存中..." : "保存"}
             </button>
           </div>
         </form>
       ) : (
-        <p className="text-sm leading-relaxed text-muted dark:text-[#a0a0c0]">
+        <p className="text-sm leading-relaxed text-muted">
           {content}
         </p>
       )}

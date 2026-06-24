@@ -35,22 +35,22 @@ export default async function Home({ searchParams }: HomeProps) {
   ]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-primary-50 dark:bg-[#16162a] relative">
+    <div className="flex min-h-screen flex-col bg-primary-50 relative">
       {/* 背景装饰生物 */}
       <BackgroundMonsters />
 
       {/* 顶部导航 */}
-      <header className="sticky top-0 z-10 border-b border-border bg-primary-50/80 backdrop-blur-md dark:border-[#3a3a58] dark:bg-[#16162a]/80">
+      <header className="sticky top-0 z-10 border-b border-border bg-primary-50/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
-          <span className="text-lg font-bold tracking-tight text-ink dark:text-[#e8e8f8]">
+          <span className="text-lg font-bold tracking-tight text-ink">
             🐾 Mashiro Chat
           </span>
-          <nav className="flex items-center gap-4 text-sm text-muted dark:text-[#a0a0c0]">
+          <nav className="flex items-center gap-4 text-sm text-muted">
             <NavHomeLink />
             <NavFeatureLink />
 
             {/* 分隔线 */}
-            <span className="mx-1 h-4 w-px bg-border dark:bg-[#3a3a58]" />
+            <span className="mx-1 h-4 w-px bg-border" />
 
             {currentUser ? (
               <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
@@ -58,13 +58,13 @@ export default async function Home({ searchParams }: HomeProps) {
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97] dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97]"
                 >
                   登录
                 </Link>
                 <Link
                   href="/register"
-                  className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted transition hover:border-primary-300 hover:bg-primary-50 hover:text-ink active:scale-[0.97] dark:border-[#3a3a58] dark:text-[#a0a0c0] dark:hover:border-primary-500 dark:hover:bg-[#2a2a48] dark:hover:text-[#e8e8f8]"
+                  className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted transition hover:border-primary-300 hover:bg-primary-50 hover:text-ink active:scale-[0.97]"
                 >
                   注册
                 </Link>
@@ -85,9 +85,9 @@ export default async function Home({ searchParams }: HomeProps) {
         <PostList posts={JSON.parse(JSON.stringify(posts))} initialCategory={initialCategory} />
 
         {/* 技术栈说明 */}
-        <div className="mt-16 rounded-2xl border border-border bg-surface p-6 shadow-card dark:border-[#3a3a58] dark:bg-[#222240]">
-          <h3 className="mb-3 font-semibold text-ink dark:text-[#e8e8f8]">🛠️ 技术栈</h3>
-          <div className="grid grid-cols-2 gap-2 text-sm text-muted dark:text-[#a0a0c0]">
+        <div className="mt-16 rounded-2xl border border-border bg-surface p-6 shadow-card">
+          <h3 className="mb-3 font-semibold text-ink">🛠️ 技术栈</h3>
+          <div className="grid grid-cols-2 gap-2 text-sm text-muted">
             <div>• Next.js 16（App Router）</div>
             <div>• Auth（JWT + Cookie）</div>
             <div>• Prisma 7（ORM）</div>
@@ -101,7 +101,7 @@ export default async function Home({ searchParams }: HomeProps) {
       </main>
 
       {/* 页脚 */}
-      <footer className="border-t border-border py-8 text-center text-sm text-muted/70 dark:border-[#3a3a58] dark:text-[#a0a0c0]/70">
+      <footer className="border-t border-border py-8 text-center text-sm text-muted/70">
         Built with Next.js + Prisma + SQLite
       </footer>
     </div>

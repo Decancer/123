@@ -45,9 +45,9 @@ export function ChatWidget({ user }: ChatWidgetProps) {
   if (!user) {
     return (
       <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[70]">
-        <div className="flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 shadow-card dark:border-[#3a3a58] dark:bg-[#222240]">
+        <div className="flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 shadow-card">
           <img src="/mashiro.svg" alt="Mashiro" className="h-6 w-6 rounded-full" />
-          <span className="text-xs text-muted dark:text-[#a0a0c0]">登录后可与我对话</span>
+          <span className="text-xs text-muted">登录后可与我对话</span>
         </div>
       </div>
     );
@@ -77,7 +77,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
               })
             )
           }
-          className="h-14 w-14 rounded-full shadow-card transition hover:scale-110 hover:shadow-glow overflow-hidden ring-2 ring-primary-200 hover:ring-primary-400 dark:ring-primary-500/30 dark:hover:ring-primary-400/50"
+          className="h-14 w-14 rounded-full shadow-card transition hover:scale-110 hover:shadow-glow overflow-hidden ring-2 ring-primary-200 hover:ring-primary-400"
           aria-label="打开 AI 聊天"
         >
           <img src="/mashiro.svg" alt="Mashiro" className="h-full w-full object-cover" />
@@ -86,18 +86,18 @@ export function ChatWidget({ user }: ChatWidgetProps) {
 
       {/* 展开：聊天面板 */}
       {open && (
-        <div className="flex h-[500px] w-[calc(100vw-1.5rem)] sm:w-[380px] flex-col rounded-2xl border border-border bg-surface shadow-xl dark:border-[#3a3a58] dark:bg-[#222240]">
+        <div className="flex h-[500px] w-[calc(100vw-1.5rem)] sm:w-[380px] flex-col rounded-2xl border border-border bg-surface shadow-xl">
           {/* 头部 */}
-          <div className="flex items-center justify-between border-b border-border px-4 py-3 dark:border-[#3a3a58]">
+          <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <div className="flex items-center gap-2">
               <img src="/mashiro.svg" alt="Mashiro" className="h-7 w-7 rounded-full" />
-              <span className="text-sm font-medium text-ink dark:text-[#e8e8f8]">
+              <span className="text-sm font-medium text-ink">
                 Mashiro
               </span>
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="rounded-lg p-1 text-muted/60 transition hover:bg-primary-50 hover:text-ink dark:hover:bg-[#3a3a58] dark:hover:text-[#e8e8f8]"
+              className="rounded-lg p-1 text-muted/60 transition hover:bg-primary-50 hover:text-ink"
               aria-label="关闭聊天"
             >
               <svg
@@ -121,7 +121,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
             {messages.length === 0 && (
               <div className="text-center py-8">
                 <img src="/mashiro.svg" alt="Mashiro" className="mx-auto h-12 w-12 rounded-full" />
-                <p className="mt-2 text-sm text-muted dark:text-[#a0a0c0]">
+                <p className="mt-2 text-sm text-muted">
                   你好，{user.name}！有什么我可以帮你的吗？
                 </p>
               </div>
@@ -138,7 +138,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
                   className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
                     m.role === "user"
                       ? "bg-primary-500 text-white"
-                      : "bg-primary-50 text-ink dark:bg-[#3a3a58] dark:text-[#e8e8f8]"
+                      : "bg-primary-50 text-ink"
                   }`}
                 >
                   {getMessageText(m)}
@@ -149,7 +149,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
             {/* 加载动画 */}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="rounded-2xl bg-primary-50 px-4 py-2.5 dark:bg-[#3a3a58]">
+                <div className="rounded-2xl bg-primary-50 px-4 py-2.5">
                   <span className="inline-flex gap-1">
                     <span
                       className="h-2 w-2 animate-bounce rounded-full bg-primary-400"
@@ -170,7 +170,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
 
             {/* 错误提示 */}
             {error && (
-              <div className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-950/40 dark:text-red-400">
+              <div className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600">
                 {error.message || "发送失败，请重试"}
               </div>
             )}
@@ -181,7 +181,7 @@ export function ChatWidget({ user }: ChatWidgetProps) {
           {/* 输入区 */}
           <form
             onSubmit={handleSubmit}
-            className="border-t border-border p-3 dark:border-[#3a3a58]"
+            className="border-t border-border p-3"
           >
             <div className="flex gap-2">
               <input
@@ -189,12 +189,12 @@ export function ChatWidget({ user }: ChatWidgetProps) {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="输入消息..."
                 disabled={isLoading}
-                className="flex-1 rounded-xl border border-border bg-primary-50/50 px-3.5 py-2 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:border-[#3a3a58] dark:bg-[#16162a] dark:text-[#e8e8f8] dark:placeholder:text-[#a0a0c0]/50 dark:focus:border-primary-400"
+                className="flex-1 rounded-xl border border-border bg-primary-50/50 px-3.5 py-2 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20"
               />
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="rounded-xl bg-primary-500 px-3.5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 active:scale-95 disabled:opacity-50 dark:bg-primary-400 dark:text-[#16162a] dark:hover:bg-primary-300"
+                className="rounded-xl bg-primary-500 px-3.5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 active:scale-95 disabled:opacity-50"
               >
                 发送
               </button>
