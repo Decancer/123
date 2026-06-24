@@ -27,7 +27,7 @@ export default async function ChatRoomPage() {
             <NavFeatureLink />
             <span className="mx-1 h-4 w-px bg-border" />
             {user ? (
-              <UserMenu userName={user.name || "User"} avatar={user.avatar} />
+              <UserMenu userId={user.id} userName={user.name || "User"} avatar={user.avatar} />
             ) : (
               <div className="flex items-center gap-2">
                 <Link

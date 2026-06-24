@@ -6,19 +6,30 @@ import { createPortal } from "react-dom";
 import { useLoadingReaction } from "@/lib/useLive2DReaction";
 
 interface UserMenuProps {
+  userId: number;
   userName: string;
   avatar: string | null;
 }
 
-export function UserMenu({ userName, avatar }: UserMenuProps) {
+export function UserMenu({ userId, userName, avatar }: UserMenuProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState<"logout" | "delete" | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [navLoading, setNavLoading] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   useLoadingReaction(navLoading);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // 下拉打开时拉取未读私信数
+  useEffect(() => {
+    if (!open) return;
+    fetch("/api/messages/unread-count")
+      .then((r) => r.json())
+      .then((d) => setUnreadCount(d.count ?? 0))
+      .catch(() => {});
+  }, [open]);
 
   // 点击外部关闭菜单
   useEffect(() => {
@@ -134,6 +145,24 @@ export function UserMenu({ userName, avatar }: UserMenuProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
             个人主页
+          </button>
+
+          {/* 私信 */}
+          <button
+            onClick={() => { setNavLoading(true); router.push("/messages"); setOpen(false); }}
+            className={`flex w-full items-center gap-2 px-4 py-2 text-sm transition hover:bg-primary-50 hover:text-ink ${
+              unreadCount > 0 ? "text-primary-500 font-medium" : "text-muted"
+            }`}
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+            消息
+            {unreadCount > 0 && (
+              <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-500 px-1.5 text-[10px] font-bold text-white">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
           </button>
 
           {/* 退出登录 */}

@@ -7,6 +7,7 @@ import { BackToHomeLink } from "@/components/BackToHomeLink";
 import { UserPostList } from "@/components/UserPostList";
 import { NavHomeLink } from "@/components/NavHomeLink";
 import { NavFeatureLink } from "@/components/NavFeatureLink";
+import { PrivateMessageButton } from "@/components/PrivateMessageButton";
 import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -67,7 +68,7 @@ export default async function UserPage({ params }: PageProps) {
             <NavFeatureLink />
             <span className="mx-1 h-4 w-px bg-border" />
             {currentUser ? (
-              <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
+              <UserMenu userId={currentUser.id} userName={currentUser.name || "User"} avatar={currentUser.avatar} />
             ) : (
               <Link href="/login" className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97]">
                 登录
@@ -131,9 +132,19 @@ export default async function UserPage({ params }: PageProps) {
 
         {/* Bio */}
         {profileUser.bio && (
-          <p className="mb-8 text-sm leading-relaxed text-muted">
+          <p className="mb-4 text-sm leading-relaxed text-muted">
             {profileUser.bio}
           </p>
+        )}
+
+        {/* 私信按钮（仅对已登录且非本人显示） */}
+        {currentUser && currentUser.id !== profileUser.id && (
+          <div className="mb-4">
+            <PrivateMessageButton
+              userId={profileUser.id}
+              userName={profileUser.name}
+            />
+          </div>
         )}
 
         {/* 分隔线 */}

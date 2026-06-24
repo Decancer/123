@@ -30,6 +30,12 @@ const features: FeatureCard[] = [
     href: "/dressing-room",
   },
   {
+    icon: "✉️",
+    title: "私信",
+    desc: "想和某位用户单独聊聊？在 TA 的个人主页点击私信按钮，或者在这里查看你的所有私信对话～",
+    href: "/messages",
+  },
+  {
     icon: "🎭",
     title: "Live2D 看板娘",
     desc: "全站右下角驻扎！点击她会切换表情动作，害羞、惊讶、生气… 还会对页面操作做出反应呢～",
@@ -86,7 +92,7 @@ export default async function FeaturesPage() {
             <span className="mx-1 h-4 w-px bg-border" />
 
             {currentUser ? (
-              <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
+              <UserMenu userId={currentUser.id} userName={currentUser.name || "User"} avatar={currentUser.avatar} />
             ) : (
               <div className="flex items-center gap-2">
                 <Link

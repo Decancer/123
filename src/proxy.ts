@@ -21,13 +21,14 @@ const PUBLIC_PATHS = [
   "/api/comments",
   "/api/profile",
   "/api/chat-room",
+  "/api/messages",
   "/api/users",
   "/_next",
   "/favicon.ico",
 ];
 
 // 页面路径（不依赖 API，直接可访问）
-const PUBLIC_PAGES = ["/chat-room", "/features", "/dressing-room", "/users", "/icon.svg"];
+const PUBLIC_PAGES = ["/chat-room", "/features", "/dressing-room", "/users", "/messages", "/icon.svg"];
 
 function isPublicPath(pathname: string) {
   if (

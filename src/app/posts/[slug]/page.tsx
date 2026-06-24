@@ -93,7 +93,7 @@ export default async function PostPage({ params }: PageProps) {
             <span className="mx-1 h-4 w-px bg-border" />
 
             {currentUser ? (
-              <UserMenu userName={currentUser.name || "User"} avatar={currentUser.avatar} />
+              <UserMenu userId={currentUser.id} userName={currentUser.name || "User"} avatar={currentUser.avatar} />
             ) : (
               <div className="flex items-center gap-2">
                 <Link

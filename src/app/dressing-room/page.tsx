@@ -66,7 +66,7 @@ export default function DressingRoomPage() {
             <NavFeatureLink />
             <span className="mx-1 h-4 w-px bg-border" />
             {currentUser ? (
-              <UserMenu userName={currentUser.name} avatar={currentUser.avatar ?? null} />
+              <UserMenu userId={Number(currentUser.id)} userName={currentUser.name} avatar={currentUser.avatar ?? null} />
             ) : (
               <div className="flex items-center gap-2">
                 <Link

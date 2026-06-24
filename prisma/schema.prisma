@@ -99,6 +99,23 @@ model ChatRoomPresence {
   @@map("chat_room_presence")
 }
 
+model PrivateMessage {
+  id             Int      @id @default(autoincrement())
+  content        String
+  senderId       Int      @map("sender_id")
+  senderName     String   @map("sender_name")
+  senderAvatar   String?  @map("sender_avatar")
+  receiverId     Int      @map("receiver_id")
+  receiverName   String   @map("receiver_name")
+  receiverAvatar String?  @map("receiver_avatar")
+  isRead         Boolean  @default(false) @map("is_read")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([senderId, receiverId])
+  @@index([receiverId, isRead])
+  @@map("private_messages")
+}
+
 model Tag {
   id    Int        @id @default(autoincrement())
   name  String     @unique
