@@ -35,6 +35,12 @@ const features: FeatureCard[] = [
     desc: "想和某位用户单独聊聊？在 TA 的个人主页点击私信按钮，或者在这里查看你的所有私信对话～",
     href: "/messages",
   },
+  {
+    icon: "👾",
+    title: "怪兽实验室",
+    desc: "控制左下角的小怪兽！自由增减数量、改变形状和颜色，最多同时显示 5 只，打造你的怪兽小队～",
+    href: "/monster-lab",
+  },
 ];
 
 export default async function FeaturesPage() {
