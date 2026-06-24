@@ -44,6 +44,42 @@ export function BackgroundMonsters() {
         mouthWidth={28}
         mouthSensitivity={1.2}
       />
+
+      {/* 黄色矮胖 — 紧挨着橙色，同形状 */}
+      <SlenderMonster
+        color="#eab308"
+        name="黄色矮胖"
+        left="calc(4% + 136px)"
+        bottom="5%"
+        width={90}
+        height={160}
+        eyeSize={40}
+        pupilSize={14}
+        eyeColor="transparent"
+        zIndex={1}
+        maxSkew={3}
+        borderRadius="80px 80px 0 0"
+        showFeet={false}
+        showMouth
+        mouthWidth={28}
+        mouthSensitivity={1.2}
+      />
+
+      {/* 紫色宽矮 — 最右，超宽超矮 */}
+      <SlenderMonster
+        color="#a855f7"
+        name="紫色宽矮"
+        left="calc(4% + 228px)"
+        bottom="3%"
+        width={120}
+        height={100}
+        eyeSize={28}
+        pupilSize={10}
+        zIndex={1}
+        maxSkew={4}
+        borderRadius="12px 12px 0 0"
+        showFeet={false}
+      />
     </div>
   );
 }
