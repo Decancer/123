@@ -192,7 +192,12 @@ export function Live2DMashiro() {
       } catch (e) {
         if (!cancelled) {
           console.error("Live2D 初始化失败:", e);
-          setError(e instanceof Error ? e.message : "初始化失败");
+          const msg = e instanceof Error ? e.message : "";
+          if (msg.includes("Cubism 2 runtime") || msg.includes("live2d.min.js")) {
+            setError("Mashiro 正在准备中，稍后再来看看吧～");
+          } else {
+            setError(msg || "初始化失败");
+          }
         }
       }
     }

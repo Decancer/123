@@ -196,11 +196,6 @@ export default function LoginPage() {
           </Link>
         </p>
 
-        {/* 提示 */}
-        <p className="mt-4 text-center text-xs text-muted/60">
-          演示账号：alice@example.com / password123
-        </p>
-
         <div className="mt-6 text-center">
           <Link
             href="/"
