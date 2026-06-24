@@ -11,8 +11,8 @@ export function BackgroundMonsters() {
     >
       {/* 蓝色瘦高 — 外（左） */}
       <SlenderMonster
-        color="#3b82f6"
-        name="蓝色瘦高"
+        color="#1a1a1a"
+        name="黑色瘦高"
         left="4%"
         bottom="3%"
         width={42}
@@ -27,7 +27,7 @@ export function BackgroundMonsters() {
 
       {/* 橙色矮胖 — 紧挨着蓝色 */}
       <SlenderMonster
-        color="#f97316"
+        color="#EE7744"
         name="橙色矮胖"
         left="calc(4% + 44px)"
         bottom="5%"
@@ -47,7 +47,7 @@ export function BackgroundMonsters() {
 
       {/* 黄色矮胖 — 紧挨着橙色，同形状 */}
       <SlenderMonster
-        color="#eab308"
+        color="#fde047"
         name="黄色矮胖"
         left="calc(4% + 136px)"
         bottom="5%"
