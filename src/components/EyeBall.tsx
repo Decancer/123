@@ -69,7 +69,7 @@ export function EyeBall({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        overflow: "hidden",
+        overflow: eyeColor === "transparent" ? "visible" : "hidden",
         transition: "height 0.1s",
         flexShrink: 0,
         ...style,
