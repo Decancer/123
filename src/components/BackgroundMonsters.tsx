@@ -41,7 +41,6 @@ export function BackgroundMonsters() {
         borderRadius="80px 80px 0 0"
         showFeet={false}
         showMouth
-        mouthType="cat"
         mouthWidth={28}
         mouthSensitivity={1.2}
       />
