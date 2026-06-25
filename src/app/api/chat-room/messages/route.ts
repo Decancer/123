@@ -5,6 +5,8 @@ import { getCurrentUser } from "@/lib/auth";
 const MESSAGE_LIMIT = 100;
 const LONG_POLL_TIMEOUT = 8000; // 长轮询最长等 8s（PM2 无超时限制，8s 是体验权衡）
 const DB_POLL_INTERVAL = 200; // 每 200ms 查一次 DB，保证消息及时送达
+const SEND_COOLDOWN_MS = 2000; // 两次发消息最少间隔 2 秒
+const cooldownMap = new Map<number, number>(); // userId → 上次发消息时间戳
 
 /** 等待指定毫秒 */
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -117,6 +119,18 @@ export async function POST(request: NextRequest) {
     if (trimmed.length > 500) {
       return NextResponse.json({ error: "消息不能超过500字" }, { status: 400 });
     }
+
+    // 频率限制：两次发消息最少间隔 2 秒
+    const lastSent = cooldownMap.get(user.id);
+    const now = Date.now();
+    if (lastSent && now - lastSent < SEND_COOLDOWN_MS) {
+      const remainSec = Math.ceil((SEND_COOLDOWN_MS - (now - lastSent)) / 1000);
+      return NextResponse.json(
+        { error: `请慢一点，${remainSec} 秒后再发喵～` },
+        { status: 429 }
+      );
+    }
+    cooldownMap.set(user.id, now);
 
     const message = await prisma.chatRoomMessage.create({
       data: {
