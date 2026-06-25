@@ -10,7 +10,7 @@
 |------|------|
 | 框架 | Next.js 16 (App Router) |
 | 语言 | TypeScript |
-| 数据库 | SQLite (支持 Turso 部署) |
+| 数据库 | SQLite |
 | ORM | Prisma 7 |
 | 样式 | Tailwind CSS v4 |
 | 认证 | JWT + Cookie (jose) |
@@ -101,14 +101,14 @@ e:\13\
 
 ### 2. 数据库模块 (`src/lib/prisma.ts`)
 
-使用 Prisma ORM 连接 SQLite/Turso 数据库。
+使用 Prisma ORM 连接 SQLite 数据库。
 
 #### 初始化逻辑
 ```typescript
 // 开发环境使用全局单例避免热重载创建多个实例
 const prisma = globalForPrisma.prisma ?? createPrismaClient()
 
-// 支持 Turso 云数据库 (需要 AUTH_TOKEN)
+// 本地 SQLite 文件，兼容云端 LibSQL 连接
 const adapter = new PrismaLibSql({ url, ...(authToken ? { authToken } : {}) })
 ```
 
@@ -463,7 +463,6 @@ DEEPSEEK_API_KEY="your-deepseek-api-key"
 | `ecosystem.config.js` | PM2 进程管理配置 |
 | `nginx.conf` | Nginx 反向代理配置 |
 | `SKILL.md` | 部署技能文档 |
-| `VERCEL-TURSO.md` | Vercel + Turso 部署指南 |
 
 ---
 
@@ -495,7 +494,7 @@ DEEPSEEK_API_KEY="your-deepseek-api-key"
 │  └──────────────────────┬──────────────────────────────┘ │
 │                         │                               │
 │  ┌──────────────────────▼──────────────────────────────┐ │
-│  │         SQLite / Turso Database                      │ │
+│  │         SQLite Database                                │ │
 │  └───────────────────────────────────────────────────────┘ │
 │                                                          │
 │  ┌─────────────────────────────────────────────────────┐ │

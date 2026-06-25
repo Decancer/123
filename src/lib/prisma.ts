@@ -12,7 +12,7 @@ function createPrismaClient() {
 
   const adapter = new PrismaLibSql({
     url,
-    // Turso 需要 authToken；本地 SQLite 文件不需要
+    // 云端数据库需要 authToken；本地 SQLite 文件不需要
     ...(authToken ? { authToken } : {}),
   });
 

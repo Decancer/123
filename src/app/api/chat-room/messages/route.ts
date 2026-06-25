@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
 const MESSAGE_LIMIT = 100;
-const LONG_POLL_TIMEOUT = 8000; // 长轮询最长等 8s（Vercel Hobby 限 10s）
+const LONG_POLL_TIMEOUT = 8000; // 长轮询最长等 8s（PM2 无超时限制，8s 是体验权衡）
 const DB_POLL_INTERVAL = 200; // 每 200ms 查一次 DB，保证消息及时送达
 
 /** 等待指定毫秒 */
