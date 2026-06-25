@@ -17,6 +17,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.VPS_HOST }}
           REMOTE_USER: ${{ secrets.VPS_USER }}
           TARGET: /var/www/blog
+          ARGS: -rltDzvc -i --no-group --no-owner
           EXCLUDE: |
             .git
             .gitignore
@@ -26,12 +27,12 @@ jobs:
             dev.db
           SCRIPT_AFTER: |
             cd /var/www/blog
-            sudo npm install --omit=dev
-            sudo npm install --save-dev prisma @types/node typescript tsx
-            sudo npx prisma generate
-            sudo npm run build
-            sudo npx prisma db push
-            sudo mkdir -p .next/standalone/public
-            sudo cp -r public/* .next/standalone/public/
-            sudo cp -r .next/static .next/standalone/.next/
+            npm install --omit=dev
+            npm install --save-dev prisma @types/node typescript tsx
+            npx prisma generate
+            npm run build
+            npx prisma db push
+            mkdir -p .next/standalone/public
+            cp -r public/* .next/standalone/public/
+            cp -r .next/static .next/standalone/.next/
             sudo pm2 reload mashiro-blog
