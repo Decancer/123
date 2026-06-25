@@ -16,6 +16,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /var/www/blog
+            git remote set-url origin git@github.com:Decancer/123.git || true
             git fetch origin main
             git reset --hard origin/main
             npm install --omit=dev
