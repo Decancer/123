@@ -59,7 +59,7 @@ export default async function Home({ searchParams }: HomeProps) {
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-600 hover:shadow-glow active:scale-[0.97]"
+                  className="rounded-lg bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition cursor-pointer hover:bg-primary-600 hover:shadow-glow hover:scale-105 active:scale-[0.97]"
                 >
                   登录
                 </Link>

@@ -121,13 +121,13 @@ export function UserMenu({ userId, userName, avatar }: UserMenuProps) {
       {/* 触发按钮 */}
       <button
         onClick={() => { setOpen(!open); setShowConfirm(false); setShowLogoutConfirm(false); }}
-        className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm transition hover:bg-primary-50"
+        className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm transition cursor-pointer hover:bg-primary-50 hover:scale-105 active:scale-95 group"
       >
         {avatar ? (
           <img
             src={avatar}
             alt=""
-            className="h-6 w-6 rounded-full object-cover ring-2 ring-primary-100"
+            className="h-6 w-6 rounded-full object-cover ring-2 ring-primary-100 transition-all duration-300 group-hover:ring-primary-400 group-hover:ring-[3px] group-hover:shadow-[0_0_12px_rgba(99,102,241,0.4)]"
           />
         ) : (
           <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary-100 text-xs font-medium text-primary-700">
