@@ -68,10 +68,9 @@ export function Live2DMashiro() {
       // 如果还没加载 live2d.min.js（从 COS 加载）
       if (!w.Live2D) {
         try {
-          const cosUrl = process.env.NEXT_PUBLIC_COS_URL || "https://mashiro-chat-1443843125.cos.ap-guangzhou.myqcloud.com";
-          await new Promise<void>((resolve, reject) => {
+            await new Promise<void>((resolve, reject) => {
             const script = document.createElement("script");
-            script.src = `${cosUrl}/live2d/live2d.min.js`;
+            script.src = "/live2d.min.js";
             script.async = false;
             script.onload = () => resolve();
             script.onerror = () =>
