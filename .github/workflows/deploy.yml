@@ -21,7 +21,7 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Deploy via SSH
-        uses: easingthemes/ssh-deploy@v5
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.VPS_HOST }}
@@ -32,15 +32,16 @@ jobs:
             .gitignore
             node_modules
             .env
-            public/live2d*
-            public/live2d.min.js
+            .next
+            dev.db
           SCRIPT_AFTER: |
             cd /var/www/blog
-            npm install --omit=dev
-            npx prisma generate
-            npx next build
-            npx prisma db push
-            mkdir -p .next/standalone/public
-            cp -r public/* .next/standalone/public/
-            cp -r .next/static .next/standalone/.next/
-            pm2 reload mashiro-blog
+            sudo npm install --omit=dev
+            sudo npm install --save-dev prisma @types/node typescript tsx
+            sudo npx prisma generate
+            sudo npm run build
+            sudo npx prisma db push
+            sudo mkdir -p .next/standalone/public
+            sudo cp -r public/* .next/standalone/public/
+            sudo cp -r .next/static .next/standalone/.next/
+            sudo pm2 reload mashiro-blog
