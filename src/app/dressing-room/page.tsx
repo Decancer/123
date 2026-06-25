@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { useLive2DContext, OUTFITS, type OutfitId } from "@/lib/Live2DContext";
+import { useLive2DContext } from "@/lib/Live2DContext";
 import { useLoadingReaction } from "@/lib/useLive2DReaction";
 import { BackgroundMonsters } from "@/components/BackgroundMonsters";
 import { NavHomeLink } from "@/components/NavHomeLink";
@@ -12,7 +12,7 @@ import { UserMenu } from "@/components/UserMenu";
 import { BackToHomeLink } from "@/components/BackToHomeLink";
 
 export default function DressingRoomPage() {
-  const { outfitId, setOutfit } = useLive2DContext();
+  const { characterId, outfitId, characters, currentCharacter, setCharacter, setOutfit } = useLive2DContext();
   const [switching, setSwitching] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [currentUser, setCurrentUser] = useState<{ id: string; name: string; avatar?: string | null } | null>(null);
@@ -29,14 +29,14 @@ export default function DressingRoomPage() {
       .catch(() => {});
   }, []);
 
-  function handleSelect(id: OutfitId) {
+  function handleSelect(id: string) {
     if (id === outfitId) return;
     setSwitching(true);
     setOutfit(id);
     setTimeout(() => setSwitching(false), 1200);
   }
 
-  const outfits = Object.values(OUTFITS);
+  const outfits = Object.values(currentCharacter.outfits);
 
   return (
     <>
@@ -103,11 +103,31 @@ export default function DressingRoomPage() {
             className="mx-auto mb-4 h-20 w-20 drop-shadow-[0_0_12px_rgba(102,119,204,0.3)]"
           />
           <h1 className="mb-2 text-3xl font-bold tracking-tight text-ink">
-            👗 Mashiro 的更衣室
+            👗 {currentCharacter.name} 的更衣室
           </h1>
           <p className="text-muted">
-            帮她挑选一套喜欢的衣服吧～右下角的 Mashiro 会立刻换上新造型哦
+            帮她挑选一套喜欢的衣服吧～右下角的 {currentCharacter.name} 会立刻换上新造型哦
           </p>
+        </div>
+
+        {/* 角色切换 */}
+        <div className="mb-6 flex justify-center gap-2">
+          {characters.map((char) => {
+            const isActive = characterId === char.id;
+            return (
+              <button
+                key={char.id}
+                onClick={() => { if (!isActive) setCharacter(char.id); }}
+                className={`cursor-pointer rounded-full border-2 px-6 py-2 text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "border-primary-500 bg-primary-500 text-white shadow-sm"
+                    : "border-border bg-surface text-muted hover:border-primary-300 hover:text-primary-600"
+                }`}
+              >
+                {char.name}
+              </button>
+            );
+          })}
         </div>
 
         {/* 衣服卡片网格 */}
@@ -157,7 +177,7 @@ export default function DressingRoomPage() {
 
         {/* 提示 */}
         <p className="mt-6 text-center text-sm text-muted/80">
-          💡 切换服装后，右下角的 Mashiro 会立即穿上新衣服哦～
+          💡 切换服装后，右下角的 {currentCharacter.name} 会立即穿上新衣服哦～
         </p>
         <p className="mt-1 text-center text-xs text-muted/50 md:hidden">
           请在电脑端查看 Mashiro 模型效果

@@ -1,0 +1,84 @@
+{
+  "type": "Live2D Model Setting",
+  "name": "ran_school_winter",
+  "model": "ran_school_winter.moc",
+  "textures": ["texture_00.png", "texture_01.png"],
+  "physics": "ran_school_winter.physics.json",
+  "pose": "",
+  "motions": {
+    "idle": [
+      {"file": "idle01.mtn"},
+      {"file": "idle02.mtn"}
+    ],
+    "angry": [
+      {"file": "angry01.mtn"}
+    ],
+    "bye": [
+      {"file": "bye01.mtn"}
+    ],
+    "cry": [
+      {"file": "cry01.mtn"},
+      {"file": "cry02.mtn"},
+      {"file": "cry03.mtn"}
+    ],
+    "kandou": [
+      {"file": "odoodo01.mtn"}
+    ],
+    "kime": [
+      {"file": "kime01.mtn"}
+    ],
+    "nf": [
+      {"file": "nf01.mtn"},
+      {"file": "nf02.mtn"},
+      {"file": "nf03.mtn"},
+      {"file": "nf04.mtn"},
+      {"file": "nf05.mtn"},
+      {"file": "nf_left01.mtn"},
+      {"file": "nf_right01.mtn"}
+    ],
+    "nnf": [
+      {"file": "nnf01.mtn"},
+      {"file": "nnf02.mtn"},
+      {"file": "nnf03.mtn"},
+      {"file": "nnf04.mtn"},
+      {"file": "nnf05.mtn"},
+      {"file": "nnf_left01.mtn"},
+      {"file": "nnf_right01.mtn"}
+    ],
+    "sad": [
+      {"file": "sad01.mtn"}
+    ],
+    "serious": [
+      {"file": "serious01.mtn"}
+    ],
+    "smile": [
+      {"file": "smile01.mtn"},
+      {"file": "smile02.mtn"},
+      {"file": "smile03.mtn"}
+    ],
+    "surprised": [
+      {"file": "surprised01.mtn"},
+      {"file": "surprised02.mtn"}
+    ],
+    "thinking": [
+      {"file": "thinking01.mtn"}
+    ],
+    "uziuzi": [
+      {"file": "pui01.mtn"}
+    ],
+    "gacha": [
+      {"file": "kime01.mtn"}
+    ]
+  },
+  "expressions": [
+    {"name": "angry", "file": "angry01.exp.json"},
+    {"name": "cry", "file": "cry01.exp.json"},
+    {"name": "default", "file": "default.exp.json"},
+    {"name": "kime", "file": "kime01.exp.json"},
+    {"name": "sad", "file": "sad01.exp.json"},
+    {"name": "serious", "file": "serious01.exp.json"},
+    {"name": "smile", "file": "smile01.exp.json"},
+    {"name": "surprised", "file": "surprised01.exp.json"},
+    {"name": "reset", "file": "default.exp.json"}
+  ]
+}
