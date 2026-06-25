@@ -3,12 +3,13 @@
 import { useState, useRef, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { RichTextEditor } from "./RichTextEditor";
+import { uploadToCos } from "@/lib/upload";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB 原始文件上限
 const MAX_DIMENSION = 1920; // 压缩后最大宽度
 
-/** 将 File 压缩并转为 base64 */
-function compressAndEncode(file: File): Promise<string> {
+/** 将 File 压缩并转为 Blob（用于上传 COS） */
+function compressToBlob(file: File): Promise<File> {
   return new Promise((resolve, reject) => {
     if (file.size > MAX_IMAGE_SIZE) {
       reject(new Error(`图片 "${file.name}" 超过 5MB 限制`));
@@ -20,9 +21,9 @@ function compressAndEncode(file: File): Promise<string> {
       const img = new Image();
       img.onload = () => {
         const { width, height } = img;
-        // 不需要压缩的小图直接返回
+        // 不需要压缩的小图直接返回原文件
         if (width <= MAX_DIMENSION && file.size < 500 * 1024) {
-          resolve(reader.result as string);
+          resolve(file);
           return;
         }
 
@@ -33,7 +34,17 @@ function compressAndEncode(file: File): Promise<string> {
         canvas.height = Math.round(height * ratio);
         const ctx = canvas.getContext("2d")!;
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", 0.8));
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject(new Error("图片压缩失败"));
+              return;
+            }
+            resolve(new File([blob], file.name, { type: "image/jpeg" }));
+          },
+          "image/jpeg",
+          0.8
+        );
       };
       img.onerror = () => reject(new Error("图片加载失败"));
       img.src = reader.result as string;
@@ -73,8 +84,14 @@ export function WriteArticleButton() {
     setUploadingImage(true);
     setError("");
     try {
-      const base64Arr = await Promise.all(files.map(compressAndEncode));
-      setImages((prev) => [...prev, ...base64Arr].slice(0, MAX_IMAGES));
+      // 压缩 → 直传 COS → 拿回 URL
+      const urls = await Promise.all(
+        files.map(async (file) => {
+          const compressed = await compressToBlob(file);
+          return uploadToCos(compressed, "post-image");
+        })
+      );
+      setImages((prev) => [...prev, ...urls].slice(0, MAX_IMAGES));
     } catch {
       setError("图片处理失败");
     } finally {

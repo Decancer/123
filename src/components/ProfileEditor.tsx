@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import { uploadToCos } from "@/lib/upload";
 
 interface ProfileData {
   name: string | null;
@@ -22,17 +23,19 @@ export function ProfileEditor({ user }: { user: ProfileData }) {
       setError("");
 
       try {
-        const formData = new FormData();
-        formData.append(field, file);
+        // 1. 直传 COS
+        const cosUrl = await uploadToCos(file, field);
 
+        // 2. 把 COS URL 发给后端存 DB
         const res = await fetch("/api/profile", {
           method: "PATCH",
-          body: formData,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [field]: cosUrl }),
         });
 
         if (!res.ok) {
           const errData = await res.json();
-          throw new Error(errData.error || "上传失败");
+          throw new Error(errData.error || "保存失败");
         }
 
         // 整页刷新，确保导航栏等处的头像和背景同步更新

@@ -26,6 +26,7 @@
     "@tiptap/starter-kit": "^3.27.0",
     "ai": "^6.0.206",
     "bcryptjs": "^3.0.3",
+    "cos-nodejs-sdk-v5": "^2.15.4",
     "dotenv": "^17.4.2",
     "jose": "^6.2.3",
     "next": "16.2.9",

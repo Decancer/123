@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { stripHtml } from "@/lib/sanitize";
+import { isValidImageValue } from "@/lib/cos";
 
 // PATCH /api/posts/[slug] — 编辑文章（仅作者本人）
 export async function PATCH(
@@ -32,15 +33,13 @@ export async function PATCH(
     const body = await request.json();
     const { title, content, excerpt, category, tags, images } = body;
 
-    // 验证图片
+    // 验证图片（过渡期：COS URL 或 base64 data URI 均接受）
     let imagesJson: string | null | undefined;
     if (Array.isArray(images)) {
       if (images.length === 0) {
         imagesJson = null; // 清空图片
       } else {
-        const validImages = images.slice(0, 6).filter(
-          (img: unknown) => typeof img === "string" && img.startsWith("data:image/")
-        );
+        const validImages = images.slice(0, 6).filter(isValidImageValue);
         imagesJson = JSON.stringify(validImages);
       }
     }

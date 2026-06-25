@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { stripHtml } from "@/lib/sanitize";
+import { isValidImageValue } from "@/lib/cos";
 
 const PAGE_SIZE = 10;
 
@@ -104,12 +105,10 @@ export async function POST(request: NextRequest) {
       })
     );
 
-    // 验证图片
+    // 验证图片（过渡期：COS URL 或 base64 data URI 均接受）
     let imagesJson: string | null = null;
     if (Array.isArray(images) && images.length > 0) {
-      const validImages = images.slice(0, 6).filter(
-        (img: unknown) => typeof img === "string" && img.startsWith("data:image/")
-      );
+      const validImages = images.slice(0, 6).filter(isValidImageValue);
       if (validImages.length > 0) {
         imagesJson = JSON.stringify(validImages);
       }

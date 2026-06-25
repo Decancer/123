@@ -2,11 +2,12 @@
 
 import { useState, useRef, useEffect, type FormEvent } from "react";
 import { RichTextEditor } from "./RichTextEditor";
+import { uploadToCos } from "@/lib/upload";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const MAX_DIMENSION = 1920;
 
-function compressAndEncode(file: File): Promise<string> {
+function compressToBlob(file: File): Promise<File> {
   return new Promise((resolve, reject) => {
     if (file.size > MAX_IMAGE_SIZE) {
       reject(new Error(`图片 "${file.name}" 超过 5MB 限制`));
@@ -18,7 +19,7 @@ function compressAndEncode(file: File): Promise<string> {
       img.onload = () => {
         const { width, height } = img;
         if (width <= MAX_DIMENSION && file.size < 500 * 1024) {
-          resolve(reader.result as string);
+          resolve(file);
           return;
         }
         const canvas = document.createElement("canvas");
@@ -27,7 +28,14 @@ function compressAndEncode(file: File): Promise<string> {
         canvas.height = Math.round(height * ratio);
         const ctx = canvas.getContext("2d")!;
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", 0.8));
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) { reject(new Error("图片压缩失败")); return; }
+            resolve(new File([blob], file.name, { type: "image/jpeg" }));
+          },
+          "image/jpeg",
+          0.8
+        );
       };
       img.onerror = () => reject(new Error("图片加载失败"));
       img.src = reader.result as string;
@@ -84,8 +92,13 @@ export function EditPostForm({ post, onClose, onSaved }: EditPostFormProps) {
     setUploadingImage(true);
     setError("");
     try {
-      const base64Arr = await Promise.all(files.map(compressAndEncode));
-      setImages((prev) => [...prev, ...base64Arr].slice(0, MAX_IMAGES));
+      const urls = await Promise.all(
+        files.map(async (file) => {
+          const compressed = await compressToBlob(file);
+          return uploadToCos(compressed, "post-image");
+        })
+      );
+      setImages((prev) => [...prev, ...urls].slice(0, MAX_IMAGES));
     } catch {
       setError("图片处理失败");
     } finally {
