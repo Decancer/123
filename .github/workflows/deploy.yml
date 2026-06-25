@@ -40,6 +40,7 @@ jobs:
             npx prisma generate
             npx next build
             npx prisma db push
-            cp -r public .next/standalone/
+            mkdir -p .next/standalone/public
+            cp -r public/* .next/standalone/public/
             cp -r .next/static .next/standalone/.next/
-            pm2 reload deploy/ecosystem.config.js
+            pm2 reload mashiro-blog
