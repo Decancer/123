@@ -1,19 +1,16 @@
 // PM2 进程管理配置
 // 放至: /var/www/blog/ecosystem.config.js
 // 启动: pm2 start ecosystem.config.js
-// 注意：环境变量建议用 node --env-file=.env 方式加载，见 SKILL.md Step 9
+// 自启: pm2 save && pm2 startup
 
 module.exports = {
   apps: [
     {
-      name: "blog",
+      name: "mashiro-blog",
       script: "node_modules/.bin/next",
       args: "start",
-      cwd: "/var/www/blog/app",
-      env: {
-        NODE_ENV: "production",
-        PORT: "3000",
-      },
+      cwd: "/var/www/blog",
+      env_file: "/var/www/blog/.env",
       instances: 1,
       exec_mode: "fork",
       max_memory_restart: "800M",
