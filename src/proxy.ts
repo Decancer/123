@@ -76,6 +76,6 @@ export const config = {
      * - 静态资源 (svg/png/jpg/gif/ico/webp/woff2/ttf/moc/mtn/bundle/asset/json)
      * - Next.js 内部路由
      */
-    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|ico|webp|woff2?|ttf|eot|moc|mtn|bundle|asset|json)$).*)",
+    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|ico|webp|woff2?|ttf|eot|moc|mtn|bundle|asset|json|js|css)$).*)",
   ],
 };
