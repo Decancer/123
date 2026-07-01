@@ -25,6 +25,7 @@ const PUBLIC_PATHS = [
   "/api/users",
   "/_next",
   "/favicon.ico",
+  "/.well-known",
 ];
 
 // 页面路径（不依赖 API，直接可访问）
